@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Department — Nnamdi Azikiwe University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════ VARIABLES ═══════ */
+:root {
+  --bg:          #07090F;
+  --bg-2:        #0D1320;
+  --bg-3:        #111827;
+  --bg-card:     rgba(255,255,255,0.04);
+  --blue:        #2272F0;
+  --blue-dim:    rgba(34,114,240,0.15);
+  --orange:      #F05818;
+  --orange-dim:  rgba(240,88,24,0.15);
+  --white:       #FFFFFF;
+  --text:        rgba(255,255,255,0.88);
+  --text-dim:    rgba(255,255,255,0.55);
+  --text-faint:  rgba(255,255,255,0.28);
+  --border:      rgba(255,255,255,0.07);
+  --border-md:   rgba(255,255,255,0.13);
+  --radius:      4px;
+  /* Dynamic dept theme — overridden by JS */
+  --dept-accent:       #F05818;
+  --dept-accent-light: #F8803A;
+  --dept-glow:         rgba(240,88,24,0.12);
+  --dept-hero:         linear-gradient(135deg,#07090F 0%,#0D1320 100%);
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--dept-accent); border-radius: 2px; }
+
+/* ── ANNOUNCEMENT BAR ── */
+.announcement-bar { background: var(--orange); color: var(--white); text-align: center; padding: 10px 20px; font-size: 12px; font-weight: 600; letter-spacing: .04em; position: relative; z-index: 1002; }
+.announcement-bar a { color: var(--white); font-weight: 800; border-bottom: 1px solid rgba(255,255,255,.45); }
+.announcement-bar a:hover { border-color: var(--white); }
+
+/* ── NAVBAR ── */
+nav { position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; height: 70px; background: rgba(7,9,15,.97); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); transition: box-shadow .3s ease; }
+nav.scrolled { box-shadow: 0 4px 40px rgba(0,0,0,.6); }
+.nav-brand { display: flex; align-items: center; gap: 12px; }
+.nav-logo { width: 38px; height: 38px; object-fit: contain; flex-shrink: 0; }
+.nav-brand-text { display: flex; flex-direction: column; }
+.nav-brand-name { font-family: 'Playfair Display', serif; color: var(--white); font-size: 14px; font-weight: 700; line-height: 1.2; }
+.nav-brand-tag { color: var(--orange); font-size: 9.5px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+.nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+.nav-links li a { color: var(--text-dim); font-size: 12.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; transition: color .2s; position: relative; padding-bottom: 4px; }
+.nav-links li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1.5px; background: var(--dept-accent); transition: width .25s ease; }
+.nav-links li a:hover { color: var(--white); }
+.nav-links li a:hover::after { width: 100%; }
+.nav-cta { background: var(--orange) !important; color: var(--white) !important; padding: 8px 18px !important; border-radius: var(--radius); letter-spacing: .08em !important; }
+.nav-cta:hover { background: #D94D12 !important; }
+.nav-cta::after { display: none !important; }
+.nav-burger { display: none; flex-direction: column; gap: 5px; padding: 6px; cursor: pointer; }
+.nav-burger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 1px; }
+.mobile-menu { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(7,9,15,.98); backdrop-filter: blur(20px); flex-direction: column; align-items: center; justify-content: center; gap: 32px; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+.mobile-menu.open { opacity: 1; pointer-events: all; display: flex; }
+.mobile-menu a { font-size: 22px; font-weight: 700; color: var(--text-dim); letter-spacing: .04em; }
+.mobile-menu a:hover { color: var(--dept-accent); }
+.mobile-close { position: absolute; top: 24px; right: 5vw; font-size: 28px; color: var(--text-dim); cursor: pointer; }
+
+/* ── BREADCRUMB ── */
+.breadcrumb { background: var(--bg-2); padding: 14px 5vw; border-bottom: 1px solid var(--border); }
+.breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-faint); flex-wrap: wrap; }
+.breadcrumb-inner a { color: var(--text-faint); transition: color .2s; }
+.breadcrumb-inner a:hover { color: var(--dept-accent-light); }
+.breadcrumb-sep { opacity: .3; }
+.breadcrumb-current { color: var(--dept-accent-light); }
+
+/* ── DEPT HERO ── */
+#dept-hero { background: var(--dept-hero); padding: 70px 5vw 0; position: relative; overflow: hidden; }
+.hero-grid { position: absolute; inset: 0; opacity: .025; background-image: linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px); background-size: 60px 60px; }
+.hero-glow { position: absolute; right: -80px; top: 40%; transform: translateY(-50%); width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle,var(--dept-glow) 0%,transparent 70%); pointer-events: none; }
+.hero-inner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: flex-start; }
+.hero-supertag { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.6); font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; padding: 5px 14px; border-radius: 2px; margin-bottom: 20px; }
+.hero-icon { font-size: 48px; display: block; margin-bottom: 14px; filter: drop-shadow(0 4px 20px var(--dept-glow)); }
+.hero-name { font-family: 'Playfair Display', serif; font-size: clamp(28px,4vw,54px); font-weight: 900; color: var(--white); line-height: 1.05; margin-bottom: 6px; }
+.hero-name em { font-style: italic; color: var(--dept-accent-light); }
+.hero-accent-line { width: 50px; height: 3px; background: linear-gradient(90deg,var(--dept-accent),transparent); margin: 18px 0 16px; }
+.hero-tagline { color: rgba(255,255,255,.55); font-size: 15px; line-height: 1.7; max-width: 560px; font-weight: 300; margin-bottom: 30px; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; padding-bottom: 60px; }
+.hero-stats { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.09); border-top: 2px solid var(--dept-accent); border-radius: 3px; padding: 24px 20px; min-width: 200px; display: flex; flex-direction: column; gap: 20px; backdrop-filter: blur(10px); }
+.hs-item {}
+.hs-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: var(--dept-accent-light); line-height: 1; }
+.hs-label { color: rgba(255,255,255,.38); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; margin-top: 3px; }
+.hs-div { height: 1px; background: rgba(255,255,255,.06); }
+.hero-tab { height: 3px; background: linear-gradient(90deg,var(--dept-accent),transparent); }
+
+/* ── SECTIONS ── */
+.sw { padding: 80px 5vw; background: var(--bg); }
+.sw.dark { background: var(--bg-2); }
+.sw.mid { background: var(--bg-3); }
+.si { max-width: 1200px; margin: 0 auto; }
+.stag { display: inline-flex; align-items: center; gap: 8px; color: var(--dept-accent); font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 14px; }
+.stag::before { content: ''; width: 24px; height: 2px; background: var(--dept-accent); }
+.stag.light { color: var(--dept-accent-light); }
+.stag.light::before { background: var(--dept-accent-light); }
+.sh { font-family: 'Playfair Display', serif; font-size: clamp(24px,2.8vw,38px); font-weight: 700; color: var(--white); line-height: 1.15; }
+.sh.light { color: var(--white); }
+.sh span { color: var(--dept-accent); }
+
+/* ── BUTTONS ── */
+.btn-a { background: var(--dept-accent); color: var(--white); padding: 12px 26px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; border-radius: var(--radius); display: inline-block; transition: transform .2s,filter .2s; box-shadow: 0 6px 22px var(--dept-glow); }
+.btn-a:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.btn-b { border: 1px solid var(--border-md); color: var(--text); padding: 12px 26px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; background: transparent; cursor: pointer; border-radius: var(--radius); display: inline-block; transition: border-color .2s,background .2s; }
+.btn-b:hover { border-color: var(--dept-accent-light); background: rgba(255,255,255,.06); color: var(--white); }
+.btn-c { border: 1px solid var(--border-md); color: var(--text-dim); padding: 12px 26px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; background: transparent; cursor: pointer; border-radius: var(--radius); display: inline-block; transition: all .2s; }
+.btn-c:hover { border-color: var(--dept-accent); color: var(--white); }
+
+/* ── HOD MESSAGE ── */
+.hod-grid { display: grid; grid-template-columns: auto 1fr; gap: 56px; align-items: flex-start; }
+.hod-card { width: 240px; flex-shrink: 0; }
+.hod-photo { width: 200px; height: 240px; background: rgba(255,255,255,.06); border-radius: var(--radius); position: relative; overflow: hidden; border: 1px solid var(--border-md); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+.hod-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.hod-initials { font-family: 'Playfair Display', serif; font-size: 48px; font-style: italic; color: var(--dept-accent); opacity: .6; user-select: none; }
+.hod-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,var(--dept-accent),transparent); }
+.hod-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+.hod-role { color: var(--dept-accent); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+.hod-quals { display: flex; flex-direction: column; gap: 5px; }
+.hod-qual { font-size: 11px; color: var(--text-faint); display: flex; align-items: flex-start; gap: 6px; line-height: 1.5; }
+.hod-qual::before { content: '—'; color: var(--dept-accent); flex-shrink: 0; }
+.hod-msg .qmark { font-family: 'Playfair Display', serif; font-size: 72px; color: var(--dept-glow); line-height: .6; display: block; margin-bottom: 14px; filter: brightness(4); }
+.hod-body { font-size: 16px; line-height: 1.85; color: var(--text-dim); font-weight: 300; font-style: italic; border-left: 3px solid var(--dept-accent); padding-left: 22px; margin-bottom: 20px; }
+.hod-body p+p { margin-top: 14px; }
+.hod-sig { font-family: 'Playfair Display', serif; font-size: 20px; font-style: italic; color: var(--white); }
+
+/* ── COURSES ── */
+.tab-row { display: flex; gap: 0; border-bottom: 1px solid var(--border-md); margin-bottom: 32px; }
+.tab { padding: 11px 26px; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; color: var(--text-faint); background: transparent; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .2s,border-color .2s; }
+.tab.active { color: var(--dept-accent); border-bottom-color: var(--dept-accent); }
+.tab:hover:not(.active) { color: var(--white); }
+.panel { display: none; }
+.panel.active { display: block; }
+.course-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+.course-card { background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--dept-accent); padding: 16px 18px; border-radius: 0 3px 3px 0; display: flex; gap: 14px; align-items: flex-start; transition: background .2s,border-color .2s; }
+.course-card:hover { background: rgba(255,255,255,.06); border-color: var(--border-md); }
+.course-code { background: var(--dept-accent); color: var(--white); font-size: 10px; font-weight: 800; letter-spacing: .06em; padding: 3px 7px; border-radius: 1px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+.course-title { font-size: 13px; font-weight: 700; color: var(--white); line-height: 1.3; }
+.course-units { font-size: 10px; color: var(--text-faint); margin-top: 3px; }
+
+/* ── STAFF ── */
+.staff-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+.staff-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; text-align: center; transition: all .25s; cursor: pointer; position: relative; overflow: hidden; }
+.staff-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--dept-accent); transform: scaleX(0); transition: transform .3s; }
+.staff-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.4); border-color: var(--border-md); }
+.staff-card:hover::after { transform: scaleX(1); }
+.staff-avatar { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 12px; background: var(--bg-2); border: 2px solid var(--dept-accent); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 20px; font-style: italic; color: var(--dept-accent); }
+.staff-name { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 4px; line-height: 1.2; }
+.staff-role { color: var(--dept-accent); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+.staff-spec { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+
+/* ── RESEARCH ── */
+.res-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.res-card { background: var(--bg-card); border: 1px solid var(--border); padding: 26px; border-radius: var(--radius); position: relative; overflow: hidden; transition: all .3s; cursor: pointer; }
+.res-card:hover { background: rgba(255,255,255,.07); transform: translateY(-4px); border-color: var(--border-md); }
+.res-num { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 900; color: rgba(255,255,255,.04); position: absolute; top: 10px; right: 14px; line-height: 1; }
+.res-area { color: var(--dept-accent-light); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 10px; }
+.res-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--white); line-height: 1.25; margin-bottom: 10px; }
+.res-desc { font-size: 12px; color: var(--text-dim); line-height: 1.65; }
+.res-meta { display: flex; gap: 18px; margin-top: 16px; }
+.res-stat { font-size: 10px; color: var(--text-faint); }
+.res-stat strong { color: var(--dept-accent-light); display: block; font-size: 15px; font-weight: 700; }
+
+/* ── FACILITIES ── */
+.fac-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.fac-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; transition: all .25s; cursor: pointer; position: relative; overflow: hidden; }
+.fac-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--dept-accent); transform: scaleX(0); transition: transform .3s; transform-origin: left; }
+.fac-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.4); border-color: var(--border-md); }
+.fac-card:hover::before { transform: scaleX(1); }
+.fac-icon { font-size: 32px; margin-bottom: 14px; display: block; }
+.fac-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+.fac-desc { font-size: 12px; color: var(--text-dim); line-height: 1.65; }
+
+/* ── NEWS ── */
+.news-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
+.news-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all .25s; }
+.news-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.4); border-color: var(--border-md); }
+.news-card-img { height: 120px; background: var(--dept-hero); position: relative; display: flex; align-items: center; justify-content: center; }
+.news-card-img-inner { position: absolute; inset: 0; background: linear-gradient(135deg,rgba(0,0,0,.3),transparent); }
+.news-cat { position: absolute; bottom: 10px; left: 12px; background: var(--dept-accent); color: var(--white); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 1px; }
+.news-body { padding: 18px; }
+.news-date { color: var(--text-faint); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 7px; }
+.news-title { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: var(--white); line-height: 1.3; }
+
+/* ── SIBLING DEPARTMENTS ── */
+.sibling-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+.sibling-pill { background: var(--bg-card); border: 1px solid var(--border); padding: 16px 12px; border-radius: var(--radius); text-decoration: none; text-align: center; transition: all .2s; display: block; }
+.sibling-pill:hover { border-color: var(--dept-accent); transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,.3); }
+.sibling-pill.active { border-color: var(--dept-accent); background: var(--dept-glow); }
+.sibling-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.sibling-name { font-size: 10px; font-weight: 700; color: var(--white); line-height: 1.3; }
+
+/* ── CTA ── */
+.cta-wrap { background: var(--bg-2); border-top: 2px solid var(--dept-accent); padding: 80px 5vw; position: relative; overflow: hidden; }
+.cta-wrap::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, var(--dept-glow) 0%, transparent 60%); }
+.cta-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; position: relative; gap: 40px; flex-wrap: wrap; }
+.cta-label { color: var(--text-faint); font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 10px; }
+.cta-title { font-family: 'Playfair Display', serif; font-size: clamp(26px,3vw,42px); font-weight: 900; color: var(--white); line-height: 1.1; }
+.cta-sub { color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-top: 10px; font-weight: 300; max-width: 420px; }
+.cta-btns { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
+.btn-white { background: var(--white); color: #0D1320; padding: 13px 28px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; border-radius: var(--radius); display: inline-block; transition: transform .2s,box-shadow .2s; box-shadow: 0 6px 24px rgba(0,0,0,.2); }
+.btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,0,0,.3); }
+.btn-ghost { border: 1px solid rgba(255,255,255,.5); color: var(--white); padding: 13px 28px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; background: transparent; border-radius: var(--radius); display: inline-block; transition: background .2s,border-color .2s; }
+.btn-ghost:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.8); }
+
+/* ── FOOTER ── */
+footer { background: var(--bg-2); border-top: 1px solid var(--border); padding: 72px 0 0; }
+.footer-grid { max-width: 1200px; margin: 0 auto; padding: 0 5vw 56px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; border-bottom: 1px solid var(--border); }
+.footer-brand-logo { width: 48px; height: 48px; object-fit: contain; margin-bottom: 16px; }
+.footer-brand-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+.footer-brand-tag { font-size: 11px; color: var(--orange); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 14px; }
+.footer-brand-desc { font-size: 13px; color: var(--text-dim); line-height: 1.7; max-width: 300px; margin-bottom: 20px; }
+.footer-col-title { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: 13px; color: var(--text-dim); transition: color .2s; }
+.footer-links a:hover { color: var(--orange); }
+.footer-bottom { max-width: 1200px; margin: 0 auto; padding: 20px 5vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.footer-copy { font-size: 12px; color: var(--text-faint); }
+.footer-motto { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text-faint); }
+.footer-motto span { color: var(--orange); }
+
+/* ── REVEAL ── */
+.rv { opacity: 0; transform: translateY(22px); transition: opacity .6s ease,transform .6s ease; }
+.rv.vis { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; } .d3 { transition-delay: .3s; }
+
+/* ── NOT FOUND ── */
+.nf { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 20px; }
+.nf-icon { font-size: 60px; margin-bottom: 20px; }
+.nf-title { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+.nf-sub { color: var(--text-dim); font-size: 15px; margin-bottom: 28px; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-stats{flex-direction:row;flex-wrap:wrap;min-width:unset;gap:14px;}
+  .hs-div{display:none;}
+  .hod-grid{grid-template-columns:1fr;}
+  .hod-card{width:100%;display:flex;gap:20px;align-items:flex-start;}
+  .hod-photo{width:120px;height:150px;flex-shrink:0;}
+  .staff-grid{grid-template-columns:repeat(2,1fr);}
+  .res-grid{grid-template-columns:1fr 1fr;}
+  .fac-grid{grid-template-columns:1fr 1fr;}
+  .sibling-grid{grid-template-columns:repeat(3,1fr);}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:36px;}
+}
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .nav-burger{display:flex;}
+  .sw{padding:56px 20px;}
+  .course-grid{grid-template-columns:1fr;}
+  .staff-grid{grid-template-columns:1fr 1fr;}
+  .res-grid{grid-template-columns:1fr;}
+  .fac-grid{grid-template-columns:1fr;}
+  .news-grid{grid-template-columns:1fr;}
+  .sibling-grid{grid-template-columns:repeat(2,1fr);}
+  .footer-grid{grid-template-columns:1fr;gap:26px;}
+  .footer-bottom{flex-direction:column;gap:8px;text-align:center;}
+  .cta-inner{flex-direction:column;}
+  .hero-actions,.cta-btns{flex-direction:column;}
+}
+@media(max-width:540px){
+  .sibling-grid{grid-template-columns:1fr 1fr;}
+  .staff-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   SIBLING MAP  — faculty → departments list (for nav pills)
+═══════════════════════════════════════════════════════════════ */
+/* ── HOD PHOTOS — assign by gender. Fallback to initials if file missing ── */
+const HOD_PHOTOS = {
+  /* Physical Sciences */
+  "computer-science":           "images/hod-m1.png",
+  "mathematics":                "images/hod-f2.png",
+  "physics":                    "images/hod-m2.png",
+  "statistics":                 "images/hod-f2.png",
+  "information-technology":     "images/hod-m2.png",
+  "industrial-physics":         "images/hod-m3.png",
+  /* Engineering */
+  "civil-engineering":          "images/hod-m1.png",
+  "mechanical-engineering":     "images/hod-m1.png",
+  "electrical-engineering":     "images/hod-f1.png",
+  "chemical-engineering":       "images/hod-m3.png",
+  "computer-engineering":       "images/hod-m3.png",
+  "metallurgical-engineering":  "images/hod-m2.png",
+  /* Health Sciences */
+  "medicine-surgery":           "images/hod-m1.png",
+  "nursing-science":            "images/hod-f1.png",
+  "medical-laboratory-science": "images/hod-f2.png",
+  "pharmacy":                   "images/hod-m1.png",
+  "physiotherapy":              "images/hod-f3.png",
+  "dentistry":                  "images/hod-m3.png",
+  /* Law */
+  "private-law":                "images/hod-f1.png",
+  "public-law":                 "images/hod-m1.png",
+  "jurisprudence":              "images/hod-f2.png",
+  "commercial-law":             "images/hod-m2.png",
+  /* Management */
+  "accounting":                 "images/hod-f1.png",
+  "business-administration":    "images/hod-m2.png",
+  "banking-finance":            "images/hod-m3.png",
+  "marketing":                  "images/hod-f3.png",
+  "public-administration":      "images/hod-m3.png",
+  /* Arts */
+  "english-literary-studies":   "images/hod-f1.png",
+  "history-international-studies": "images/hod-m2.png",
+  "philosophy":                 "images/hod-f2.png",
+  "igbo-linguistics":           "images/hod-f1.png",
+  "religion-human-relations":   "images/hod-m3.png",
+  "mass-communication":         "images/hod-f3.png"
+};
+
+const SIBLINGS = {
+  "engineering":       [{id:"civil-engineering",name:"Civil Engineering",icon:"🏗️"},{id:"mechanical-engineering",name:"Mechanical Engineering",icon:"⚙️"},{id:"electrical-engineering",name:"Electrical Engineering",icon:"⚡"},{id:"chemical-engineering",name:"Chemical Engineering",icon:"🧪"},{id:"computer-engineering",name:"Computer Engineering",icon:"💾"},{id:"metallurgical-engineering",name:"Metallurgical & Materials",icon:"🔩"}],
+  "health-sciences":   [{id:"medicine-surgery",name:"Medicine & Surgery",icon:"🩺"},{id:"nursing-science",name:"Nursing Science",icon:"💊"},{id:"medical-laboratory-science",name:"Medical Lab Science",icon:"🔬"},{id:"pharmacy",name:"Pharmacy",icon:"💉"},{id:"physiotherapy",name:"Physiotherapy",icon:"🏃"},{id:"dentistry",name:"Dentistry",icon:"🦷"}],
+  "physical-sciences": [{id:"computer-science",name:"Computer Science",icon:"💻"},{id:"mathematics",name:"Mathematics",icon:"📐"},{id:"physics",name:"Physics",icon:"⚛️"},{id:"statistics",name:"Statistics",icon:"📊"},{id:"information-technology",name:"Information Technology",icon:"🌐"},{id:"industrial-physics",name:"Industrial Physics",icon:"🔭"}],
+  "law":               [{id:"private-law",name:"Private & Property Law",icon:"🏠"},{id:"public-law",name:"Public & International Law",icon:"🌍"},{id:"jurisprudence",name:"Jurisprudence & Legal Theory",icon:"⚖️"},{id:"commercial-law",name:"Commercial & Industrial Law",icon:"📋"}],
+  "management":        [{id:"accounting",name:"Accounting",icon:"📒"},{id:"business-administration",name:"Business Administration",icon:"📈"},{id:"banking-finance",name:"Banking & Finance",icon:"🏦"},{id:"marketing",name:"Marketing",icon:"📣"},{id:"public-administration",name:"Public Administration",icon:"🏛️"}],
+  "arts":              [{id:"english-literary-studies",name:"English & Literary Studies",icon:"✍️"},{id:"history-international-studies",name:"History & Int'l Studies",icon:"🗺️"},{id:"philosophy",name:"Philosophy",icon:"🧠"},{id:"igbo-linguistics",name:"Igbo Language & Linguistics",icon:"🗣️"},{id:"religion-human-relations",name:"Religion & Human Relations",icon:"☮️"},{id:"mass-communication",name:"Mass Communication",icon:"📰"}]
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPLETE DEPARTMENT DATA  — 33 entries
+═══════════════════════════════════════════════════════════════ */
+const DEPT = {
+
+/* ─────────────── PHYSICAL SCIENCES ─────────────── */
+
+"computer-science":{
+  id:"computer-science", name:"Department of Computer Science", shortName:"Computer Science", icon:"💻",
+  faculty:{id:"physical-sciences",name:"Faculty of Physical Sciences"},
+  theme:{accent:"#2A5AC4",light:"#6A9AFF",glow:"rgba(42,90,196,.14)",hero:"linear-gradient(135deg,#060F20 0%,#0A1635 50%,#0A1C42 100%)"},
+  tagline:"Forging the algorithms, systems and intelligence that will power Africa's digital century.",
+  established:1996, stats:{students:680,staff:18,courses:42,research:7},
+  hod:{name:"Prof. Chidi Ezeasor",initials:"CE",qualifications:["Ph.D. Computer Science (ML), University of Ibadan, 2009","M.Sc. Software Engineering, OAU, 2003","Senior Member, IEEE · ACM Distinguished Speaker"],message:["The Department of Computer Science at UNIZIK has, over nearly three decades, produced graduates shaping Nigeria's digital economy — from senior engineers at global tech firms to founders of indigenous software companies serving millions.","Our curriculum reflects industry realities from cloud-native engineering to frontier AI. We challenge our students not merely to use technology, but to invent it. The problems of Africa will not be solved by importing solutions — they will be solved by the brilliant minds we train right here."]},
+  courses:{
+    undergraduate:[{code:"CSC 211",title:"Introduction to Programming",units:3},{code:"CSC 221",title:"Data Structures & Algorithms",units:3},{code:"CSC 312",title:"Database Management Systems",units:3},{code:"CSC 321",title:"Operating Systems",units:3},{code:"CSC 411",title:"Machine Learning Fundamentals",units:3},{code:"CSC 421",title:"Software Engineering",units:3},{code:"CSC 431",title:"Computer Networks & Security",units:3},{code:"CSC 491",title:"Final Year Project",units:6}],
+    postgraduate:[{code:"CSC 701",title:"Advanced Algorithms & Complexity",units:3},{code:"CSC 711",title:"Deep Learning & Neural Networks",units:3},{code:"CSC 721",title:"Distributed Systems & Cloud",units:3},{code:"CSC 731",title:"Research Methods in CS",units:3}],
+    phd:[{code:"CSC 901",title:"Advanced Topics in AI",units:3},{code:"CSC 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Prof. Chidi Ezeasor",initials:"CE",role:"Professor & HOD",spec:"Machine Learning, NLP"},{name:"Dr. Adaeze Nwofor",initials:"AN",role:"Associate Professor",spec:"Cybersecurity, Cryptography"},{name:"Dr. Obinna Chukwu",initials:"OC",role:"Senior Lecturer",spec:"Distributed Systems, Cloud"},{name:"Dr. Ifeoma Okafor",initials:"IO",role:"Lecturer I",spec:"Computer Vision, Robotics"}],
+  research:[{area:"AI & NLP",title:"Igbo Language NLP & Generative AI",desc:"Building foundational LLMs trained on Igbo and Nigerian Pidgin corpora for local applications.",funding:"₦120M",projects:3},{area:"Cybersecurity",title:"Threat Intelligence for Nigerian Financial Systems",desc:"Real-time IDS frameworks adapted for attack profiles targeting Nigerian banking infrastructure.",funding:"₦85M",projects:2},{area:"Software Engineering",title:"Low-Code Platforms for African SMEs",desc:"No-code/low-code tools enabling Nigerian small businesses to build custom digital solutions.",funding:"₦55M",projects:2}],
+  facilities:[{name:"AI & Data Science Lab",icon:"🤖",desc:"GPU-equipped lab with 40 workstations for deep learning and big data research."},{name:"Cybersecurity Operations Centre",icon:"🔐",desc:"Simulated enterprise network for ethical hacking, penetration testing and incident response."},{name:"Software Development Studio",icon:"💾",desc:"Collaborative coding space with CI/CD pipelines and cloud sandbox accounts."}],
+  news:[{date:"Aug 8, 2024",cat:"Research",title:"UNIZIK CS Dept Publishes Igbo NLP Benchmark Dataset — 2M Tokens Open Source"},{date:"Jul 25, 2024",cat:"Events",title:"Hackathon 2024: ₦5M Prize Pool — Applications Open to All Year Groups"}]
+},
+
+"mathematics":{
+  id:"mathematics", name:"Department of Mathematics", shortName:"Mathematics", icon:"📐",
+  faculty:{id:"physical-sciences",name:"Faculty of Physical Sciences"},
+  theme:{accent:"#7A2AC4",light:"#B06AFF",glow:"rgba(122,42,196,.14)",hero:"linear-gradient(135deg,#0C0620 0%,#130830 50%,#160A3C 100%)"},
+  tagline:"The language of the universe — and the silent engine behind every technology, economy and structure on earth.",
+  established:1992, stats:{students:420,staff:14,courses:38,research:5},
+  hod:{name:"Dr. Ngozi Obialo",initials:"NO",qualifications:["Ph.D. Applied Mathematics, University of Lagos, 2011","M.Sc. Pure Mathematics, UNILAG, 2005","Fellow, Mathematical Association of Nigeria"],message:["Mathematics is not a service subject — it is the foundation upon which every quantitative discipline rests. The Department of Mathematics at UNIZIK has produced actuaries, data scientists, economists, and engineers who are among the most technically rigorous graduates in the South-East.","We pride ourselves on a department culture that takes pure mathematics seriously while maintaining strong connections to applied areas that matter: mathematical finance, statistical modelling, optimisation, and the emerging field of mathematical AI."]},
+  courses:{
+    undergraduate:[{code:"MTH 211",title:"Mathematical Analysis I",units:3},{code:"MTH 221",title:"Linear Algebra",units:3},{code:"MTH 311",title:"Real Analysis",units:3},{code:"MTH 321",title:"Ordinary Differential Equations",units:3},{code:"MTH 411",title:"Numerical Methods",units:3},{code:"MTH 421",title:"Abstract Algebra",units:3},{code:"MTH 431",title:"Mathematical Modelling",units:3},{code:"MTH 491",title:"Project",units:6}],
+    postgraduate:[{code:"MTH 701",title:"Functional Analysis",units:3},{code:"MTH 711",title:"Stochastic Processes",units:3},{code:"MTH 721",title:"Computational Mathematics",units:3}],
+    phd:[{code:"MTH 901",title:"Advanced Topics in Analysis",units:3},{code:"MTH 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Ngozi Obialo",initials:"NO",role:"Associate Professor & HOD",spec:"Functional Analysis, PDEs"},{name:"Dr. Emeka Nnadi",initials:"EN",role:"Senior Lecturer",spec:"Mathematical Finance, Stochastics"},{name:"Dr. Chioma Ezeobi",initials:"CE",role:"Lecturer I",spec:"Numerical Analysis, Optimisation"},{name:"Mr. Obinna Eze",initials:"OE",role:"Assistant Lecturer",spec:"Graph Theory, Combinatorics"}],
+  research:[{area:"Applied Mathematics",title:"Mathematical Modelling of Epidemic Spread in Nigeria",desc:"ODE and agent-based models for predicting infectious disease trajectories in Nigerian populations.",funding:"₦65M",projects:2},{area:"Financial Mathematics",title:"Derivative Pricing Models for Emerging Markets",desc:"Adapting Black-Scholes and SABR models for thin, volatile African equity markets.",funding:"₦48M",projects:2},{area:"Computational Maths",title:"AI-Assisted Theorem Proving for Nigerian Curricula",desc:"Using LLMs and symbolic math tools to support undergraduate proof-writing skill development.",funding:"₦30M",projects:1}],
+  facilities:[{name:"Mathematics Computing Lab",icon:"🖥️",desc:"MATLAB, Python (NumPy/SciPy), Mathematica and R workstations for computational coursework."},{name:"Mathematical Sciences Library",icon:"📚",desc:"Specialist collection of 8,000+ volumes and access to MathSciNet and JSTOR."},{name:"Seminar & Proof Room",icon:"📝",desc:"Dedicated space for advanced seminars, proof workshops and graduate student presentations."}],
+  news:[{date:"Aug 3, 2024",cat:"Achievement",title:"UNIZIK Mathematics Student Wins West Africa Regional Maths Olympiad"},{date:"Jul 20, 2024",cat:"Events",title:"Annual Mathematics & Statistics Week — Public Lectures Open to All"}]
+},
+
+"physics":{
+  id:"physics", name:"Department of Physics", shortName:"Physics", icon:"⚛️",
+  faculty:{id:"physical-sciences",name:"Faculty of Physical Sciences"},
+  theme:{accent:"#C47A2A",light:"#FFAA50",glow:"rgba(196,122,42,.14)",hero:"linear-gradient(135deg,#1A0800 0%,#2A1000 50%,#1A0C00 100%)"},
+  tagline:"Probing the deepest laws of nature — from the quantum to the cosmic — and engineering solutions from first principles.",
+  established:1993, stats:{students:310,staff:12,courses:34,research:4},
+  hod:{name:"Dr. Emeka Nwofor",initials:"EN",qualifications:["Ph.D. Condensed Matter Physics, University of Nigeria, 2010","M.Sc. Applied Physics, UNILAG, 2004","Member, Nigerian Institute of Physics"],message:["Physics is the most fundamental of the sciences, and a rigorous training in physics endows graduates with an exceptional ability to reason from first principles — a skill that is in chronic shortage in the Nigerian economy.","Our department produces graduates who go into materials science, instrumentation engineering, renewable energy, medical physics and data science. We are also investing heavily in our experimental research infrastructure to become a hub for materials characterisation and solid-state physics research in South-East Nigeria."]},
+  courses:{
+    undergraduate:[{code:"PHY 211",title:"Classical Mechanics",units:3},{code:"PHY 221",title:"Electricity & Magnetism",units:3},{code:"PHY 311",title:"Quantum Mechanics I",units:3},{code:"PHY 321",title:"Thermodynamics & Statistical Mechanics",units:3},{code:"PHY 411",title:"Solid State Physics",units:3},{code:"PHY 421",title:"Nuclear & Particle Physics",units:3},{code:"PHY 431",title:"Electronics & Instrumentation",units:3},{code:"PHY 491",title:"Project",units:6}],
+    postgraduate:[{code:"PHY 701",title:"Advanced Quantum Mechanics",units:3},{code:"PHY 711",title:"Condensed Matter Physics",units:3},{code:"PHY 721",title:"Computational Physics",units:3}],
+    phd:[{code:"PHY 901",title:"Advanced Topics in Materials Physics",units:3},{code:"PHY 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Emeka Nwofor",initials:"EN",role:"Associate Professor & HOD",spec:"Condensed Matter, Solar Materials"},{name:"Dr. Adaeze Eze",initials:"AE",role:"Senior Lecturer",spec:"Atomic Physics, Spectroscopy"},{name:"Dr. Chukwudi Obi",initials:"CO",role:"Lecturer I",spec:"Nuclear Physics, Dosimetry"},{name:"Mr. Ikenna Anieke",initials:"IA",role:"Assistant Lecturer",spec:"Computational Physics, Simulation"}],
+  research:[{area:"Renewable Energy",title:"Thin-Film Solar Cell Research for Nigerian Climate",desc:"Developing locally-optimised perovskite and CZTS solar cells with high efficiency under tropical irradiance.",funding:"₦90M",projects:2},{area:"Materials Science",title:"Nanocomposites for Water Purification",desc:"Engineering low-cost nanomaterial filters for heavy metal and bacteria removal in rural Nigerian water sources.",funding:"₦55M",projects:2},{area:"Medical Physics",title:"Radiation Dosimetry Standards for Anambra Hospitals",desc:"Quality assurance protocols and dose audit for radiotherapy and diagnostic imaging facilities.",funding:"₦35M",projects:1}],
+  facilities:[{name:"Physics Laboratory Complex",icon:"⚗️",desc:"Three fully equipped labs covering mechanics, optics, electricity and modern physics experiments."},{name:"Materials Characterisation Suite",icon:"🔬",desc:"XRD, SEM, UV-Vis spectrophotometer and four-probe resistivity measurement systems."},{name:"Solar Energy Research Facility",icon:"☀️",desc:"Rooftop experimental PV array with monitoring systems for thin-film cell testing."}],
+  news:[{date:"Aug 1, 2024",cat:"Research",title:"Physics Dept Receives ₦55M Grant for Solar Cell Research from TETFUND"},{date:"Jul 16, 2024",cat:"Events",title:"Annual Physics Colloquium — 'Quantum Computing & African Futures'"}]
+},
+
+"statistics":{
+  id:"statistics", name:"Department of Statistics", shortName:"Statistics", icon:"📊",
+  faculty:{id:"physical-sciences",name:"Faculty of Physical Sciences"},
+  theme:{accent:"#2AC48A",light:"#60FFB8",glow:"rgba(42,196,138,.12)",hero:"linear-gradient(135deg,#001A10 0%,#002A18 50%,#001C12 100%)"},
+  tagline:"Transforming data into decisions — the quantitative backbone of modern science, policy and business.",
+  established:1994, stats:{students:280,staff:10,courses:30,research:4},
+  hod:{name:"Dr. Ifeoma Nnaji",initials:"IN",qualifications:["Ph.D. Biostatistics, University of Ibadan, 2012","M.Sc. Statistics, University of Nigeria, 2005","Fellow, Nigerian Statistical Association"],message:["In an era defined by data, the statistician occupies a position of extraordinary importance — as interpreter, validator, and navigator of numerical truth. The Department of Statistics at UNIZIK trains graduates who are equipped to serve in government, industry, health institutions, and the growing data economy.","Our programmes blend classical inference with modern data science, ensuring that our graduates are as comfortable with R and Python as they are with Bayesian reasoning and experimental design."]},
+  courses:{
+    undergraduate:[{code:"STA 211",title:"Probability Theory I",units:3},{code:"STA 221",title:"Statistical Inference I",units:3},{code:"STA 311",title:"Regression & ANOVA",units:3},{code:"STA 321",title:"Design of Experiments",units:3},{code:"STA 411",title:"Multivariate Analysis",units:3},{code:"STA 421",title:"Time Series & Forecasting",units:3},{code:"STA 431",title:"Data Science & Python",units:3},{code:"STA 491",title:"Project",units:6}],
+    postgraduate:[{code:"STA 701",title:"Advanced Probability & Measure Theory",units:3},{code:"STA 711",title:"Bayesian Statistics",units:3},{code:"STA 721",title:"Survival Analysis & Clinical Trials",units:3}],
+    phd:[{code:"STA 901",title:"Advanced Statistical Theory",units:3},{code:"STA 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Ifeoma Nnaji",initials:"IN",role:"Associate Professor & HOD",spec:"Biostatistics, Survival Analysis"},{name:"Dr. Chidi Okafor",initials:"CO",role:"Senior Lecturer",spec:"Time Series, Econometrics"},{name:"Dr. Ngozi Chukwu",initials:"NC",role:"Lecturer I",spec:"Machine Learning, Data Mining"},{name:"Mr. Emeka Obialo",initials:"EO",role:"Assistant Lecturer",spec:"Bayesian Methods, R Programming"}],
+  research:[{area:"Health Statistics",title:"Maternal Mortality Risk Modelling in Anambra",desc:"Logistic regression and survival models identifying key predictors of maternal death in the state.",funding:"₦52M",projects:2},{area:"Economic Statistics",title:"Informal Economy Estimation for South-East Nigeria",desc:"Mixed-methods survey design and Bayesian estimation of the unrecorded economy across five states.",funding:"₦38M",projects:1},{area:"Data Science",title:"ML-Driven Agricultural Census System",desc:"Automated crop estimation using satellite data, survey imputation and ensemble methods for Anambra State.",funding:"₦44M",projects:2}],
+  facilities:[{name:"Statistical Computing Laboratory",icon:"💻",desc:"40 workstations with R, STATA, SPSS, SAS and Python pre-installed for all students."},{name:"Survey Research Centre",icon:"📋",desc:"Dedicated facility for questionnaire design, CAPI interviewing and survey data management."},{name:"Bioinformatics Workroom",icon:"🧬",desc:"Specialist stations for genomic data analysis and epidemiological modelling software."}],
+  news:[{date:"Jul 30, 2024",cat:"Research",title:"Dept of Statistics Publishes South-East Nigeria Economic Inequality Report 2024"},{date:"Jul 12, 2024",cat:"Partnership",title:"National Bureau of Statistics Signs Data Partnership with UNIZIK Statistics Dept"}]
+},
+
+"information-technology":{
+  id:"information-technology", name:"Department of Information Technology", shortName:"Information Technology", icon:"🌐",
+  faculty:{id:"physical-sciences",name:"Faculty of Physical Sciences"},
+  theme:{accent:"#2AAAC4",light:"#60DDFF",glow:"rgba(42,170,196,.12)",hero:"linear-gradient(135deg,#001820 0%,#002530 50%,#001C28 100%)"},
+  tagline:"Connecting systems, securing networks, and building the digital infrastructure that underpins modern Nigeria.",
+  established:2002, stats:{students:490,staff:13,courses:36,research:5},
+  hod:{name:"Dr. Obinna Okonkwo",initials:"OO",qualifications:["Ph.D. Information Systems, Covenant University, 2013","M.Sc. IT Management, University of Benin, 2007","CISSP Certified · Microsoft Certified Trainer"],message:["Information Technology is the connective tissue of the modern economy — and yet Nigeria's digital infrastructure remains chronically underinvested and undersecured. The Department of IT at UNIZIK is directly addressing this by training the network engineers, cloud architects and cybersecurity professionals the country urgently needs.","Our curriculum is closely aligned with globally recognised professional certifications — CompTIA, Cisco, AWS, and Microsoft — ensuring that our graduates hit the ground running in any technology environment."]},
+  courses:{
+    undergraduate:[{code:"ITP 211",title:"Fundamentals of IT",units:3},{code:"ITP 221",title:"Network Administration",units:3},{code:"ITP 311",title:"Cloud Computing Fundamentals",units:3},{code:"ITP 321",title:"Information Security Management",units:3},{code:"ITP 411",title:"Enterprise Systems Architecture",units:3},{code:"ITP 421",title:"UI/UX Design & Development",units:3},{code:"ITP 431",title:"IT Project Management",units:3},{code:"ITP 491",title:"Project",units:6}],
+    postgraduate:[{code:"ITP 701",title:"Advanced Cloud & DevOps",units:3},{code:"ITP 711",title:"Cybersecurity Architecture",units:3},{code:"ITP 721",title:"Digital Transformation Management",units:3}],
+    phd:[{code:"ITP 901",title:"Advanced Topics in Information Systems",units:3},{code:"ITP 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Obinna Okonkwo",initials:"OO",role:"Associate Professor & HOD",spec:"Cloud Security, IT Governance"},{name:"Dr. Chioma Eze",initials:"CE",role:"Senior Lecturer",spec:"Network Engineering, SDN"},{name:"Dr. Adaeze Anieke",initials:"AA",role:"Lecturer I",spec:"UX Research, Human-Computer Interaction"},{name:"Mr. Chukwudi Nwosu",initials:"CN",role:"Assistant Lecturer",spec:"DevOps, Containerisation"}],
+  research:[{area:"Cybersecurity",title:"Smart City Security Framework for Nigerian Municipalities",desc:"Threat modelling and security architecture for Awka Smart City initiative's IoT network.",funding:"₦72M",projects:2},{area:"Cloud Computing",title:"Affordable Cloud Adoption Pathways for Nigerian SMEs",desc:"Cost modelling, migration frameworks and capacity building for 500-employee-or-fewer organisations.",funding:"₦55M",projects:2},{area:"Digital Inclusion",title:"IT Skills Gap Study — South-East Nigerian Youth",desc:"National survey and curriculum recommendations addressing the disconnect between IT education and employment.",funding:"₦35M",projects:1}],
+  facilities:[{name:"Network Lab & Cisco Academy",icon:"🔌",desc:"UNIZIK is an authorised Cisco Networking Academy — students can sit CCNA/CCNP exams on-site."},{name:"Cloud Sandbox Environment",icon:"☁️",desc:"AWS Educate, Azure for Students and GCP credits pre-provisioned for all enrolled IT students."},{name:"Cybersecurity Range",icon:"🛡️",desc:"Isolated virtual network for red-team/blue-team exercises and CTF competitions."}],
+  news:[{date:"Aug 5, 2024",cat:"Partnership",title:"Microsoft Partners UNIZIK IT Dept for Azure AI Certification Programme"},{date:"Jul 22, 2024",cat:"Events",title:"IT Career Fair 2024 — 28 Companies Recruiting On Campus"}]
+},
+
+"industrial-physics":{
+  id:"industrial-physics", name:"Department of Industrial Physics", shortName:"Industrial Physics", icon:"🔭",
+  faculty:{id:"physical-sciences",name:"Faculty of Physical Sciences"},
+  theme:{accent:"#C4902A",light:"#FFB850",glow:"rgba(196,144,42,.14)",hero:"linear-gradient(135deg,#1A1000 0%,#241600 50%,#1A1200 100%)"},
+  tagline:"Bridging fundamental physics and industrial application — powering the factories, sensors and quality systems of modern Nigeria.",
+  established:1998, stats:{students:240,staff:10,courses:28,research:3},
+  hod:{name:"Dr. Chukwudi Anichebe",initials:"CA",qualifications:["Ph.D. Industrial Physics (Instrumentation), Enugu State University, 2011","M.Sc. Applied Physics, University of Nigeria, 2004","Member, Nigerian Institute of Physics"],message:["Industrial Physics occupies a unique niche — it produces graduates who understand physics at a deep level while being immediately deployable in manufacturing, quality control, oil & gas, and renewable energy sectors. This is the combination that Nigerian industry is crying out for.","Our graduates work in production lines, design sensors, commission renewable energy systems, and conduct non-destructive testing of materials across the country. We are proud of their contribution to making Nigerian industry more technically rigorous."]},
+  courses:{
+    undergraduate:[{code:"IPH 211",title:"Electronics I",units:3},{code:"IPH 221",title:"Industrial Instrumentation",units:3},{code:"IPH 311",title:"Non-Destructive Testing",units:3},{code:"IPH 321",title:"Renewable Energy Systems",units:3},{code:"IPH 411",title:"Process Control & Automation",units:3},{code:"IPH 421",title:"Quality Control & Metrology",units:3},{code:"IPH 431",title:"Industrial Acoustics & Vibration",units:3},{code:"IPH 491",title:"Industrial Attachment & Report",units:6}],
+    postgraduate:[{code:"IPH 701",title:"Advanced Instrumentation Systems",units:3},{code:"IPH 711",title:"Renewable Energy Technology",units:3},{code:"IPH 721",title:"Industrial Electronics & Control",units:3}],
+    phd:[{code:"IPH 901",title:"Advanced Topics in Industrial Physics",units:3},{code:"IPH 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Chukwudi Anichebe",initials:"CA",role:"Associate Professor & HOD",spec:"Instrumentation, Sensors"},{name:"Dr. Nkechi Obi",initials:"NO",role:"Senior Lecturer",spec:"Renewable Energy, PV Systems"},{name:"Dr. Ikenna Nnaji",initials:"IN",role:"Lecturer I",spec:"Non-Destructive Testing"},{name:"Mr. Bartholomew Eze",initials:"BE",role:"Assistant Lecturer",spec:"Process Automation, PLCs"}],
+  research:[{area:"Renewable Energy",title:"Off-Grid Solar-Diesel Hybrid Systems for Rural Industry",desc:"Designing hybrid energy systems optimised for small-scale agro-processing plants in rural Anambra.",funding:"₦68M",projects:2},{area:"Instrumentation",title:"Low-Cost IoT Sensor Networks for Environmental Monitoring",desc:"Open-hardware air quality and water level sensors deployed across Anambra River Basin.",funding:"₦42M",projects:1},{area:"Quality Control",title:"NDT Standards Development for Nigerian Oil & Gas",desc:"Calibration protocols and operator certification frameworks for ultrasonic and radiographic inspection.",funding:"₦35M",projects:1}],
+  facilities:[{name:"Industrial Electronics Laboratory",icon:"🔌",desc:"PLC trainers, oscilloscopes, function generators and microcontroller development boards."},{name:"Renewable Energy Demonstration Plant",icon:"⚡",desc:"On-campus solar-wind hybrid microgrid used for research and student hands-on training."},{name:"NDT Training Facility",icon:"🔍",desc:"Ultrasonic, magnetic particle and dye penetrant testing stations certified by COREN."}],
+  news:[{date:"Jul 28, 2024",cat:"Research",title:"Industrial Physics Wins Best Renewable Energy Research Award at NIPSS Conference"},{date:"Jul 10, 2024",cat:"Events",title:"Industry Day 2024 — Schlumberger, Shell, Innoson Plants to Receive Student Delegations"}]
+},
+
+/* ─────────────── ENGINEERING ─────────────── */
+
+"civil-engineering":{
+  id:"civil-engineering", name:"Department of Civil Engineering", shortName:"Civil Engineering", icon:"🏗️",
+  faculty:{id:"engineering",name:"Faculty of Engineering"},
+  theme:{accent:"#2A8A9A",light:"#50C8DC",glow:"rgba(42,138,154,.14)",hero:"linear-gradient(135deg,#001518 0%,#002028 50%,#001820 100%)"},
+  tagline:"Designing the roads, bridges, dams and cities that will carry Nigeria into its next century of growth.",
+  established:1992, stats:{students:520,staff:16,courses:38,research:6},
+  hod:{name:"Prof. Chukwudi Obiora",initials:"CO",qualifications:["Ph.D. Structural Engineering, University of Lagos, 2007","M.Eng. Civil Engineering, University of Nigeria, 2001","COREN Registered Engineer · FNSE"],message:["Civil engineering is perhaps the most visible of the engineering disciplines — our graduates' work is literally embedded in the landscape of Nigeria. Every bridge that stands, every highway that connects communities, every water treatment plant that delivers clean water, reflects the standard of our graduates' training.","We have developed strong partnerships with FERMA, Anambra State MOPWH, and several leading engineering firms, providing our students with industrial exposure and our graduates with employment pipelines that very few departments can match."]},
+  courses:{
+    undergraduate:[{code:"CVE 211",title:"Engineering Mechanics",units:3},{code:"CVE 221",title:"Structural Analysis I",units:3},{code:"CVE 311",title:"Geotechnical Engineering I",units:3},{code:"CVE 321",title:"Highway & Transportation Engineering",units:3},{code:"CVE 411",title:"Reinforced Concrete Design",units:3},{code:"CVE 421",title:"Water Resources Engineering",units:3},{code:"CVE 431",title:"Construction Project Management",units:3},{code:"CVE 491",title:"Final Year Project",units:6}],
+    postgraduate:[{code:"CVE 701",title:"Advanced Structural Analysis",units:3},{code:"CVE 711",title:"Finite Element Methods",units:3},{code:"CVE 721",title:"Environmental Engineering",units:3}],
+    phd:[{code:"CVE 901",title:"Advanced Topics in Structural/Geotech Engineering",units:3},{code:"CVE 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Prof. Chukwudi Obiora",initials:"CO",role:"Professor & HOD",spec:"Structural Engineering, FEM"},{name:"Dr. Ngozi Nwachukwu",initials:"NN",role:"Senior Lecturer",spec:"Geotechnical Engineering"},{name:"Dr. Emeka Okonkwo",initials:"EO",role:"Lecturer I",spec:"Highway Engineering, Pavements"},{name:"Dr. Ifeoma Obi",initials:"IO",role:"Lecturer I",spec:"Water Resources, Hydrology"}],
+  research:[{area:"Structural Engineering",title:"Smart Bridge Health Monitoring on Anambra Roads",desc:"IoT sensor arrays for real-time structural health monitoring on selected state bridges.",funding:"₦160M",projects:3},{area:"Geotechnics",title:"Foundation Engineering for Expansive Soils in Anambra",desc:"Stabilisation techniques for the problematic clayey soils prevalent in Awka and environs.",funding:"₦80M",projects:2},{area:"Water Resources",title:"Flooding Risk Modelling for Anambra River Communities",desc:"Hydraulic modelling and early warning system design for flood-prone communities.",funding:"₦65M",projects:2}],
+  facilities:[{name:"Structural Engineering Laboratory",icon:"🏛️",desc:"Universal testing machine, concrete cube testing, beam deflection rigs and load cells."},{name:"Geotechnical & Soil Mechanics Lab",icon:"🪨",desc:"Triaxial, direct shear, consolidation and compaction testing equipment."},{name:"Surveying & GIS Suite",icon:"🗺️",desc:"Total stations, GPS/GNSS equipment, AutoCAD Civil 3D and ArcGIS workstations."}],
+  news:[{date:"Aug 2, 2024",cat:"Achievement",title:"Civil Engineering Dept Wins 2024 Federal Infrastructure Innovation Prize"},{date:"Jul 18, 2024",cat:"Partnership",title:"Anambra State Govt Signs MoU with Civil Eng Dept for Road Assessment Study"}]
+},
+
+"mechanical-engineering":{
+  id:"mechanical-engineering", name:"Department of Mechanical Engineering", shortName:"Mechanical Engineering", icon:"⚙️",
+  faculty:{id:"engineering",name:"Faculty of Engineering"},
+  theme:{accent:"#4A6A8A",light:"#80A0C8",glow:"rgba(74,106,138,.14)",hero:"linear-gradient(135deg,#080F18 0%,#0E1822 50%,#0A1420 100%)"},
+  tagline:"From thermodynamics to robotics — designing the machines and manufacturing systems that will industrialise Nigeria.",
+  established:1992, stats:{students:480,staff:15,courses:36,research:5},
+  hod:{name:"Prof. Emeka Nwosu",initials:"EN",qualifications:["Ph.D. Mechanical Engineering (Thermofluids), Imperial College London, 2005","M.Eng. Manufacturing Engineering, University of Lagos, 1999","MNSE · COREN Registered Engineer"],message:["Mechanical engineering is the backbone of industrialisation. Nigeria's goal of becoming a manufacturing economy cannot be achieved without a generation of well-trained mechanical engineers who understand thermodynamics, manufacturing processes, and industrial automation — not merely in theory, but in practice.","Our department has invested heavily in our workshop and laboratory infrastructure, and our partnerships with Innoson Vehicle Manufacturing and Anambra State Industrial Estate ensure that our students get hands-on exposure to real manufacturing environments."]},
+  courses:{
+    undergraduate:[{code:"MCE 211",title:"Engineering Thermodynamics I",units:3},{code:"MCE 221",title:"Fluid Mechanics I",units:3},{code:"MCE 311",title:"Machine Design I",units:3},{code:"MCE 321",title:"Manufacturing Processes",units:3},{code:"MCE 411",title:"Industrial Automation & Control",units:3},{code:"MCE 421",title:"Heat Transfer",units:3},{code:"MCE 431",title:"Power Plant Engineering",units:3},{code:"MCE 491",title:"Final Year Project",units:6}],
+    postgraduate:[{code:"MCE 701",title:"Advanced Thermofluids",units:3},{code:"MCE 711",title:"Advanced Manufacturing Systems",units:3},{code:"MCE 721",title:"Tribology & Maintenance Engineering",units:3}],
+    phd:[{code:"MCE 901",title:"Advanced Topics in Mechanical Engineering",units:3},{code:"MCE 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Prof. Emeka Nwosu",initials:"EN",role:"Professor & HOD",spec:"Thermofluids, CFD"},{name:"Dr. Adaeze Okafor",initials:"AO",role:"Senior Lecturer",spec:"Manufacturing Systems, CAD/CAM"},{name:"Dr. Obinna Eze",initials:"OE",role:"Lecturer I",spec:"Machine Design, FEA"},{name:"Dr. Chioma Obialo",initials:"CO",role:"Lecturer I",spec:"Energy Systems, Refrigeration"}],
+  research:[{area:"Manufacturing",title:"Indigenous Auto-Parts Manufacturing for Innoson Vehicles",desc:"Reverse engineering and local manufacturing of high-wear vehicle components using Nigerian materials.",funding:"₦110M",projects:2},{area:"Energy",title:"Biomass Gasification for Rural Industrial Power",desc:"Designing low-cost gasifier systems for agro-industrial applications in rural South-East Nigeria.",funding:"₦75M",projects:2},{area:"Automation",title:"Robotic Assembly Cells for Nigerian SME Manufacturers",desc:"Low-cost robotic integration pathways for small-scale manufacturing enterprises.",funding:"₦55M",projects:1}],
+  facilities:[{name:"Mechanical Engineering Workshop",icon:"🔧",desc:"Lathe, milling, drilling and CNC machines for practical manufacturing training."},{name:"Thermodynamics & Heat Transfer Lab",icon:"🌡️",desc:"Steam tables, heat exchangers, refrigeration test rigs and thermal imaging equipment."},{name:"CAD/CAM & FEA Suite",icon:"🖥️",desc:"SolidWorks, AutoCAD, ANSYS and CATIA workstations for design and simulation."}],
+  news:[{date:"Jul 30, 2024",cat:"Partnership",title:"Innoson Vehicle Manufacturing Sponsors 10 UNIZIK Mechanical Engineering Scholarships"},{date:"Jul 14, 2024",cat:"Events",title:"Design & Build Challenge 2024 — Student Teams to Fabricate Mini-CNC Machines"}]
+},
+
+"electrical-engineering":{
+  id:"electrical-engineering", name:"Department of Electrical & Electronic Engineering", shortName:"Electrical Engineering", icon:"⚡",
+  faculty:{id:"engineering",name:"Faculty of Engineering"},
+  theme:{accent:"#D4A020",light:"#FFD060",glow:"rgba(212,160,32,.14)",hero:"linear-gradient(135deg,#1A1400 0%,#241C00 50%,#1C1600 100%)"},
+  tagline:"Powering Nigeria — from the national grid to the microchip, from telecoms towers to smart city infrastructure.",
+  established:1992, stats:{students:560,staff:17,courses:40,research:7},
+  hod:{name:"Dr. Ngozi Anichebe",initials:"NA",qualifications:["Ph.D. Power Systems Engineering, FUTO, 2009","M.Eng. Electrical Engineering, University of Nigeria, 2002","MNSE · COREN · Senior Member, IEEE"],message:["Nigeria's power crisis is ultimately an engineering problem, and the Department of Electrical and Electronic Engineering at UNIZIK is committed to producing the engineers who will solve it. From renewable energy integration to grid modernisation, our research agenda is directly aligned with Nigeria's most pressing infrastructure challenge.","Alongside power engineering, we have growing strengths in telecommunications, embedded systems and digital electronics — producing graduates who are finding roles in telecoms, banking technology, defence electronics and the broader African technology ecosystem."]},
+  courses:{
+    undergraduate:[{code:"EEE 211",title:"Circuit Theory I",units:3},{code:"EEE 221",title:"Electronics I",units:3},{code:"EEE 311",title:"Electromagnetic Fields & Waves",units:3},{code:"EEE 321",title:"Power Systems I",units:3},{code:"EEE 411",title:"Digital Signal Processing",units:3},{code:"EEE 421",title:"Renewable Energy Engineering",units:3},{code:"EEE 431",title:"Telecommunications Engineering",units:3},{code:"EEE 491",title:"Final Year Project",units:6}],
+    postgraduate:[{code:"EEE 701",title:"Advanced Power Systems",units:3},{code:"EEE 711",title:"Smart Grid Technology",units:3},{code:"EEE 721",title:"Advanced Digital Communications",units:3}],
+    phd:[{code:"EEE 901",title:"Advanced Topics in Electrical Engineering",units:3},{code:"EEE 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Ngozi Anichebe",initials:"NA",role:"Associate Professor & HOD",spec:"Power Systems, Smart Grid"},{name:"Dr. Chukwudi Eze",initials:"CE",role:"Senior Lecturer",spec:"Renewable Energy, HVDC"},{name:"Dr. Adaeze Obi",initials:"AO",role:"Lecturer I",spec:"Telecommunications, 5G"},{name:"Dr. Ikenna Nwofor",initials:"IN",role:"Lecturer I",spec:"Embedded Systems, IoT"}],
+  research:[{area:"Power Systems",title:"Smart Grid Integration for Nigerian Distribution Network",desc:"Implementing SCADA and automated fault detection on the 11kV distribution network in Awka.",funding:"₦200M",projects:3},{area:"Renewables",title:"Wind-Solar Hybrid Microgrid for University Campus",desc:"Designing a 500kW hybrid system to reduce UNIZIK's dependence on diesel generation.",funding:"₦95M",projects:2},{area:"Telecoms",title:"5G Readiness Assessment for Anambra State",desc:"Spectrum management, infrastructure siting and regulatory recommendations for 5G rollout.",funding:"₦60M",projects:2}],
+  facilities:[{name:"High Voltage Laboratory",icon:"⚡",desc:"Impulse generator, partial discharge analyser and high-voltage test transformer."},{name:"Power Electronics & Drives Lab",icon:"🔋",desc:"Variable speed drives, inverters, DC-DC converters and motor test benches."},{name:"RF & Microwave Lab",icon:"📡",desc:"Network analysers, spectrum analysers and antenna test systems."}],
+  news:[{date:"Aug 4, 2024",cat:"Research",title:"Electrical Eng Dept Partners EEDC to Deploy Smart Meters in Awka Pilot Zone"},{date:"Jul 20, 2024",cat:"Events",title:"Annual Electrical Engineering Symposium — 'Decarbonising Nigeria's Grid'"}]
+},
+
+"chemical-engineering":{
+  id:"chemical-engineering", name:"Department of Chemical Engineering", shortName:"Chemical Engineering", icon:"🧪",
+  faculty:{id:"engineering",name:"Faculty of Engineering"},
+  theme:{accent:"#C4602A",light:"#FF9060",glow:"rgba(196,96,42,.13)",hero:"linear-gradient(135deg,#180A00 0%,#241000 50%,#1C0C00 100%)"},
+  tagline:"Converting raw materials into the products and fuels that power everyday Nigerian life — safely, efficiently, at scale.",
+  established:1994, stats:{students:340,staff:12,courses:32,research:4},
+  hod:{name:"Dr. Ikechukwu Eze",initials:"IE",qualifications:["Ph.D. Process Engineering, University of Lagos, 2010","M.Eng. Chemical Engineering, University of Nigeria, 2003","MNSE · COREN · AIChE Member"],message:["Chemical engineering is the discipline that sits at the intersection of chemistry, physics, mathematics and economics to design processes that create value at scale. In Nigeria, the opportunity is immense — from refinery optimisation to food processing, from polymer manufacture to pharmaceutical production.","Our graduates are working across the Nigerian chemical industry, the petroleum sector, NAFDAC-regulated food and pharmaceutical companies, and increasingly in the renewable energy space. We are proud of their impact and committed to deepening the quality of our training."]},
+  courses:{
+    undergraduate:[{code:"CHE 211",title:"Chemical Engineering Thermodynamics",units:3},{code:"CHE 221",title:"Fluid Flow & Heat Transfer",units:3},{code:"CHE 311",title:"Mass Transfer Operations",units:3},{code:"CHE 321",title:"Reaction Engineering",units:3},{code:"CHE 411",title:"Process Design & Simulation",units:3},{code:"CHE 421",title:"Petroleum Refining",units:3},{code:"CHE 431",title:"Process Safety & Environmental Engineering",units:3},{code:"CHE 491",title:"Final Year Project",units:6}],
+    postgraduate:[{code:"CHE 701",title:"Advanced Process Design",units:3},{code:"CHE 711",title:"Polymer Technology",units:3},{code:"CHE 721",title:"Environmental Chemical Engineering",units:3}],
+    phd:[{code:"CHE 901",title:"Advanced Topics in Chemical Engineering",units:3},{code:"CHE 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Ikechukwu Eze",initials:"IE",role:"Associate Professor & HOD",spec:"Process Design, Simulation"},{name:"Dr. Chioma Okafor",initials:"CO",role:"Senior Lecturer",spec:"Polymer Engineering"},{name:"Dr. Obinna Nwachukwu",initials:"ON",role:"Lecturer I",spec:"Reaction Engineering, Catalysis"},{name:"Dr. Ngozi Obialo",initials:"NO",role:"Lecturer I",spec:"Process Safety, HAZOP"}],
+  research:[{area:"Petroleum",title:"Crude Oil Characterisation for Anambra Basin Reserves",desc:"Viscosity, pour point and compositional analysis of Anambra Basin crude ahead of anticipated production.",funding:"₦90M",projects:2},{area:"Polymers",title:"Bioplastics from Cassava Starch for Nigerian Packaging",desc:"Developing compostable packaging materials from locally sourced cassava starch waste.",funding:"₦55M",projects:1},{area:"Environment",title:"Effluent Treatment Systems for Onitsha Industrial Area",desc:"Low-cost wastewater treatment process design for SMEs in Nigeria's largest inland market.",funding:"₦45M",projects:1}],
+  facilities:[{name:"Chemical Engineering Process Lab",icon:"⚗️",desc:"Distillation columns, heat exchangers, absorption towers and reactor vessels for CAPE-OPEN simulation."},{name:"Polymer & Materials Lab",icon:"🧴",desc:"Rheometer, DSC, TGA and tensile testing for polymer characterisation."},{name:"Process Simulation Suite",icon:"🖥️",desc:"Aspen Plus, HYSYS and PRO/II workstations for process design and steady-state simulation."}],
+  news:[{date:"Jul 26, 2024",cat:"Research",title:"Chemical Eng Dept Receives NNPC Foundation Grant for Biofuels Research"},{date:"Jul 8, 2024",cat:"Events",title:"AIChE UNIZIK Student Chapter Hosts National Process Safety Workshop"}]
+},
+
+"computer-engineering":{
+  id:"computer-engineering", name:"Department of Computer Engineering", shortName:"Computer Engineering", icon:"💾",
+  faculty:{id:"engineering",name:"Faculty of Engineering"},
+  theme:{accent:"#3A9A5A",light:"#70D890",glow:"rgba(58,154,90,.13)",hero:"linear-gradient(135deg,#011408 0%,#021E0C 50%,#011510 100%)"},
+  tagline:"Designing the silicon brains of the digital age — from embedded microcontrollers to AI accelerator chips.",
+  established:1998, stats:{students:380,staff:13,courses:34,research:5},
+  hod:{name:"Dr. Obinna Okafor",initials:"OO",qualifications:["Ph.D. Computer Engineering (VLSI Design), Covenant University, 2012","M.Eng. Embedded Systems, FUTO, 2006","IEEE Computer Society Member · COREN Registered"],message:["Computer engineering occupies a unique position — combining the rigour of electrical engineering with the abstraction power of computer science to produce graduates who can design both the hardware and the software of computing systems.","In Nigeria, the demand for embedded systems engineers, FPGA designers and hardware-software co-design specialists far outstrips supply. Our department is specifically targeted at filling this gap, with a curriculum that blends VLSI, real-time operating systems, networking hardware and IoT platform development."]},
+  courses:{
+    undergraduate:[{code:"CPE 211",title:"Digital Logic Design",units:3},{code:"CPE 221",title:"Microprocessors & Assembly Language",units:3},{code:"CPE 311",title:"Computer Architecture",units:3},{code:"CPE 321",title:"Embedded Systems Design",units:3},{code:"CPE 411",title:"VLSI & IC Design",units:3},{code:"CPE 421",title:"Real-Time Operating Systems",units:3},{code:"CPE 431",title:"IoT Systems Engineering",units:3},{code:"CPE 491",title:"Final Year Project",units:6}],
+    postgraduate:[{code:"CPE 701",title:"Advanced VLSI Design",units:3},{code:"CPE 711",title:"Hardware Security",units:3},{code:"CPE 721",title:"FPGA-Based System Design",units:3}],
+    phd:[{code:"CPE 901",title:"Advanced Topics in Computer Engineering",units:3},{code:"CPE 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Obinna Okafor",initials:"OO",role:"Associate Professor & HOD",spec:"VLSI, Hardware Acceleration"},{name:"Dr. Adaeze Eze",initials:"AE",role:"Senior Lecturer",spec:"Embedded Systems, RTOS"},{name:"Dr. Chukwudi Nwofor",initials:"CN",role:"Lecturer I",spec:"IoT, Wireless Sensor Networks"},{name:"Mr. Emeka Anieke",initials:"EA",role:"Assistant Lecturer",spec:"FPGA Design, Digital Systems"}],
+  research:[{area:"Embedded Systems",title:"Low-Power IoT Devices for Nigerian Agricultural Monitoring",desc:"Ultra-low-power sensor nodes for remote soil moisture, temperature and crop health monitoring.",funding:"₦85M",projects:2},{area:"Hardware Security",title:"Side-Channel Attack Mitigation in Nigerian Banking Terminals",desc:"Identifying and patching hardware vulnerabilities in POS terminals deployed across Nigeria.",funding:"₦65M",projects:2},{area:"VLSI",title:"Open-Source RISC-V Core for Nigerian Educational Use",desc:"Custom RISC-V microprocessor designed and fabricated specifically for Nigerian university teaching.",funding:"₦40M",projects:1}],
+  facilities:[{name:"Digital Systems & FPGA Lab",icon:"🖥️",desc:"Xilinx and Intel FPGA development boards, logic analysers, oscilloscopes and simulation tools."},{name:"Embedded Systems Workshop",icon:"🔌",desc:"Arduino, Raspberry Pi, STM32 and ESP32 development stations with full peripheral interfacing."},{name:"PCB Design & Fabrication Studio",icon:"🔧",desc:"Altium Designer, KiCad workstations and in-house PCB milling and reflow soldering facility."}],
+  news:[{date:"Aug 6, 2024",cat:"Research",title:"Computer Engineering Team Wins Best Paper at IEEE Nigeria Annual Conference"},{date:"Jul 15, 2024",cat:"Events",title:"Embedded Systems Bootcamp 2024 — 3 Days of Hands-On Arduino & RTOS Training"}]
+},
+
+"metallurgical-engineering":{
+  id:"metallurgical-engineering", name:"Department of Metallurgical & Materials Engineering", shortName:"Metallurgical Engineering", icon:"🔩",
+  faculty:{id:"engineering",name:"Faculty of Engineering"},
+  theme:{accent:"#9A7A4A",light:"#C8A870",glow:"rgba(154,122,74,.13)",hero:"linear-gradient(135deg,#100C04 0%,#181206 50%,#120E04 100%)"},
+  tagline:"Unlocking the properties of matter — developing the materials science that Nigeria's manufacturing sector desperately needs.",
+  established:1996, stats:{students:220,staff:10,courses:28,research:3},
+  hod:{name:"Dr. Uchenna Okeke",initials:"UO",qualifications:["Ph.D. Materials Engineering, University of Lagos, 2011","M.Eng. Metallurgical Engineering, University of Nigeria, 2004","MNSE · COREN · Member, Materials Society of Nigeria"],message:["Materials engineering is the enabling discipline for all of manufacturing — you cannot make anything without understanding the properties of the materials from which it is made. Nigeria has extraordinary mineral wealth, and the Department of Metallurgical and Materials Engineering exists to train the engineers who will add value to it.","Our research focus on locally available materials — Nigerian iron ores, clays, laterites, and agricultural waste — reflects our belief that solutions to Nigerian engineering challenges must be built from Nigerian resources."]},
+  courses:{
+    undergraduate:[{code:"MTE 211",title:"Physical Metallurgy",units:3},{code:"MTE 221",title:"Extractive Metallurgy",units:3},{code:"MTE 311",title:"Materials Characterisation",units:3},{code:"MTE 321",title:"Corrosion Engineering",units:3},{code:"MTE 411",title:"Powder Metallurgy & Composites",units:3},{code:"MTE 421",title:"Welding & Joining Technology",units:3},{code:"MTE 431",title:"Mineral Processing",units:3},{code:"MTE 491",title:"Final Year Project",units:6}],
+    postgraduate:[{code:"MTE 701",title:"Advanced Materials Science",units:3},{code:"MTE 711",title:"Nanomaterials & Nanotechnology",units:3},{code:"MTE 721",title:"Biomaterials Engineering",units:3}],
+    phd:[{code:"MTE 901",title:"Advanced Topics in Materials Engineering",units:3},{code:"MTE 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Uchenna Okeke",initials:"UO",role:"Associate Professor & HOD",spec:"Corrosion, Coatings"},{name:"Dr. Nkechi Eze",initials:"NE",role:"Senior Lecturer",spec:"Nanomaterials, Composites"},{name:"Dr. Ikenna Obi",initials:"IO",role:"Lecturer I",spec:"Welding, Fracture Mechanics"},{name:"Mr. Emeka Nnaji",initials:"EN",role:"Assistant Lecturer",spec:"Mineral Processing, Extractive Metallurgy"}],
+  research:[{area:"Corrosion",title:"Anti-Corrosion Coatings for Nigerian Pipeline Infrastructure",desc:"Developing polymer-nanoclay composite coatings that outperform imported products at lower cost.",funding:"₦72M",projects:2},{area:"Composites",title:"Agricultural Waste Reinforced Metal Matrix Composites",desc:"Using rice husk ash and palm kernel shell as reinforcements for aluminium-matrix composites.",funding:"₦50M",projects:1},{area:"Mineral Processing",title:"Value Addition to Anambra Basin Iron Ore Deposits",desc:"Beneficiation and direct reduction processes suited to low-grade Anambra iron ore.",funding:"₦42M",projects:1}],
+  facilities:[{name:"Metallography & Characterisation Lab",icon:"🔬",desc:"Optical and electron microscopy, XRD, EDX and hardness testing equipment."},{name:"Corrosion Testing Laboratory",icon:"⚗️",desc:"Salt spray chamber, potentiostat/galvanostat and corrosion rate measurement systems."},{name:"Materials Processing Workshop",icon:"🔥",desc:"Muffle furnaces, arc welding stations, hydraulic press and casting equipment."}],
+  news:[{date:"Jul 22, 2024",cat:"Research",title:"Metallurgy Dept Publishes Corrosion Resistance Data for Nigerian Pipeline Steels"},{date:"Jul 5, 2024",cat:"Events",title:"Minerals & Materials Exhibition 2024 — Student Showcase of Locally Made Alloys"}]
+},
+
+/* ─────────────── HEALTH SCIENCES ─────────────── */
+
+"medicine-surgery":{
+  id:"medicine-surgery", name:"Department of Medicine & Surgery", shortName:"Medicine & Surgery", icon:"🩺",
+  faculty:{id:"health-sciences",name:"College of Health Sciences"},
+  theme:{accent:"#C43030",light:"#FF7070",glow:"rgba(196,48,48,.13)",hero:"linear-gradient(135deg,#1A0000 0%,#280000 50%,#1C0000 100%)"},
+  tagline:"Training the physicians who will heal Nigeria — combining world-class clinical science with deep African medical context.",
+  established:1992, stats:{students:1200,staff:42,courses:60,research:14},
+  hod:{name:"Prof. Chukwuemeka Emejuku",initials:"CE",qualifications:["MBBS (Hons), University of Nigeria, 1990","FMCP (Internal Medicine), 1998","Fellow, Royal College of Physicians of Edinburgh"],message:["The pursuit of medicine is both a scientific endeavour and a moral one. In Nigeria, where disease burdens remain heavy and the physician-to-patient ratio is among the lowest in the world, every doctor we train here carries the weight of tens of thousands of lives they may influence over their career.","Our training at NAUTH is rigorous and demanding — by design. The complexity of disease in our environment, the resource constraints of our health system, and the sheer diversity of clinical presentations our students encounter produce doctors of extraordinary resilience and diagnostic skill."]},
+  courses:{
+    undergraduate:[{code:"PCM 201",title:"Anatomy & Embryology",units:4},{code:"PCM 211",title:"Physiology I",units:4},{code:"PCM 221",title:"Medical Biochemistry",units:4},{code:"PCM 311",title:"Pathology",units:4},{code:"PCM 321",title:"Pharmacology & Therapeutics",units:4},{code:"CLM 411",title:"Internal Medicine",units:6},{code:"CLM 421",title:"Surgery & Surgical Specialties",units:6},{code:"CLM 491",title:"Obstetrics & Gynaecology",units:6}],
+    postgraduate:[{code:"MED 701",title:"M.Sc. Medical Education",units:3},{code:"MED 711",title:"PGD Clinical Research Methods",units:3},{code:"MED 721",title:"M.Sc. Palliative Care",units:3}],
+    phd:[{code:"MED 901",title:"Ph.D. Medical Sciences",units:3},{code:"MED 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Prof. C. Emejuku",initials:"CE",role:"Professor & HOD (Internal Medicine)",spec:"Cardiology, Hypertension"},{name:"Prof. Ada Okonkwo",initials:"AO",role:"Professor (Surgery)",spec:"General Surgery, Laparoscopy"},{name:"Dr. Ikenna Obialo",initials:"IO",role:"Consultant Physician",spec:"Pulmonology, Critical Care"},{name:"Dr. Ngozi Eze",initials:"NE",role:"Consultant (Obs & Gynae)",spec:"High-Risk Obstetrics, Maternal Medicine"}],
+  research:[{area:"Cardiology",title:"Hypertension Prevalence & Control in Anambra State",desc:"Multi-site study examining BP control rates and treatment adherence across urban and rural populations.",funding:"₦180M",projects:4},{area:"Infectious Disease",title:"Drug-Resistant TB Detection & Treatment Pathways",desc:"Genotypic resistance profiling and novel treatment monitoring for MDR-TB in South-East Nigeria.",funding:"₦145M",projects:3},{area:"Medical Education",title:"Simulation-Based Clinical Training Programme",desc:"Implementing high-fidelity patient simulators and standardised patient OSCEs into the MBBS curriculum.",funding:"₦90M",projects:2}],
+  facilities:[{name:"NAUTH Teaching Hospital Wards",icon:"🏥",desc:"300-bed teaching hospital with direct clinical access in all major specialties from Year 3."},{name:"Clinical Skills & Simulation Centre",icon:"🫀",desc:"High-fidelity mannequins, laparoscopic trainers and standardised patient programme."},{name:"Medical Research Laboratory",icon:"🔬",desc:"Molecular diagnostics, tissue banking, GCP-compliant clinical trials support."}],
+  news:[{date:"Aug 5, 2024",cat:"Research",title:"Medicine Dept Secures ₦180M WHO Collaborative Grant for Hypertension Study"},{date:"Jul 28, 2024",cat:"Achievement",title:"NAUTH Ranked Best Teaching Hospital in South-East Nigeria by NMC Inspection"}]
+},
+
+"nursing-science":{
+  id:"nursing-science", name:"Department of Nursing Science", shortName:"Nursing Science", icon:"💊",
+  faculty:{id:"health-sciences",name:"College of Health Sciences"},
+  theme:{accent:"#D45080",light:"#FF80B0",glow:"rgba(212,80,128,.12)",hero:"linear-gradient(135deg,#1A0010 0%,#280018 50%,#1C0014 100%)"},
+  tagline:"The compassionate science of care — equipping nurses to serve at the frontline of Nigerian healthcare.",
+  established:1993, stats:{students:680,staff:22,courses:40,research:6},
+  hod:{name:"Prof. Adaeze Nwosu",initials:"AN",qualifications:["Ph.D. Nursing Science (Community Health), University of Nigeria, 2008","M.Sc. Adult Nursing, University of Lagos, 2001","Fellow, Nursing Council of Nigeria"],message:["Nurses are the backbone of healthcare — they spend more time with patients than any other health professional, and the quality of that relationship determines outcomes in ways that no drug or device can replicate.","The Department of Nursing Science at UNIZIK is committed to producing nurses who are not just technically competent, but who understand the social, cultural and economic contexts of the patients in their care. Our graduates serve across Nigeria and in healthcare systems internationally."]},
+  courses:{
+    undergraduate:[{code:"NRS 211",title:"Foundations of Nursing Practice",units:3},{code:"NRS 221",title:"Anatomy & Physiology for Nurses",units:3},{code:"NRS 311",title:"Medical-Surgical Nursing",units:4},{code:"NRS 321",title:"Paediatric Nursing",units:3},{code:"NRS 411",title:"Psychiatric & Mental Health Nursing",units:3},{code:"NRS 421",title:"Community Health Nursing",units:3},{code:"NRS 431",title:"Midwifery & Neonatal Care",units:3},{code:"NRS 491",title:"Clinical Consolidation Project",units:6}],
+    postgraduate:[{code:"NRS 701",title:"Advanced Clinical Nursing Practice",units:3},{code:"NRS 711",title:"Nursing Education & Curriculum",units:3},{code:"NRS 721",title:"PGD Critical Care Nursing",units:3}],
+    phd:[{code:"NRS 901",title:"Advanced Nursing Research Methods",units:3},{code:"NRS 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Prof. Adaeze Nwosu",initials:"AN",role:"Professor & HOD",spec:"Community Health, Maternal Nursing"},{name:"Dr. Ifeoma Chukwu",initials:"IC",role:"Senior Lecturer",spec:"Psychiatric Nursing, Mental Health"},{name:"Dr. Chukwudi Okonkwo",initials:"CO",role:"Lecturer I",spec:"Paediatric Nursing"},{name:"Mrs. Ngozi Eze",initials:"NE",role:"Clinical Instructor",spec:"Surgical Nursing, Wound Care"}],
+  research:[{area:"Maternal Health",title:"Kangaroo Mother Care Adoption in South-East Nigeria",desc:"Implementation research on KMC uptake for LBW neonates across 12 secondary health facilities.",funding:"₦75M",projects:2},{area:"Mental Health",title:"Prevalence of Postnatal Depression in Anambra Women",desc:"Community-based screening study using EPDS tool across urban and peri-urban Anambra communities.",funding:"₦50M",projects:2},{area:"Community Nursing",title:"Home-Based Care for Elderly Patients with Chronic Disease",desc:"Nurse-led home visit model for hypertension and diabetes monitoring in older Anambra residents.",funding:"₦45M",projects:2}],
+  facilities:[{name:"Nursing Skills Laboratory",icon:"🛏️",desc:"Hospital-grade simulation ward with mannequins, IV trainers, catheterisation and wound care stations."},{name:"Midwifery Training Suite",icon:"👶",desc:"Labour room simulators, birthing mannequins and neonatal resuscitation training equipment."},{name:"Community Health Outreach Vehicle",icon:"🚑",desc:"Fully equipped mobile clinic for community health nursing practicums in rural communities."}],
+  news:[{date:"Aug 3, 2024",cat:"Research",title:"Nursing Dept Study on Postnatal Depression Published in Africa Journal of Nursing"},{date:"Jul 19, 2024",cat:"Events",title:"Annual Nursing Week — 'Nursing Leadership for Universal Health Coverage'"}]
+},
+
+"medical-laboratory-science":{
+  id:"medical-laboratory-science", name:"Department of Medical Laboratory Science", shortName:"Medical Laboratory Science", icon:"🔬",
+  faculty:{id:"health-sciences",name:"College of Health Sciences"},
+  theme:{accent:"#2A70C4",light:"#60A8FF",glow:"rgba(42,112,196,.13)",hero:"linear-gradient(135deg,#001018 0%,#001828 50%,#001220 100%)"},
+  tagline:"The unseen diagnosticians — detecting, measuring and interpreting the biological evidence that guides every clinical decision.",
+  established:1994, stats:{students:420,staff:16,courses:36,research:7},
+  hod:{name:"Dr. Ifeoma Eze",initials:"IE",qualifications:["Ph.D. Haematology, University of Nigeria, 2010","B.MLS (Hons), UNIZIK, 2003","Fellow, Institute of Medical Laboratory Science of Nigeria (FIMLS)"],message:["Medical laboratory science is the diagnostic engine of modern healthcare — without the laboratory, the clinician is largely guessing. The Department of Medical Laboratory Science at UNIZIK trains diagnosticians of exceptional technical precision and scientific depth.","Our graduates staff the laboratories of NAUTH, Federal Medical Centres, NAFDAC and private diagnostic companies across the country. Our M.Sc. and Ph.D. programmes are producing researchers who are publishing in international journals and advancing the science of tropical diagnostics."]},
+  courses:{
+    undergraduate:[{code:"MLS 211",title:"Medical Biochemistry",units:3},{code:"MLS 221",title:"Haematology I",units:3},{code:"MLS 311",title:"Clinical Microbiology",units:3},{code:"MLS 321",title:"Blood Transfusion Science",units:3},{code:"MLS 411",title:"Histopathology & Cytology",units:3},{code:"MLS 421",title:"Molecular Diagnostics",units:3},{code:"MLS 431",title:"Clinical Chemistry",units:3},{code:"MLS 491",title:"Industrial Attachment Report",units:6}],
+    postgraduate:[{code:"MLS 701",title:"Advanced Haematology",units:3},{code:"MLS 711",title:"Medical Microbiology & Virology",units:3},{code:"MLS 721",title:"Clinical Molecular Biology",units:3}],
+    phd:[{code:"MLS 901",title:"Advanced Diagnostic Sciences",units:3},{code:"MLS 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Ifeoma Eze",initials:"IE",role:"Associate Professor & HOD",spec:"Haematology, Sickle Cell Disease"},{name:"Dr. Obinna Nwosu",initials:"ON",role:"Senior Lecturer",spec:"Molecular Diagnostics, PCR"},{name:"Dr. Chioma Okafor",initials:"CO",role:"Lecturer I",spec:"Clinical Microbiology, AMR"},{name:"Dr. Emeka Okeke",initials:"EO",role:"Lecturer I",spec:"Clinical Chemistry, Enzymology"}],
+  research:[{area:"Haematology",title:"Sickle Cell Disease Complication Prediction in South-East Nigeria",desc:"Biomarker profiling for vaso-occlusive crisis prediction in paediatric sickle cell patients.",funding:"₦110M",projects:3},{area:"Microbiology",title:"AMR Surveillance in NAUTH & Community Settings",desc:"Phenotypic and genotypic characterisation of antibiotic-resistant pathogens from clinical isolates.",funding:"₦80M",projects:2},{area:"Molecular Diagnostics",title:"Rapid Molecular Tests for Tropical Diseases at Point of Care",desc:"LAMP and CRISPR-based diagnostics for malaria, typhoid and viral hepatitis in resource-limited settings.",funding:"₦65M",projects:2}],
+  facilities:[{name:"Haematology Laboratory",icon:"🩸",desc:"Full blood count analysers, coagulation systems and flow cytometry for teaching and research."},{name:"Molecular Diagnostics Suite",icon:"🧬",desc:"Real-time PCR, gel electrophoresis, biosafety cabinets and -80°C storage for molecular work."},{name:"Clinical Chemistry Laboratory",icon:"⚗️",desc:"Automated biochemistry analysers, ELISA stations and point-of-care testing platforms."}],
+  news:[{date:"Aug 7, 2024",cat:"Research",title:"MLS Dept Secures WHO Grant for AMR Surveillance Network in South-East Nigeria"},{date:"Jul 23, 2024",cat:"Achievement",title:"UNIZIK MLS Graduate Wins Best Oral Presentation at IAMLS World Congress, Dubai"}]
+},
+
+"pharmacy":{
+  id:"pharmacy", name:"Department of Pharmacy", shortName:"Pharmacy", icon:"💉",
+  faculty:{id:"health-sciences",name:"College of Health Sciences"},
+  theme:{accent:"#3A9A4A",light:"#70D880",glow:"rgba(58,154,74,.12)",hero:"linear-gradient(135deg,#011408 0%,#021E0C 50%,#011810 100%)"},
+  tagline:"The science and art of drug therapy — producing pharmacists who are champions of medicine safety and rational use.",
+  established:1995, stats:{students:520,staff:18,courses:44,research:8},
+  hod:{name:"Prof. Bartholomew Okonkwo",initials:"BO",qualifications:["Ph.D. Clinical Pharmacy, University of Lagos, 2007","B.Pharm. (Hons), UNIZIK, 1999","Fellow, Pharmaceutical Society of Nigeria (FPSN)"],message:["Pharmacy is evolving rapidly — from a dispensing profession to a clinical one, with pharmacists increasingly embedded in patient care teams, chronic disease management and public health programmes. The Department of Pharmacy at UNIZIK is at the forefront of this evolution in Nigeria.","Our graduates are not just dispensers. They are medicines information specialists, clinical pharmacists managing patients with complex drug regimens, community health advocates, and pharmaceutical scientists developing new Nigerian-manufactured medicines. We are proud of this breadth."]},
+  courses:{
+    undergraduate:[{code:"PHA 211",title:"Pharmaceutical Chemistry I",units:3},{code:"PHA 221",title:"Pharmacognosy I",units:3},{code:"PHA 311",title:"Pharmacology I",units:4},{code:"PHA 321",title:"Pharmaceutics I",units:3},{code:"PHA 411",title:"Clinical Pharmacy",units:4},{code:"PHA 421",title:"Pharmacy Practice",units:3},{code:"PHA 431",title:"Pharmaceutical Microbiology",units:3},{code:"PHA 491",title:"Final Year Project",units:6}],
+    postgraduate:[{code:"PHA 701",title:"Advanced Clinical Pharmacology",units:3},{code:"PHA 711",title:"Pharmaceutical Technology",units:3},{code:"PHA 721",title:"PGD Hospital Pharmacy",units:3}],
+    phd:[{code:"PHA 901",title:"Advanced Topics in Pharmaceutical Sciences",units:3},{code:"PHA 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Prof. Bartholomew Okonkwo",initials:"BO",role:"Professor & HOD",spec:"Clinical Pharmacy, Pharmacovigilance"},{name:"Dr. Chioma Obialo",initials:"CO",role:"Senior Lecturer",spec:"Pharmaceutical Technology"},{name:"Dr. Ikenna Nwofor",initials:"IN",role:"Lecturer I",spec:"Natural Products, Ethnopharmacology"},{name:"Dr. Ngozi Eze",initials:"NE",role:"Lecturer I",spec:"Social & Administrative Pharmacy"}],
+  research:[{area:"Clinical Pharmacy",title:"Medication Error Reduction in NAUTH",desc:"System-based interventions and pharmacist-led medication review for high-risk patients at NAUTH.",funding:"₦88M",projects:2},{area:"Natural Products",title:"Nigerian Medicinal Plants for Diabetes Management",desc:"Bioassay-guided fractionation of anti-diabetic compounds from plants used in Igbo traditional medicine.",funding:"₦72M",projects:3},{area:"Pharmaceutical Technology",title:"Locally Manufactured Oral Dosage Forms from Nigerian Excipients",desc:"Formulation development using cassava starch and kaolin as tablet binders and disintegrants.",funding:"₦55M",projects:2}],
+  facilities:[{name:"Pharmaceutical Chemistry Laboratory",icon:"⚗️",desc:"HPLC, UV-Vis spectrophotometers, rotary evaporators and analytical balances."},{name:"Pharmaceutics & Formulation Lab",icon:"💊",desc:"Tablet press, capsule filling machine, dissolution tester and content uniformity equipment."},{name:"Pharmacology Research Laboratory",icon:"🐭",desc:"In-vivo pharmacology facility with rodent models, isolated tissue bath and metabolic cages."}],
+  news:[{date:"Aug 2, 2024",cat:"Research",title:"Pharmacy Dept's Anti-Diabetic Plant Extract Shows Promising Phase I Results"},{date:"Jul 17, 2024",cat:"Events",title:"Annual Pharmaceutical Week — 'Medicines Safety & Rational Drug Use in Nigeria'"}]
+},
+
+"physiotherapy":{
+  id:"physiotherapy", name:"Department of Physiotherapy", shortName:"Physiotherapy", icon:"🏃",
+  faculty:{id:"health-sciences",name:"College of Health Sciences"},
+  theme:{accent:"#7A4AC4",light:"#B08AFF",glow:"rgba(122,74,196,.12)",hero:"linear-gradient(135deg,#0C0618 0%,#140A28 50%,#100820 100%)"},
+  tagline:"Restoring function, rebuilding lives — the movement science that helps Nigerians recover and thrive.",
+  established:1999, stats:{students:320,staff:12,courses:32,research:5},
+  hod:{name:"Dr. Chioma Anieke",initials:"CA",qualifications:["Ph.D. Neurological Physiotherapy, University of Nigeria, 2012","B.PT. (Hons), UNIZIK, 2004","Member, Nigerian Society of Physiotherapy"],message:["Physiotherapy is the cornerstone of rehabilitation medicine — and in Nigeria, with our rising burden of stroke, trauma, and musculoskeletal disease, the need for skilled physiotherapists has never been greater.","Our graduates work in hospital rehabilitation units, private practice, community disability programmes and sports medicine. We are developing sub-specialty depth in neurological rehabilitation, sports physiotherapy and women's health physiotherapy to address areas of particular need."]},
+  courses:{
+    undergraduate:[{code:"PHT 211",title:"Anatomy for Physiotherapy",units:3},{code:"PHT 221",title:"Physiological Basis of Movement",units:3},{code:"PHT 311",title:"Musculoskeletal Physiotherapy",units:4},{code:"PHT 321",title:"Neurological Physiotherapy",units:4},{code:"PHT 411",title:"Cardiorespiratory Physiotherapy",units:3},{code:"PHT 421",title:"Paediatric Physiotherapy",units:3},{code:"PHT 431",title:"Sports Physiotherapy",units:3},{code:"PHT 491",title:"Clinical Portfolio",units:6}],
+    postgraduate:[{code:"PHT 701",title:"Advanced Neurological Rehabilitation",units:3},{code:"PHT 711",title:"Manual Therapy",units:3},{code:"PHT 721",title:"Sports Medicine & Exercise Science",units:3}],
+    phd:[{code:"PHT 901",title:"Advanced Topics in Rehabilitation Science",units:3},{code:"PHT 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Chioma Anieke",initials:"CA",role:"Associate Professor & HOD",spec:"Neurological Rehabilitation"},{name:"Dr. Emeka Obi",initials:"EO",role:"Senior Lecturer",spec:"Musculoskeletal Physiotherapy"},{name:"Dr. Adaeze Chukwu",initials:"AC",role:"Lecturer I",spec:"Sports Physiotherapy"},{name:"Mrs. Ngozi Okeke",initials:"NO",role:"Clinical Educator",spec:"Cardiorespiratory PT, ICU Rehab"}],
+  research:[{area:"Neurology",title:"Stroke Rehabilitation Outcomes in South-East Nigerian Hospitals",desc:"Functional independence scores and return-to-work rates in post-stroke patients undergoing inpatient rehabilitation.",funding:"₦62M",projects:2},{area:"Musculoskeletal",title:"Chronic Low Back Pain in Nigerian Office Workers",desc:"Prevalence, risk factors and effectiveness of physiotherapy-led intervention programmes.",funding:"₦45M",projects:2},{area:"Sports Medicine",title:"Injury Prevention Programmes for UNIZIK Athletes",desc:"Screening protocols and targeted exercise programmes reducing injury rates in university sport.",funding:"₦30M",projects:1}],
+  facilities:[{name:"Physiotherapy Treatment Gymnasium",icon:"🏋️",desc:"Treatment plinths, parallel bars, overhead frames, treadmills and resistance equipment."},{name:"Electrotherapy Laboratory",icon:"⚡",desc:"TENS, ultrasound, shortwave diathermy and laser therapy units for clinical education."},{name:"Gait & Motion Analysis Lab",icon:"📹",desc:"2D/3D movement analysis system for research and rehabilitation assessment."}],
+  news:[{date:"Jul 29, 2024",cat:"Research",title:"Physiotherapy Dept Publishes Stroke Rehab Outcomes Report in African J of Health Sciences"},{date:"Jul 11, 2024",cat:"Events",title:"World Physiotherapy Day Symposium — 'Rehabilitation Access in Rural Nigeria'"}]
+},
+
+"dentistry":{
+  id:"dentistry", name:"Department of Dentistry", shortName:"Dentistry", icon:"🦷",
+  faculty:{id:"health-sciences",name:"College of Health Sciences"},
+  theme:{accent:"#2A9A8A",light:"#50D8C0",glow:"rgba(42,154,138,.12)",hero:"linear-gradient(135deg,#001A18 0%,#002824 50%,#001E1C 100%)"},
+  tagline:"The gateway to oral health — training dentists and specialists who will transform dental care across South-East Nigeria.",
+  established:2001, stats:{students:280,staff:14,courses:36,research:4},
+  hod:{name:"Dr. Emeka Okafor",initials:"EO",qualifications:["BDS (Hons), University of Lagos, 1999","FMCDS (Oral & Maxillofacial Surgery), 2007","Fellow, West African College of Surgeons"],message:["Oral health is a neglected priority in Nigerian healthcare, yet its impact on quality of life, nutrition, child development and systemic health is profound. The Department of Dentistry at UNIZIK is committed to producing dentists who are not only technically excellent but who understand the public health dimensions of oral disease in Nigeria.","We operate one of South-East Nigeria's largest dental schools with a fully operational dental clinic providing free and subsidised treatment to the Awka community while giving our students the highest-volume clinical exposure of any dental school in the region."]},
+  courses:{
+    undergraduate:[{code:"DEN 211",title:"Dental Anatomy & Morphology",units:3},{code:"DEN 221",title:"Oral Histology & Embryology",units:3},{code:"DEN 311",title:"Operative Dentistry",units:4},{code:"DEN 321",title:"Oral Pathology",units:3},{code:"DEN 411",title:"Oral & Maxillofacial Surgery",units:4},{code:"DEN 421",title:"Orthodontics",units:3},{code:"DEN 431",title:"Paediatric Dentistry",units:3},{code:"DEN 491",title:"Clinical Consolidation",units:6}],
+    postgraduate:[{code:"DEN 701",title:"M.Sc. Restorative Dentistry",units:3},{code:"DEN 711",title:"PGD Dental Public Health",units:3},{code:"DEN 721",title:"M.Sc. Oral Surgery",units:3}],
+    phd:[{code:"DEN 901",title:"Advanced Oral Biomedical Sciences",units:3},{code:"DEN 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Emeka Okafor",initials:"EO",role:"Consultant & HOD (Oral Surgery)",spec:"Maxillofacial Surgery, Implants"},{name:"Dr. Adaeze Eze",initials:"AE",role:"Consultant (Restorative)",spec:"Endodontics, Prosthodontics"},{name:"Dr. Chioma Obialo",initials:"CO",role:"Senior Registrar",spec:"Orthodontics, Fixed Appliances"},{name:"Dr. Ikenna Nwosu",initials:"IN",role:"Lecturer & Registrar",spec:"Paediatric Dentistry, Prevention"}],
+  research:[{area:"Oral Surgery",title:"Mandibular Reconstruction Using Nigerian Bone Banks",desc:"Outcomes of iliac crest and fibula-free flap reconstruction in mandibular defect repair at NAUTH.",funding:"₦55M",projects:2},{area:"Public Health",title:"Dental Caries Prevalence in Anambra School Children",desc:"Cross-sectional survey and fluoride varnish intervention in 3,200 primary school pupils.",funding:"₦38M",projects:1},{area:"Biomaterials",title:"Evaluation of Locally Sourced Restorative Materials",desc:"Clinical performance of glass ionomer cements manufactured using Nigerian kaolin base.",funding:"₦28M",projects:1}],
+  facilities:[{name:"Dental Clinical Training Centre",icon:"🦷",desc:"80-chair dental clinic providing full dental services — the largest in South-East Nigeria."},{name:"Dental Skills Laboratory",icon:"🔧",desc:"Pre-clinical phantom heads and dental simulation stations for all preclinical years."},{name:"Dental Materials Research Lab",icon:"⚗️",desc:"Universal testing machine, SEM, and tribology equipment for dental materials characterisation."}],
+  news:[{date:"Aug 1, 2024",cat:"Achievement",title:"UNIZIK Dental School Achieves Full NUC & MDCN Accreditation for BDS Programme"},{date:"Jul 15, 2024",cat:"Events",title:"Free Community Dental Outreach — 500 Awka Residents to Receive Free Dental Care"}]
+},
+
+/* ─────────────── LAW ─────────────── */
+
+"private-law":{
+  id:"private-law", name:"Department of Private & Property Law", shortName:"Private Law", icon:"🏠",
+  faculty:{id:"law",name:"Faculty of Law"},
+  theme:{accent:"#9A2A4A",light:"#D06080",glow:"rgba(154,42,74,.13)",hero:"linear-gradient(135deg,#150008 0%,#200012 50%,#18000E 100%)"},
+  tagline:"The law that governs how Nigerians own, transfer, inherit and protect their most valuable assets.",
+  established:1992, stats:{students:340,staff:12,courses:26,research:4},
+  hod:{name:"Prof. Adaeze Okonkwo",initials:"AO",qualifications:["LL.B. (Hons), University of Nigeria, 1991","BL, Nigerian Law School","LL.M. Property Law, University of London, 1994","Ph.D. Law, University of Lagos, 2002"],message:["Private law — the law of contract, tort, property and equity — underpins every commercial transaction, every sale of land, every professional relationship in Nigeria. Its mastery is the foundation of legal excellence in any field of practice.","Our department takes particular pride in its teaching of Nigerian land law, a uniquely complex area that interfaces with the Land Use Act, customary tenure systems, and federal constitutional provisions in ways that every practising lawyer in Nigeria must navigate."]},
+  courses:{
+    undergraduate:[{code:"LAW 211",title:"Law of Contract I",units:3},{code:"LAW 221",title:"Law of Torts",units:3},{code:"LAW 311",title:"Nigerian Land Law",units:3},{code:"LAW 321",title:"Equity & Trusts",units:3},{code:"LAW 411",title:"Family Law",units:3},{code:"LAW 421",title:"Law of Succession",units:3},{code:"LAW 431",title:"Alternative Dispute Resolution",units:3},{code:"LAW 491",title:"Dissertation",units:6}],
+    postgraduate:[{code:"LAW 701",title:"Advanced Property Law",units:3},{code:"LAW 711",title:"Family Law & Child Rights",units:3},{code:"LAW 721",title:"Customary Law & Land Tenure",units:3}],
+    phd:[{code:"LAW 901",title:"Advanced Private Law Research",units:3},{code:"LAW 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Prof. Adaeze Okonkwo",initials:"AO",role:"Professor & HOD",spec:"Property Law, Land Use Act"},{name:"Dr. Emeka Chukwu",initials:"EC",role:"Senior Lecturer",spec:"Contract Law, Remedies"},{name:"Dr. Ngozi Nwofor",initials:"NN",role:"Lecturer I",spec:"Family Law, Child Rights"},{name:"Mr. Ikenna Obialo",initials:"IO",role:"Assistant Lecturer",spec:"ADR, Mediation Practice"}],
+  research:[{area:"Land Law",title:"Customary Land Tenure Security in Igbo-Speaking Communities",desc:"Empirical study of land access, conflict and resolution mechanisms across rural Anambra LGAs.",funding:"₦52M",projects:2},{area:"Family Law",title:"Child Custody Law Reform in Nigeria",desc:"Comparative analysis of Nigerian and Commonwealth approaches to best interests of the child.",funding:"₦38M",projects:1},{area:"ADR",title:"Customary Arbitration & Modern Commercial Disputes",desc:"Examining the enforceability and ethics of igba-onu and ofo staff arbitral proceedings.",funding:"₦28M",projects:1}],
+  facilities:[{name:"Moot Court",icon:"⚖️",desc:"Purpose-built courtroom with bench, witness stand and gallery for advocacy training."},{name:"Legal Research Library",icon:"📚",desc:"Law Reports, Statutes of the Federation and international law databases including Westlaw."},{name:"ADR Training Room",icon:"🤝",desc:"Dedicated mediation and negotiation suite with recording and observation facilities."}],
+  news:[{date:"Jul 30, 2024",cat:"Research",title:"Private Law Dept Submits Memorandum to Law Reform Commission on Land Use Act Review"},{date:"Jul 12, 2024",cat:"Events",title:"Annual Mooting Competition Finals — Prof. Ezike Prize to Be Awarded"}]
+},
+
+"public-law":{
+  id:"public-law", name:"Department of Public & International Law", shortName:"Public Law", icon:"🌍",
+  faculty:{id:"law",name:"Faculty of Law"},
+  theme:{accent:"#2A4A9A",light:"#6080D0",glow:"rgba(42,74,154,.13)",hero:"linear-gradient(135deg,#060A18 0%,#0A1228 50%,#081020 100%)"},
+  tagline:"The law of governance, rights, and nations — training the advocates who hold power accountable.",
+  established:1992, stats:{students:360,staff:13,courses:24,research:5},
+  hod:{name:"Prof. Emeka Ezike",initials:"EE",qualifications:["LL.B. (Hons), Ahmadu Bello University, 1990","BL, Nigerian Law School","LL.M. International Human Rights, University of Essex, 1993","SAN (Senior Advocate of Nigeria), 2005"],message:["Public law is the law of accountability — it defines the limits of government power, protects fundamental rights, and establishes the constitutional architecture within which all other laws operate. In a democracy as complex and contested as Nigeria's, the public lawyer occupies a position of extraordinary civic importance.","Our department has contributed to landmark constitutional litigation at every level of the Nigerian court system, and our faculty sit on constitutional law reform committees, INEC advisory panels, and international human rights bodies. We bring that real-world expertise directly into the classroom."]},
+  courses:{
+    undergraduate:[{code:"LAW 212",title:"Constitutional Law I",units:3},{code:"LAW 222",title:"Administrative Law",units:3},{code:"LAW 312",title:"Human Rights Law",units:3},{code:"LAW 322",title:"Public International Law",units:3},{code:"LAW 412",title:"Electoral Law & Democracy",units:3},{code:"LAW 422",title:"Environmental Law",units:3},{code:"LAW 432",title:"International Humanitarian Law",units:3},{code:"LAW 492",title:"Dissertation",units:6}],
+    postgraduate:[{code:"LAW 702",title:"Advanced Constitutional Law",units:3},{code:"LAW 712",title:"International Human Rights Law",units:3},{code:"LAW 722",title:"International Trade & Economic Law",units:3}],
+    phd:[{code:"LAW 902",title:"Advanced Public Law Research",units:3},{code:"LAW 992",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Prof. Emeka Ezike (SAN)",initials:"EE",role:"Professor & HOD",spec:"Constitutional Law, Federalism"},{name:"Dr. Adaeze Obi",initials:"AO",role:"Senior Lecturer",spec:"International Human Rights"},{name:"Dr. Ngozi Nwosu",initials:"NN",role:"Lecturer I",spec:"Administrative Law, Judicial Review"},{name:"Dr. Chukwudi Eze",initials:"CE",role:"Lecturer I",spec:"Environmental Law, Climate Policy"}],
+  research:[{area:"Constitutional Law",title:"Federal Structure and INEC Independence in Nigeria",desc:"Comparative and doctrinal analysis of electoral commission autonomy under the 1999 Constitution.",funding:"₦65M",projects:2},{area:"Human Rights",title:"Digital Rights & Online Expression in Nigeria",desc:"Mapping legal gaps in Nigeria's regulatory framework for digital privacy, expression and access.",funding:"₦52M",projects:2},{area:"Environmental Law",title:"Climate Litigation Pathways in Nigerian Courts",desc:"Identifying constitutional and statutory bases for climate-related litigation in Nigerian jurisprudence.",funding:"₦38M",projects:1}],
+  facilities:[{name:"Moot Court",icon:"⚖️",desc:"Shared faculty courtroom facility used for constitutional law advocacy exercises."},{name:"International Law Resource Centre",icon:"🌍",desc:"UN treaty collections, ICJ reports, African Commission decisions and international arbitration awards."},{name:"Constitutional Law Archive",icon:"📂",desc:"Complete collection of Nigerian constitutional history documents from 1914 to present."}],
+  news:[{date:"Aug 3, 2024",cat:"Research",title:"Public Law Dept Submits Evidence to Senate Committee on Electoral Act Amendment"},{date:"Jul 22, 2024",cat:"Events",title:"Annual Human Rights Day Lecture — 'Emerging Technologies & the Nigerian Constitution'"}]
+},
+
+"jurisprudence":{
+  id:"jurisprudence", name:"Department of Jurisprudence & Legal Theory", shortName:"Jurisprudence", icon:"⚖️",
+  faculty:{id:"law",name:"Faculty of Law"},
+  theme:{accent:"#7A5A3A",light:"#B08A60",glow:"rgba(122,90,58,.12)",hero:"linear-gradient(135deg,#120C04 0%,#1C1408 50%,#160E04 100%)"},
+  tagline:"The philosophy of law — interrogating why rules bind, what justice demands, and what law ought to be.",
+  established:1994, stats:{students:180,staff:8,courses:18,research:3},
+  hod:{name:"Dr. Ngozi Obialo",initials:"NO",qualifications:["Ph.D. Philosophy of Law, University of Ibadan, 2010","LL.M. Jurisprudence, University of Lagos, 2003","BL, Nigerian Law School · Member, IVR"],message:["Jurisprudence is the discipline that asks the questions no other law course dares to ask: what is law? does it bind morally? what is the relationship between law and justice? These questions are not academic luxuries — they shape how lawyers interpret statutes, argue cases and advise clients on the edges of the law.","Our department is small but carries outsized intellectual influence within the Faculty. We teach every law student to think critically about the foundations of their discipline, and our postgraduate and doctoral research is producing original scholarship in African legal philosophy."]},
+  courses:{
+    undergraduate:[{code:"LAW 213",title:"Jurisprudence I",units:3},{code:"LAW 223",title:"Jurisprudence II",units:3},{code:"LAW 313",title:"African Legal Philosophy",units:3},{code:"LAW 323",title:"Feminist Legal Theory",units:3},{code:"LAW 413",title:"Law & Economics",units:3},{code:"LAW 423",title:"Comparative Legal Systems",units:3},{code:"LAW 493",title:"Dissertation",units:6}],
+    postgraduate:[{code:"LAW 703",title:"Advanced Jurisprudence",units:3},{code:"LAW 713",title:"Legal Positivism & Natural Law",units:3},{code:"LAW 723",title:"Postcolonial Legal Theory",units:3}],
+    phd:[{code:"LAW 903",title:"Advanced Legal Philosophy Research",units:3},{code:"LAW 993",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Ngozi Obialo",initials:"NO",role:"Associate Professor & HOD",spec:"African Jurisprudence, Ubuntu Law"},{name:"Dr. Emeka Anieke",initials:"EA",role:"Senior Lecturer",spec:"Legal Positivism, H.L.A. Hart"},{name:"Dr. Chioma Nwosu",initials:"CN",role:"Lecturer I",spec:"Feminist Legal Theory"},{name:"Mr. Ikenna Okafor",initials:"IO",role:"Assistant Lecturer",spec:"Law & Economics, Behavioural Law"}],
+  research:[{area:"African Philosophy",title:"Ubuntu Law Theory in Nigerian Jurisprudence",desc:"Examining the doctrinal influence of ubuntu principles on Nigerian judicial reasoning and customary law.",funding:"₦38M",projects:1},{area:"Postcolonial Law",title:"Colonial Legal Legacy & Nigerian Constitutional Identity",desc:"Critical analysis of how British colonial law structures have shaped post-independence Nigerian law.",funding:"₦32M",projects:1},{area:"Feminist Theory",title:"Gender & the Nigerian Legal System",desc:"Doctrinal and empirical study of gender bias in Nigerian statutory interpretation and judicial decisions.",funding:"₦25M",projects:1}],
+  facilities:[{name:"Philosophy of Law Seminar Room",icon:"💭",desc:"Intimate discussion space equipped for Socratic method teaching and doctoral seminars."},{name:"Jurisprudence Research Library",icon:"📚",desc:"Specialist collection of legal philosophy texts, journals and comparative legal studies."},{name:"Digital Legal Archive",icon:"💻",desc:"Full-text access to Hart, Dworkin, Fuller, Rawls and African legal philosophy scholarship."}],
+  news:[{date:"Jul 25, 2024",cat:"Research",title:"Jurisprudence Dept Publishes 'African Legal Philosophy Review' — Vol 12"},{date:"Jul 8, 2024",cat:"Events",title:"Annual Jurisprudence Debate — Motion: 'African Customary Law Should Be Codified'"}]
+},
+
+"commercial-law":{
+  id:"commercial-law", name:"Department of Commercial & Industrial Law", shortName:"Commercial Law", icon:"📋",
+  faculty:{id:"law",name:"Faculty of Law"},
+  theme:{accent:"#3A7A5A",light:"#70C090",glow:"rgba(58,122,90,.12)",hero:"linear-gradient(135deg,#041210 0%,#081E18 50%,#061614 100%)"},
+  tagline:"The engine of commerce — the legal rules that make business, banking and investment possible and trustworthy.",
+  established:1995, stats:{students:290,staff:10,courses:22,research:4},
+  hod:{name:"Dr. Bartholomew Nnaji",initials:"BN",qualifications:["Ph.D. Commercial Law, University of Lagos, 2009","LL.M. Corporate & Commercial Law, University of Cambridge, 2003","BL, Nigerian Law School"],message:["Commercial law is the law that makes the economy function. Without clear, predictable rules governing contracts, company formation, banking, intellectual property and dispute resolution, no market economy can function efficiently. Nigeria's economic transformation depends on its commercial law framework evolving to match.","Our graduates join commercial law practice, investment banking, the SEC and CBN, multinational corporations, and the growing Nigerian startup ecosystem. The versatility of a commercial law specialisation is unmatched."]},
+  courses:{
+    undergraduate:[{code:"LAW 214",title:"Company Law",units:3},{code:"LAW 224",title:"Commercial Transactions",units:3},{code:"LAW 314",title:"Banking & Finance Law",units:3},{code:"LAW 324",title:"Intellectual Property Law",units:3},{code:"LAW 414",title:"Arbitration & Dispute Resolution",units:3},{code:"LAW 424",title:"Oil & Gas Law",units:3},{code:"LAW 434",title:"Capital Markets Regulation",units:3},{code:"LAW 494",title:"Dissertation",units:6}],
+    postgraduate:[{code:"LAW 704",title:"Advanced Corporate Law",units:3},{code:"LAW 714",title:"International Commercial Arbitration",units:3},{code:"LAW 724",title:"IP Law & Technology",units:3}],
+    phd:[{code:"LAW 904",title:"Advanced Commercial Law Research",units:3},{code:"LAW 994",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Bartholomew Nnaji",initials:"BN",role:"Associate Professor & HOD",spec:"Corporate Law, M&A"},{name:"Dr. Adaeze Obi",initials:"AO",role:"Senior Lecturer",spec:"Banking Law, Financial Regulation"},{name:"Dr. Emeka Eze",initials:"EE",role:"Lecturer I",spec:"Intellectual Property, Technology Law"},{name:"Mr. Chukwudi Okonkwo",initials:"CO",role:"Assistant Lecturer",spec:"Oil & Gas Law, Energy Contracts"}],
+  research:[{area:"Corporate Law",title:"Corporate Governance Failures in Nigerian Banks — Post-2008 Review",desc:"Doctrinal and empirical study of board composition, audit quality and CBN regulatory enforcement.",funding:"₦58M",projects:2},{area:"IP Law",title:"Software Copyright & Open Source Licensing in Nigeria",desc:"Legal gap analysis in Nigerian copyright law for software, APIs and AI-generated works.",funding:"₦42M",projects:1},{area:"Arbitration",title:"Enforceability of ICSID Awards in Nigerian Courts",desc:"Doctrinal study of Nigerian courts' treatment of foreign arbitral awards from 2000–2024.",funding:"₦35M",projects:1}],
+  facilities:[{name:"Commercial Law Seminar Suite",icon:"💼",desc:"Case study teaching rooms equipped with case law databases and contract drafting workstations."},{name:"Arbitration Training Centre",icon:"🤝",desc:"Fully equipped arbitral hearing room with recording, observation and presentation facilities."},{name:"Business Law Library",icon:"📋",desc:"Companies and Allied Matters Act, SEC regulations, tax statutes and commercial law reports."}],
+  news:[{date:"Aug 4, 2024",cat:"Research",title:"Commercial Law Dept Report on StartUp Ecosystem Legal Barriers Cited in National Assembly"},{date:"Jul 18, 2024",cat:"Events",title:"Annual CAMA Masterclass — Directors' Duties Under the 2020 Companies Act"}]
+},
+
+/* ─────────────── MANAGEMENT SCIENCES ─────────────── */
+
+"accounting":{
+  id:"accounting", name:"Department of Accounting", shortName:"Accounting", icon:"📒",
+  faculty:{id:"management",name:"Faculty of Management Sciences"},
+  theme:{accent:"#2A6A4A",light:"#60A080",glow:"rgba(42,106,74,.12)",hero:"linear-gradient(135deg,#041008 0%,#081A10 50%,#06120C 100%)"},
+  tagline:"The language of business — training the accountants and financial professionals who keep Nigeria's economy honest.",
+  established:1992, stats:{students:980,staff:24,courses:44,research:6},
+  hod:{name:"Prof. Ifeoma Nwosu",initials:"IN",qualifications:["Ph.D. Accounting, University of Lagos, 2006","MBA Finance, University of Benin, 2000","FCA, ICAN · Fellow, ACCA"],message:["The accounting profession in Nigeria is undergoing a transformation — driven by IFRS adoption, automation, and the growing complexity of Nigerian business. The Department of Accounting at UNIZIK is training accountants who are not just technically proficient, but who understand strategy, technology and governance.","Our ICAN exam pass rates are consistently among the highest in South-East Nigeria, and our MBA Finance stream is producing financial leaders who are making their mark in banking, manufacturing, and the public sector."]},
+  courses:{
+    undergraduate:[{code:"ACC 211",title:"Financial Accounting I",units:3},{code:"ACC 221",title:"Management Accounting I",units:3},{code:"ACC 311",title:"Corporate Reporting",units:3},{code:"ACC 321",title:"Auditing & Assurance",units:3},{code:"ACC 411",title:"Taxation",units:3},{code:"ACC 421",title:"Public Sector Accounting",units:3},{code:"ACC 431",title:"Forensic Accounting",units:3},{code:"ACC 491",title:"Project",units:6}],
+    postgraduate:[{code:"ACC 701",title:"Advanced Financial Reporting (IFRS)",units:3},{code:"ACC 711",title:"Corporate Governance & Internal Audit",units:3},{code:"ACC 721",title:"Forensic Accounting & Fraud Examination",units:3}],
+    phd:[{code:"ACC 901",title:"Advanced Accounting Theory",units:3},{code:"ACC 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Prof. Ifeoma Nwosu",initials:"IN",role:"Professor & HOD",spec:"Corporate Reporting, IFRS"},{name:"Dr. Emeka Obi",initials:"EO",role:"Senior Lecturer",spec:"Auditing, Internal Control"},{name:"Dr. Chioma Eze",initials:"CE",role:"Lecturer I",spec:"Forensic Accounting, Fraud"},{name:"Dr. Obinna Okonkwo",initials:"OO",role:"Lecturer I",spec:"Taxation, Transfer Pricing"}],
+  research:[{area:"Financial Reporting",title:"IFRS Adoption & Earnings Quality in Nigerian Listed Companies",desc:"Event study and panel data analysis of earnings manipulation pre and post full IFRS adoption.",funding:"₦72M",projects:2},{area:"Taxation",title:"Tax Compliance Behaviour of Nigerian SMEs",desc:"Survey study examining knowledge, attitude and structural barriers to SME tax compliance.",funding:"₦52M",projects:2},{area:"Public Sector",title:"Financial Reporting Transparency in Anambra LGAs",desc:"IPSAS compliance audit and recommendations for 21 Anambra local government authorities.",funding:"₦38M",projects:2}],
+  facilities:[{name:"Accounting Computer Laboratory",icon:"💻",desc:"Sage 50, QuickBooks, SAGE ERP, Microsoft Dynamics and Excel Advanced are all pre-installed."},{name:"Taxation Clinic",icon:"🧾",desc:"Student-staffed free tax advisory clinic for SMEs, overseen by ICAN-registered faculty."},{name:"Forensic Accounting Research Suite",icon:"🔍",desc:"Data analytics tools including IDEA, ACL and XLMiner for audit and forensic examination."}],
+  news:[{date:"Aug 6, 2024",cat:"Achievement",title:"UNIZIK Accounting Students Record Highest ICAN ATS Pass Rate in South-East Nigeria"},{date:"Jul 22, 2024",cat:"Partnership",title:"Deloitte West Africa Signs Graduate Recruitment MoU with UNIZIK Accounting Dept"}]
+},
+
+"business-administration":{
+  id:"business-administration", name:"Department of Business Administration", shortName:"Business Administration", icon:"📈",
+  faculty:{id:"management",name:"Faculty of Management Sciences"},
+  theme:{accent:"#9A7A2A",light:"#D0AA60",glow:"rgba(154,122,42,.13)",hero:"linear-gradient(135deg,#181004 0%,#241808 50%,#1C1404 100%)"},
+  tagline:"Building the managers and entrepreneurs who will lead Nigeria's businesses into a new era of global competitiveness.",
+  established:1992, stats:{students:840,staff:20,courses:40,research:5},
+  hod:{name:"Dr. Chukwudi Okafor",initials:"CO",qualifications:["Ph.D. Business Administration, Covenant University, 2011","MBA Strategy, University of Lagos, 2004","Fellow, Chartered Institute of Management, Nigeria"],message:["Business administration is often mischaracterised as a general discipline. In fact, it is a rigorous study of how organisations are structured, led, and made to perform under conditions of uncertainty. The Department of Business Administration at UNIZIK prepares graduates for the complexity of managing real Nigerian organisations.","Our MBA programme is designed for people who want to lead — whether in the corporate sector, the public service, or as entrepreneurs building the next generation of Nigerian enterprises. We combine global management theory with Nigerian business case studies and live consulting projects."]},
+  courses:{
+    undergraduate:[{code:"BAD 211",title:"Principles of Management",units:3},{code:"BAD 221",title:"Organisational Behaviour",units:3},{code:"BAD 311",title:"Strategic Management",units:3},{code:"BAD 321",title:"Human Resource Management",units:3},{code:"BAD 411",title:"Entrepreneurship & SME Management",units:3},{code:"BAD 421",title:"Operations Management",units:3},{code:"BAD 431",title:"Business Ethics & Governance",units:3},{code:"BAD 491",title:"Project",units:6}],
+    postgraduate:[{code:"BAD 701",title:"Advanced Strategy & Competitive Advantage",units:3},{code:"BAD 711",title:"Leadership & Organisational Change",units:3},{code:"BAD 721",title:"International Business Management",units:3}],
+    phd:[{code:"BAD 901",title:"Advanced Management Theory",units:3},{code:"BAD 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Chukwudi Okafor",initials:"CO",role:"Associate Professor & HOD",spec:"Strategic Management, Innovation"},{name:"Dr. Adaeze Nwofor",initials:"AN",role:"Senior Lecturer",spec:"HRM, Talent Management"},{name:"Dr. Obinna Ezeobi",initials:"OE",role:"Lecturer I",spec:"Entrepreneurship, SME Growth"},{name:"Dr. Ngozi Eze",initials:"NE",role:"Lecturer I",spec:"Operations Management, Supply Chain"}],
+  research:[{area:"Entrepreneurship",title:"Survival Factors for South-East Nigerian SMEs",desc:"3-year panel study tracking 350 South-East Nigerian SMEs — factors predicting survival versus closure.",funding:"₦65M",projects:2},{area:"Strategic Management",title:"Corporate Strategy of Nigerian Manufacturing Firms",desc:"Resource-based view analysis of competitive advantage sources in the Nigerian manufacturing sector.",funding:"₦50M",projects:2},{area:"HRM",title:"Talent Retention in the Nigerian Banking Sector",desc:"Identifying non-monetary drivers of employee retention in Nigerian commercial banks.",funding:"₦38M",projects:1}],
+  facilities:[{name:"Business Strategy Simulation Lab",icon:"🎲",desc:"Capsim and Marketplace business simulation platforms for experiential strategy learning."},{name:"Entrepreneurship Incubator",icon:"💡",desc:"Student startup workspace, mentorship programme and seed funding panel — 12 active startups."},{name:"MBA Case Study Room",icon:"💼",desc:"Harvard-style case discussion room for MBA seminars and executive education programmes."}],
+  news:[{date:"Aug 5, 2024",cat:"Events",title:"UNIZIK MBA Applications Now Open — Full-Time & Weekend Modes Available"},{date:"Jul 20, 2024",cat:"Partnership",title:"Access Bank Donates ₦15M Entrepreneurship Fund to Business Administration Dept"}]
+},
+
+"banking-finance":{
+  id:"banking-finance", name:"Department of Banking & Finance", shortName:"Banking & Finance", icon:"🏦",
+  faculty:{id:"management",name:"Faculty of Management Sciences"},
+  theme:{accent:"#2A3A7A",light:"#6070C0",glow:"rgba(42,58,122,.13)",hero:"linear-gradient(135deg,#040814 0%,#060E20 50%,#05091A 100%)"},
+  tagline:"Training the bankers, investment analysts and fintech builders who will mobilise Nigeria's capital for growth.",
+  established:1993, stats:{students:680,staff:16,courses:36,research:6},
+  hod:{name:"Dr. Emeka Obialo",initials:"EO",qualifications:["Ph.D. Banking & Finance, University of Nigeria, 2010","MBA Finance, University of Lagos, 2003","ACIB, Chartered Institute of Bankers of Nigeria"],message:["Nigeria's financial system is the largest and most sophisticated in sub-Saharan Africa, yet it remains deeply challenged — by chronic credit market failures, a vast unbanked population, and fintech disruption happening faster than the regulatory framework can absorb.","Our graduates understand these tensions and are equipped to navigate them. They work as investment bankers, risk managers, CBN examiners, hedge fund analysts, and — increasingly — as founders of fintech companies reshaping how Nigerians borrow, save and invest."]},
+  courses:{
+    undergraduate:[{code:"BFN 211",title:"Principles of Banking",units:3},{code:"BFN 221",title:"Financial Markets",units:3},{code:"BFN 311",title:"Corporate Finance",units:3},{code:"BFN 321",title:"Investment Analysis",units:3},{code:"BFN 411",title:"Risk Management & Derivatives",units:3},{code:"BFN 421",title:"Fintech & Digital Banking",units:3},{code:"BFN 431",title:"International Finance",units:3},{code:"BFN 491",title:"Project",units:6}],
+    postgraduate:[{code:"BFN 701",title:"Advanced Corporate Finance",units:3},{code:"BFN 711",title:"Financial Econometrics",units:3},{code:"BFN 721",title:"Bank Management & Regulation",units:3}],
+    phd:[{code:"BFN 901",title:"Advanced Finance Theory",units:3},{code:"BFN 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Emeka Obialo",initials:"EO",role:"Associate Professor & HOD",spec:"Corporate Finance, Capital Markets"},{name:"Dr. Chioma Obi",initials:"CO",role:"Senior Lecturer",spec:"Financial Econometrics, Risk"},{name:"Dr. Adaeze Nwachukwu",initials:"AN",role:"Lecturer I",spec:"Fintech, Mobile Banking"},{name:"Dr. Ikenna Eze",initials:"IE",role:"Lecturer I",spec:"International Finance, FX Markets"}],
+  research:[{area:"Fintech",title:"Mobile Money Adoption & Financial Inclusion in Rural Anambra",desc:"Survey-based study of M-PESA-equivalent adoption patterns and barriers in 500 rural households.",funding:"₦68M",projects:2},{area:"Capital Markets",title:"NSE Market Microstructure & Price Discovery",desc:"High-frequency analysis of bid-ask spreads, market impact and liquidity provision on the NGX.",funding:"₦55M",projects:2},{area:"Banking",title:"SME Credit Access & Bank Lending Behaviour Post-COVID",desc:"Panel data analysis of CBN MSME credit data examining collateral requirements and approval rates.",funding:"₦45M",projects:2}],
+  facilities:[{name:"Financial Markets Laboratory",icon:"📈",desc:"Bloomberg terminal, Refinitiv Eikon and NSE real-time data feeds for live market analysis."},{name:"Fintech Innovation Hub",icon:"📱",desc:"Co-working space for student fintech projects with mentorship from GTB, Flutterwave alumni."},{name:"Risk Analytics Suite",icon:"🎯",desc:"MATLAB, R, Python and VBA workstations for quantitative finance and risk modelling."}],
+  news:[{date:"Aug 4, 2024",cat:"Partnership",title:"Stanbic IBTC Bank Signs Internship & Scholarship MoU with UNIZIK Banking & Finance Dept"},{date:"Jul 19, 2024",cat:"Events",title:"Annual Finance Week — 'Cryptocurrency Regulation in Nigeria: Threat or Opportunity?'"}]
+},
+
+"marketing":{
+  id:"marketing", name:"Department of Marketing", shortName:"Marketing", icon:"📣",
+  faculty:{id:"management",name:"Faculty of Management Sciences"},
+  theme:{accent:"#C44A2A",light:"#FF8060",glow:"rgba(196,74,42,.13)",hero:"linear-gradient(135deg,#180600 0%,#240C00 50%,#1C0800 100%)"},
+  tagline:"The art and science of creating, communicating and delivering value — building the brands that Nigerians trust.",
+  established:1994, stats:{students:560,staff:14,courses:32,research:4},
+  hod:{name:"Dr. Adaeze Eze",initials:"AE",qualifications:["Ph.D. Marketing, University of Lagos, 2011","MBA Marketing, Obafemi Awolowo University, 2004","Fellow, Chartered Institute of Marketing, Nigeria"],message:["Marketing in Nigeria operates in one of the world's most challenging and most rewarding consumer environments — a young, brand-savvy, mobile-first population of 220 million with increasingly sophisticated tastes and acute sensitivity to value.","Our graduates are building marketing careers across advertising agencies, FMCG companies, telecoms, digital media and their own entrepreneurial ventures. We teach marketing both as analytical science and as creative practice, because the best marketers in Nigeria — and globally — must be both."]},
+  courses:{
+    undergraduate:[{code:"MKT 211",title:"Principles of Marketing",units:3},{code:"MKT 221",title:"Consumer Behaviour",units:3},{code:"MKT 311",title:"Marketing Research",units:3},{code:"MKT 321",title:"Brand Management",units:3},{code:"MKT 411",title:"Digital & Social Media Marketing",units:3},{code:"MKT 421",title:"Sales Management",units:3},{code:"MKT 431",title:"International Marketing",units:3},{code:"MKT 491",title:"Project",units:6}],
+    postgraduate:[{code:"MKT 701",title:"Advanced Marketing Strategy",units:3},{code:"MKT 711",title:"Marketing Analytics",units:3},{code:"MKT 721",title:"Brand & Communications Management",units:3}],
+    phd:[{code:"MKT 901",title:"Advanced Marketing Theory",units:3},{code:"MKT 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Adaeze Eze",initials:"AE",role:"Associate Professor & HOD",spec:"Brand Management, Consumer Behaviour"},{name:"Dr. Obinna Nwachukwu",initials:"ON",role:"Senior Lecturer",spec:"Digital Marketing, Social Media"},{name:"Dr. Chioma Obialo",initials:"CO",role:"Lecturer I",spec:"Marketing Research, CRM"},{name:"Mr. Emeka Obi",initials:"EO",role:"Assistant Lecturer",spec:"Sales Management, Distribution"}],
+  research:[{area:"Digital Marketing",title:"Social Media Marketing Effectiveness for Nigerian SMEs",desc:"A/B testing and conversion analysis across Instagram, WhatsApp Business and TikTok for Igbo-market brands.",funding:"₦48M",projects:2},{area:"Consumer Behaviour",title:"Price Sensitivity in Nigerian FMCG Markets Post-Inflation",desc:"Survey study of consumer switching behaviour and brand loyalty during 2023–24 inflationary shock.",funding:"₦38M",projects:1},{area:"Retail",title:"Informal Retail Modernisation — Onitsha Market Study",desc:"Ethnographic and quantitative study of how informal traders in Onitsha Main Market use digital tools.",funding:"₦30M",projects:1}],
+  facilities:[{name:"Digital Marketing Studio",icon:"📱",desc:"Social media dashboards, SEO tools, Google Analytics 4 and Meta Ads Manager workstations."},{name:"Marketing Research Laboratory",icon:"📊",desc:"SPSS, Qualtrics and focus group recording facilities for primary market research."},{name:"Brand Simulation Workshop",icon:"🎨",desc:"Canva, Adobe Creative Suite and pitch presentation space for integrated marketing campaigns."}],
+  news:[{date:"Jul 31, 2024",cat:"Partnership",title:"Unilever Nigeria Partners UNIZIK Marketing Dept for Brand Challenge Competition 2024"},{date:"Jul 16, 2024",cat:"Events",title:"Digital Marketing Masterclass — Meta Business Partners & UNIZIK Co-host Free Workshop"}]
+},
+
+"public-administration":{
+  id:"public-administration", name:"Department of Public Administration", shortName:"Public Administration", icon:"🏛️",
+  faculty:{id:"management",name:"Faculty of Management Sciences"},
+  theme:{accent:"#5A2A9A",light:"#9060D0",glow:"rgba(90,42,154,.12)",hero:"linear-gradient(135deg,#0C0418 0%,#140828 50%,#0E0620 100%)"},
+  tagline:"Training the public servants, policy analysts and governance reformers who will make the Nigerian state work.",
+  established:1993, stats:{students:420,staff:12,courses:28,research:4},
+  hod:{name:"Dr. Obinna Anichebe",initials:"OA",qualifications:["Ph.D. Public Administration, University of Nigeria, 2009","MPA Policy Analysis, University of Lagos, 2002","Associate, Institute of Chartered Secretaries and Administrators of Nigeria"],message:["Public administration is the discipline that should matter most to Nigerians — because it is about the capacity of the state to deliver services, collect revenue, maintain order and make good decisions. A weak state costs lives.","Our graduates enter the federal and state civil services, local government, development agencies, NGOs and international organisations. We take seriously our responsibility to produce public servants who combine technical competence with ethical commitment to the public interest."]},
+  courses:{
+    undergraduate:[{code:"PAD 211",title:"Introduction to Public Administration",units:3},{code:"PAD 221",title:"Public Policy Analysis",units:3},{code:"PAD 311",title:"Development Administration",units:3},{code:"PAD 321",title:"Local Government Administration",units:3},{code:"PAD 411",title:"Public Financial Management",units:3},{code:"PAD 421",title:"E-Government & Digital Governance",units:3},{code:"PAD 431",title:"Public Sector HRM",units:3},{code:"PAD 491",title:"Project",units:6}],
+    postgraduate:[{code:"PAD 701",title:"Advanced Public Policy",units:3},{code:"PAD 711",title:"Governance & Anti-Corruption",units:3},{code:"PAD 721",title:"International Development Administration",units:3}],
+    phd:[{code:"PAD 901",title:"Advanced Public Administration Theory",units:3},{code:"PAD 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Obinna Anichebe",initials:"OA",role:"Associate Professor & HOD",spec:"Public Policy, Governance"},{name:"Dr. Chioma Eze",initials:"CE",role:"Senior Lecturer",spec:"Local Government, Decentralisation"},{name:"Dr. Ngozi Nwofor",initials:"NN",role:"Lecturer I",spec:"Development Administration, UNDP"},{name:"Mr. Emeka Obialo",initials:"EO",role:"Assistant Lecturer",spec:"E-Government, Digital Governance"}],
+  research:[{area:"Governance",title:"Internally Generated Revenue Performance of Anambra LGAs",desc:"Revenue productivity analysis and reform recommendations for all 21 Anambra LGA administrations.",funding:"₦55M",projects:2},{area:"Anti-Corruption",title:"Corruption Perception & Reporting Behaviour in Nigerian Civil Service",desc:"Survey study examining whistleblowing intent, fear of retaliation and institutional trust.",funding:"₦42M",projects:1},{area:"E-Government",title:"Digital Service Delivery Readiness in Anambra State MDAs",desc:"Technology audit and readiness assessment of 28 Anambra State ministries and departments.",funding:"₦35M",projects:1}],
+  facilities:[{name:"Governance Research Centre",icon:"🏛️",desc:"Policy document archive, government gazette collection and public administration databases."},{name:"Simulation & War-Gaming Room",icon:"♟️",desc:"Policy scenario simulation exercises for advanced students and executive education programmes."},{name:"E-Government Laboratory",icon:"💻",desc:"GIS mapping, citizen engagement platform development and public data analysis workstations."}],
+  news:[{date:"Aug 2, 2024",cat:"Research",title:"Public Admin Dept IGR Report Presented to Anambra Governor's Economic Advisory Council"},{date:"Jul 17, 2024",cat:"Events",title:"Annual Governance Lecture — 'Fixing Nigerian Local Government: Evidence-Based Reforms'"}]
+},
+
+/* ─────────────── ARTS ─────────────── */
+
+"english-literary-studies":{
+  id:"english-literary-studies", name:"Department of English & Literary Studies", shortName:"English & Literary Studies", icon:"✍️",
+  faculty:{id:"arts",name:"Faculty of Arts"},
+  theme:{accent:"#8A3A2A",light:"#C07060",glow:"rgba(138,58,42,.12)",hero:"linear-gradient(135deg,#160804 0%,#201008 50%,#180C04 100%)"},
+  tagline:"Language, literature and meaning — the humanities training that sharpens minds, deepens empathy and shapes culture.",
+  established:1992, stats:{students:480,staff:16,courses:36,research:5},
+  hod:{name:"Prof. Chioma Nwosu",initials:"CN",qualifications:["Ph.D. African Literature, University of Ghana, 2006","M.A. English Language & Linguistics, University of Nigeria, 1999","Member, Association of Nigerian Authors (ANA)"],message:["In the age of ChatGPT and AI-generated content, the ability to write with precision, argue with nuance, and read with critical intelligence has never been more valuable — because machines still cannot do these things with genuine human insight. The Department of English and Literary Studies at UNIZIK trains graduates who can.","Our graduates have become journalists at the BBC, novelists shortlisted for the NLNG Prize, lawyers whose written briefs have been cited by the Supreme Court, and communications directors at Nigeria's leading corporations. The power of the English degree is its transferability."]},
+  courses:{
+    undergraduate:[{code:"ENG 211",title:"Introduction to Literature",units:3},{code:"ENG 221",title:"English Language & Linguistics",units:3},{code:"ENG 311",title:"African Literature in English",units:3},{code:"ENG 321",title:"Literary Theory & Criticism",units:3},{code:"ENG 411",title:"Creative Writing",units:3},{code:"ENG 421",title:"Stylistics & Discourse Analysis",units:3},{code:"ENG 431",title:"Digital Humanities",units:3},{code:"ENG 491",title:"Dissertation",units:6}],
+    postgraduate:[{code:"ENG 701",title:"Advanced Literary Theory",units:3},{code:"ENG 711",title:"Post-Colonial Literature",units:3},{code:"ENG 721",title:"Applied Linguistics",units:3}],
+    phd:[{code:"ENG 901",title:"Advanced African Literature Research",units:3},{code:"ENG 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Prof. Chioma Nwosu",initials:"CN",role:"Professor & HOD",spec:"African Literature, Gender Studies"},{name:"Dr. Emeka Obi",initials:"EO",role:"Senior Lecturer",spec:"Stylistics, Critical Discourse"},{name:"Dr. Ngozi Obialo",initials:"NO",role:"Lecturer I",spec:"Creative Writing, Narrative"},{name:"Dr. Adaeze Chukwu",initials:"AC",role:"Lecturer I",spec:"Applied Linguistics, TESOL"}],
+  research:[{area:"African Literature",title:"Post-Biafra Memory in Contemporary Igbo Fiction",desc:"Literary critical study of how the civil war is memorialised and contested in Igbo-language and Anglophone fiction.",funding:"₦48M",projects:2},{area:"Applied Linguistics",title:"English Language Proficiency & Academic Performance at UNIZIK",desc:"Correlation study across 2,000 undergraduates examining the link between English ability and degree outcome.",funding:"₦35M",projects:1},{area:"Digital Humanities",title:"Digitising Igbo Oral Literature — Archive Project",desc:"Transcription, translation and open-access publication of 400+ recorded Igbo oral texts.",funding:"₦40M",projects:2}],
+  facilities:[{name:"Creative Writing Studio",icon:"✍️",desc:"Quiet writing space with literary reference library, visiting writer recordings and manuscript archive."},{name:"Language & Linguistics Laboratory",icon:"🗣️",desc:"Phonetics equipment, speech analysis software (Praat) and multilingual corpus databases."},{name:"Digital Humanities Centre",icon:"💻",desc:"Text mining, corpus analysis, network visualisation and digital archiving workstations."}],
+  news:[{date:"Aug 1, 2024",cat:"Achievement",title:"UNIZIK English Dept Alumna Shortlisted for NLNG Literature Prize 2024"},{date:"Jul 23, 2024",cat:"Events",title:"Annual Literary Festival — 'Writing Nigeria Forward': Open to All Students"}]
+},
+
+"history-international-studies":{
+  id:"history-international-studies", name:"Department of History & International Studies", shortName:"History & Int'l Studies", icon:"🗺️",
+  faculty:{id:"arts",name:"Faculty of Arts"},
+  theme:{accent:"#7A5A2A",light:"#B08A50",glow:"rgba(122,90,42,.12)",hero:"linear-gradient(135deg,#120C02 0%,#1C1406 50%,#160E04 100%)"},
+  tagline:"Understanding where we came from — and how that shapes the world we are building.",
+  established:1992, stats:{students:280,staff:10,courses:28,research:4},
+  hod:{name:"Dr. Emeka Obialo",initials:"EO",qualifications:["Ph.D. African History, University of Ibadan, 2009","M.A. International Relations, University of Lagos, 2002","Member, Historical Society of Nigeria"],message:["History is not nostalgia — it is the discipline that provides the deepest possible context for understanding contemporary events. The department trains students to research rigorously, argue carefully, and interpret complexity — skills that are desperately needed in Nigeria's public discourse.","Our International Studies strand has become increasingly popular as Nigeria grapples with its role in a changing global order. We produce graduates who go into diplomacy, international organisations, journalism and strategic consulting."]},
+  courses:{
+    undergraduate:[{code:"HIS 211",title:"Pre-Colonial African History",units:3},{code:"HIS 221",title:"Introduction to International Relations",units:3},{code:"HIS 311",title:"Colonial & Decolonisation History",units:3},{code:"HIS 321",title:"Nigerian Foreign Policy",units:3},{code:"HIS 411",title:"Contemporary African Politics",units:3},{code:"HIS 421",title:"Global Governance & International Organisations",units:3},{code:"HIS 431",title:"Research Methods for Historians",units:3},{code:"HIS 491",title:"Dissertation",units:6}],
+    postgraduate:[{code:"HIS 701",title:"Advanced African History",units:3},{code:"HIS 711",title:"International Security Studies",units:3},{code:"HIS 721",title:"Diplomatic History",units:3}],
+    phd:[{code:"HIS 901",title:"Advanced Historical Research",units:3},{code:"HIS 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Emeka Obialo",initials:"EO",role:"Associate Professor & HOD",spec:"Colonial History, Nigerian Nationalism"},{name:"Dr. Chioma Eze",initials:"CE",role:"Senior Lecturer",spec:"International Security, Peacekeeping"},{name:"Dr. Ngozi Nwosu",initials:"NN",role:"Lecturer I",spec:"West African History, Pre-Colonial Trade"},{name:"Mr. Obinna Obi",initials:"OO",role:"Assistant Lecturer",spec:"Global Governance, AU & ECOWAS"}],
+  research:[{area:"Nigerian History",title:"1966–1970 Civil War Memory in Anambra Communities",desc:"Oral history collection and archive across 40 communities — recording survivor testimonies.",funding:"₦55M",projects:2},{area:"International Relations",title:"Nigeria's ECOWAS Peacekeeping Commitments 2000–2024",desc:"Policy analysis of Nigeria's military, financial and diplomatic contributions to ECOMOG/ECOWAS.",funding:"₦40M",projects:1},{area:"Pre-Colonial",title:"Trans-Saharan Trade & Igbo Diaspora in Northern Nigeria",desc:"Archival and oral history study of Igbo traders in Kano, Kaduna and Maiduguri pre-1900.",funding:"₦30M",projects:1}],
+  facilities:[{name:"Historical Archive & Special Collections",icon:"📜",desc:"Colonial-era documents, newspapers and photographs — West Africa's second-largest university archive."},{name:"Oral History Recording Suite",icon:"🎙️",desc:"Professional recording equipment and digital preservation software for oral history work."},{name:"Cartography & GIS Laboratory",icon:"🗺️",desc:"Historical maps, QGIS workstations and spatial analysis software for historical geography."}],
+  news:[{date:"Jul 27, 2024",cat:"Research",title:"History Dept Oral Archive of Biafra War Testimonies Acquired by University of Oxford"},{date:"Jul 9, 2024",cat:"Events",title:"International Studies Week — 'Africa & the New Cold War: Nigeria's Strategic Choices'"}]
+},
+
+"philosophy":{
+  id:"philosophy", name:"Department of Philosophy", shortName:"Philosophy", icon:"🧠",
+  faculty:{id:"arts",name:"Faculty of Arts"},
+  theme:{accent:"#3A2A9A",light:"#7060D0",glow:"rgba(58,42,154,.12)",hero:"linear-gradient(135deg,#060414 0%,#0C0820 50%,#08061A 100%)"},
+  tagline:"The love of wisdom — sharpening the critical intelligence that every discipline, profession and democracy needs.",
+  established:1993, stats:{students:180,staff:8,courses:24,research:3},
+  hod:{name:"Dr. Ngozi Ezeobi",initials:"NE",qualifications:["Ph.D. Philosophy, University of Ibadan, 2008","M.A. Ethics & Political Philosophy, University of Lagos, 2001","Member, Nigerian Philosophical Association"],message:["Philosophy trains the sharpest analytical minds in any university — not because philosophers are smarter, but because the discipline demands rigorous argument, tolerance of complexity and the ability to question assumptions that everyone else takes for granted.","Our graduates go into law, public policy, AI ethics, journalism and academia. In an age of misinformation, algorithmic decision-making and governance failure, the philosophical skills of careful reasoning and ethical analysis are more valuable than ever — and chronically undersupplied."]},
+  courses:{
+    undergraduate:[{code:"PHI 211",title:"Logic & Critical Thinking",units:3},{code:"PHI 221",title:"History of Philosophy",units:3},{code:"PHI 311",title:"Ethics",units:3},{code:"PHI 321",title:"African Philosophy",units:3},{code:"PHI 411",title:"Political Philosophy",units:3},{code:"PHI 421",title:"Philosophy of Mind & AI",units:3},{code:"PHI 431",title:"Epistemology",units:3},{code:"PHI 491",title:"Dissertation",units:6}],
+    postgraduate:[{code:"PHI 701",title:"Advanced Ethics & Applied Philosophy",units:3},{code:"PHI 711",title:"African Philosophical Traditions",units:3},{code:"PHI 721",title:"Philosophy of Technology",units:3}],
+    phd:[{code:"PHI 901",title:"Advanced Topics in Philosophy",units:3},{code:"PHI 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Ngozi Ezeobi",initials:"NE",role:"Associate Professor & HOD",spec:"African Philosophy, Ubuntu Ethics"},{name:"Dr. Emeka Nwofor",initials:"EN",role:"Senior Lecturer",spec:"Logic, Philosophy of Language"},{name:"Dr. Chioma Eze",initials:"CE",role:"Lecturer I",spec:"Political Philosophy, Social Contract"},{name:"Mr. Obinna Obialo",initials:"OO",role:"Assistant Lecturer",spec:"AI Ethics, Philosophy of Mind"}],
+  research:[{area:"African Philosophy",title:"Igbo Concept of Person (Onye) & Human Rights",desc:"Philosophical analysis of the Igbo concept of personhood as a foundation for an indigenous rights theory.",funding:"₦36M",projects:1},{area:"Applied Ethics",title:"AI Decision-Making Ethics for Nigerian Institutions",desc:"Developing an African ethical framework for algorithmic decision-making in banking, healthcare and justice.",funding:"₦42M",projects:2},{area:"Political Philosophy",title:"Legitimacy Crisis & Democratic Theory in Nigeria",desc:"Political philosophical analysis of the conditions for legitimate authority in the contemporary Nigerian state.",funding:"₦28M",projects:1}],
+  facilities:[{name:"Philosophy Seminar & Debate Room",icon:"💭",desc:"Socratic method teaching space with debate recording equipment and philosophical archive."},{name:"Logic & Reasoning Laboratory",icon:"🧮",desc:"Formal logic software, argument mapping tools and critical thinking assessment platforms."},{name:"Philosophy of Mind & AI Ethics Lab",icon:"🤖",desc:"Literature collections and computing resources for AI consciousness and algorithmic ethics research."}],
+  news:[{date:"Jul 24, 2024",cat:"Research",title:"Philosophy Dept Awarded ₦42M Grant for AI Ethics Framework for Nigerian Institutions"},{date:"Jul 7, 2024",cat:"Events",title:"Annual Philosophy Day Debate — 'African AI: Whose Values Should Machines Learn?'"}]
+},
+
+"igbo-linguistics":{
+  id:"igbo-linguistics", name:"Department of Igbo Language & Linguistics", shortName:"Igbo Language & Linguistics", icon:"🗣️",
+  faculty:{id:"arts",name:"Faculty of Arts"},
+  theme:{accent:"#9A7A2A",light:"#D0AA50",glow:"rgba(154,122,42,.12)",hero:"linear-gradient(135deg,#181004 0%,#241808 50%,#1C1204 100%)"},
+  tagline:"The guardian of Igbo — preserving, studying and digitising one of Africa's greatest linguistic and cultural heritages.",
+  established:1992, stats:{students:240,staff:10,courses:28,research:5},
+  hod:{name:"Prof. Adaeze Okeke",initials:"AO",qualifications:["Ph.D. African Linguistics, University of Ghana, Legon, 2005","M.A. Igbo Language & Literature, University of Nigeria, 1998","Fellow, Linguistic Association of Nigeria"],message:["Igbo is one of the most spoken languages in Africa — and one of the most endangered in terms of intergenerational transmission, as urbanisation and English dominance erode daily usage among the young. The Department of Igbo Language and Linguistics at UNIZIK takes this crisis seriously.","We are not merely teaching a language — we are training the linguists, lexicographers, language technologists and teachers who will keep Igbo alive and thriving into the next century. Our open-source NLP datasets are already being used by technology companies around the world to build Igbo-language tools."]},
+  courses:{
+    undergraduate:[{code:"IGL 211",title:"Igbo Grammar I",units:3},{code:"IGL 221",title:"Igbo Literature",units:3},{code:"IGL 311",title:"Sociolinguistics",units:3},{code:"IGL 321",title:"Phonology of Igbo",units:3},{code:"IGL 411",title:"Language Documentation",units:3},{code:"IGL 421",title:"Igbo Oral Tradition",units:3},{code:"IGL 431",title:"Computational Linguistics & NLP",units:3},{code:"IGL 491",title:"Dissertation",units:6}],
+    postgraduate:[{code:"IGL 701",title:"Advanced Igbo Syntax",units:3},{code:"IGL 711",title:"Language Endangerment & Revitalisation",units:3},{code:"IGL 721",title:"African Language Technology",units:3}],
+    phd:[{code:"IGL 901",title:"Advanced Linguistics Research",units:3},{code:"IGL 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Prof. Adaeze Okeke",initials:"AO",role:"Professor & HOD",spec:"Igbo Syntax, Language Documentation"},{name:"Dr. Emeka Nwosu",initials:"EN",role:"Senior Lecturer",spec:"Oral Literature, Folklore"},{name:"Dr. Chioma Obi",initials:"CO",role:"Lecturer I",spec:"Sociolinguistics, Code-Switching"},{name:"Dr. Ngozi Obialo",initials:"NO",role:"Lecturer I",spec:"Computational Linguistics, NLP"}],
+  research:[{area:"Language Technology",title:"Open-Source Igbo NLP Benchmark Dataset",desc:"Building and maintaining a 2M-token Igbo text corpus for academic and industry NLP research.",funding:"₦72M",projects:2},{area:"Language Documentation",title:"Dialectal Survey of Igbo Across Anambra, Imo & Enugu",desc:"Audio-recorded documentation of 14 Igbo dialects with full transcription and morphological analysis.",funding:"₦55M",projects:2},{area:"Language Revitalisation",title:"Igbo Language Teaching & Digital Media Intervention",desc:"Gamified Igbo learning app and YouTube series targeting 15–25-year-olds in urban South-East Nigeria.",funding:"₦38M",projects:1}],
+  facilities:[{name:"Igbo Language Archive",icon:"📼",desc:"4,000+ hours of digitised recordings of Igbo speech, folk tales, proverbs and ceremonies."},{name:"Linguistics Field Research Centre",icon:"🎙️",desc:"Portable recording equipment, transcription software and fieldwork support for dialectal research."},{name:"Language Technology Lab",icon:"💻",desc:"HuggingFace, spaCy and Kaldi workstations for Igbo NLP, ASR and MT model development."}],
+  news:[{date:"Aug 8, 2024",cat:"Research",title:"UNIZIK Igbo NLP Dataset Downloaded 18,000 Times — Used by Meta & Google Research"},{date:"Jul 27, 2024",cat:"Achievement",title:"Prof. Okeke Delivers Keynote at UNESCO International Decade of Indigenous Languages Conference"}]
+},
+
+"religion-human-relations":{
+  id:"religion-human-relations", name:"Department of Religion & Human Relations", shortName:"Religion & Human Relations", icon:"☮️",
+  faculty:{id:"arts",name:"Faculty of Arts"},
+  theme:{accent:"#4A7A2A",light:"#80B050",glow:"rgba(74,122,42,.11)",hero:"linear-gradient(135deg,#081200 0%,#0E1C00 50%,#0A1600 100%)"},
+  tagline:"Exploring faith, meaning and human community — the studies that help Nigeria understand and navigate its religious diversity.",
+  established:1993, stats:{students:210,staff:9,courses:24,research:3},
+  hod:{name:"Dr. Chukwudi Nwofor",initials:"CN",qualifications:["Ph.D. Religious Studies, University of Ibadan, 2010","M.A. African Traditional Religion, University of Nigeria, 2002","Member, Nigerian Association for the Study of Religions (NASR)"],message:["Nigeria's religious landscape is one of the most complex and consequential in the world — a country of 220 million people split roughly equally between Christianity and Islam, with deep African traditional religious roots in both communities. The Department of Religion and Human Relations exists to study this landscape with academic rigour and civic purpose.","Our graduates enter education, interfaith organisations, conflict resolution, chaplaincy, journalism and the civil service. We believe that understanding religion — its history, sociology, and diversity — is essential for any Nigerian who wants to understand their country."]},
+  courses:{
+    undergraduate:[{code:"RHR 211",title:"Introduction to World Religions",units:3},{code:"RHR 221",title:"African Traditional Religion",units:3},{code:"RHR 311",title:"Christianity in Nigeria",units:3},{code:"RHR 321",title:"Islam in Nigeria",units:3},{code:"RHR 411",title:"Religion & Social Change",units:3},{code:"RHR 421",title:"Interfaith Relations & Peacebuilding",units:3},{code:"RHR 431",title:"Religion & Ethics",units:3},{code:"RHR 491",title:"Dissertation",units:6}],
+    postgraduate:[{code:"RHR 701",title:"Advanced Religious Studies",units:3},{code:"RHR 711",title:"Religious Conflict & Peacebuilding",units:3},{code:"RHR 721",title:"Religion, Politics & Governance in Nigeria",units:3}],
+    phd:[{code:"RHR 901",title:"Advanced Topics in Religion & Society",units:3},{code:"RHR 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Chukwudi Nwofor",initials:"CN",role:"Associate Professor & HOD",spec:"African Traditional Religion"},{name:"Dr. Ngozi Obi",initials:"NO",role:"Senior Lecturer",spec:"Islamic Studies, Hausa Islam"},{name:"Dr. Emeka Eze",initials:"EE",role:"Lecturer I",spec:"Pentecostalism, Charismatic Christianity"},{name:"Mr. Ikenna Obialo",initials:"IO",role:"Assistant Lecturer",spec:"Interfaith Peacebuilding"}],
+  research:[{area:"Interfaith Relations",title:"Christian-Muslim Peacebuilding Initiatives in Middle Belt Nigeria",desc:"Field study of civil society interfaith organisations operating in conflict-affected communities.",funding:"₦42M",projects:2},{area:"Religion & Politics",title:"Pentecostalism & Electoral Behaviour in South-East Nigeria",desc:"Survey study of the political attitudes and voting behaviour of Pentecostal church members.",funding:"₦30M",projects:1},{area:"African Religion",title:"Igbo Shrines & Sacred Landscapes — Anthropological Survey",desc:"Photographic and ethnographic documentation of 80+ sacred sites across Igbo-speaking states.",funding:"₦28M",projects:1}],
+  facilities:[{name:"World Religions Reference Library",icon:"📚",desc:"Primary texts of all major world religions, interfaith studies journals and oral religion archive."},{name:"Interfaith Dialogue Centre",icon:"🕊️",desc:"Neutral discussion space for interfaith events, conflict resolution training and community dialogue."},{name:"Sacred Texts Digital Archive",icon:"💻",desc:"Digitised collection of Igbo traditional prayer texts, hymns and ritual scripts."}],
+  news:[{date:"Jul 26, 2024",cat:"Research",title:"Religion Dept Secures Fetzer Institute Grant for Christian-Muslim Peacebuilding Study"},{date:"Jul 10, 2024",cat:"Events",title:"Annual Interfaith Week — Faith Leaders Across Five Religions to Speak on Campus"}]
+},
+
+"mass-communication":{
+  id:"mass-communication", name:"Department of Mass Communication", shortName:"Mass Communication", icon:"📰",
+  faculty:{id:"arts",name:"Faculty of Arts"},
+  theme:{accent:"#C42A2A",light:"#FF6060",glow:"rgba(196,42,42,.13)",hero:"linear-gradient(135deg,#1A0000 0%,#280000 50%,#1C0000 100%)"},
+  tagline:"Training the journalists, broadcasters and communicators who will hold power accountable in a democratic Nigeria.",
+  established:1994, stats:{students:560,staff:14,courses:32,research:4},
+  hod:{name:"Dr. Ifeoma Okonkwo",initials:"IO",qualifications:["Ph.D. Mass Communication, University of Nigeria, 2010","M.Sc. Journalism, University of Lagos, 2003","Member, Nigerian Institute of Public Relations (NIPR)"],message:["A healthy democracy requires a healthy press. Nigeria's media landscape is vast, competitive and increasingly digital — but it also struggles with commercial pressure, political interference and the spread of misinformation.","The Department of Mass Communication at UNIZIK trains journalists, broadcasters, PR professionals and digital content producers who understand not just how to communicate, but why accuracy, independence and public service matter. Our graduates are in newsrooms from Lagos to London, and at broadcast stations across the South-East."]},
+  courses:{
+    undergraduate:[{code:"MCM 211",title:"Introduction to Mass Communication",units:3},{code:"MCM 221",title:"Journalism Practice I",units:3},{code:"MCM 311",title:"Broadcast Journalism",units:3},{code:"MCM 321",title:"Public Relations",units:3},{code:"MCM 411",title:"Digital & Online Journalism",units:3},{code:"MCM 421",title:"Media Law & Ethics",units:3},{code:"MCM 431",title:"Advertising & Media Management",units:3},{code:"MCM 491",title:"Project",units:6}],
+    postgraduate:[{code:"MCM 701",title:"Advanced Media Studies",units:3},{code:"MCM 711",title:"Political Communication & Media",units:3},{code:"MCM 721",title:"Investigative Journalism",units:3}],
+    phd:[{code:"MCM 901",title:"Advanced Mass Communication Research",units:3},{code:"MCM 991",title:"Ph.D. Dissertation",units:12}]},
+  staff:[{name:"Dr. Ifeoma Okonkwo",initials:"IO",role:"Associate Professor & HOD",spec:"Political Communication, Media Policy"},{name:"Dr. Chukwudi Eze",initials:"CE",role:"Senior Lecturer",spec:"Broadcast Journalism, Documentary"},{name:"Dr. Ngozi Nwosu",initials:"NN",role:"Lecturer I",spec:"Digital Media, Social Media Research"},{name:"Mr. Emeka Obialo",initials:"EO",role:"Assistant Lecturer",spec:"Advertising, Brand Communications"}],
+  research:[{area:"Media Studies",title:"Misinformation Spread During Nigerian Elections",desc:"Content analysis and network analysis of false election-related news on WhatsApp and Twitter/X.",funding:"₦62M",projects:2},{area:"Journalism",title:"Investigative Journalism Capacity in Nigerian Regional Media",desc:"Survey of investigative reporting output, skills gaps and editorial independence in South-East Nigerian media.",funding:"₦45M",projects:1},{area:"Digital Media",title:"Youth Social Media Literacy in Anambra Secondary Schools",desc:"Assessment and intervention study for 1,200 secondary school students on source verification and media literacy.",funding:"₦35M",projects:1}],
+  facilities:[{name:"UNIZIK Community Radio & TV Studio",icon:"📺",desc:"Professional broadcast studio for radio and TV production, live streaming and student journalism."},{name:"Digital Media & Podcast Lab",icon:"🎙️",desc:"Soundproofed recording booths, Adobe Premiere, Audition and Final Cut Pro workstations."},{name:"Print Journalism Workshop",icon:"🖨️",desc:"In-house newsletter and newspaper production facility — students publish UNIZIK Campus Digest monthly."}],
+  news:[{date:"Aug 6, 2024",cat:"Achievement",title:"UNIZIK Mass Comm Student Wins NUJ Best Campus Journalist Award 2024"},{date:"Jul 23, 2024",cat:"Events",title:"Annual Media Week — 'AI in the Nigerian Newsroom: Threat or Tool?'"}]
+}
+
+}; /* END DEPT */
+</script>
+
+<!-- ─── ANNOUNCEMENT BAR ─── -->
+<div class="announcement-bar">
+  📣 2024/2025 Post-UTME Registration Now Open — <a href="index.html#admissions">Apply Before August 30 →</a>
+</div>
+
+<!-- ─── NAVBAR ─── -->
+<nav id="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="images/logo.png" alt="UNIZIK" class="nav-logo">
+    <div class="nav-brand-text">
+      <span class="nav-brand-name">Nnamdi Azikiwe University</span>
+      <span class="nav-brand-tag">Est. 1992 · Awka, Nigeria</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#academics">Academics</a></li>
+    <li><a href="index.html#research">Research</a></li>
+    <li><a href="index.html#campus">Campus</a></li>
+    <li><a href="index.html#news">News</a></li>
+    <li><a href="index.html#admissions" class="nav-cta">Apply Now</a></li>
+  </ul>
+  <button class="nav-burger" id="burger" onclick="openMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ─── MOBILE MENU ─── -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMenu()">✕</button>
+  <a href="index.html#about" onclick="closeMenu()">About</a>
+  <a href="index.html#academics" onclick="closeMenu()">Academics</a>
+  <a href="index.html#research" onclick="closeMenu()">Research</a>
+  <a href="index.html#campus" onclick="closeMenu()">Campus</a>
+  <a href="index.html#news" onclick="closeMenu()">News</a>
+  <a href="index.html#admissions" onclick="closeMenu()" style="color:var(--dept-accent)">Apply Now →</a>
+</div>
+
+<!-- ─── BREADCRUMB ─── -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="index.html#academics">Academics</a>
+    <span class="breadcrumb-sep">›</span>
+    <a id="bc-faculty" href="#">Faculty</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current" id="bc-dept">Department</span>
+  </div>
+</div>
+
+<!-- ─── MAIN ─── -->
+<div id="page-root"></div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <img src="images/logo.png" alt="UNIZIK" class="footer-brand-logo">
+      <div class="footer-brand-name">Nnamdi Azikiwe University</div>
+      <div class="footer-brand-tag">Awka · Anambra State · Nigeria</div>
+      <p class="footer-brand-desc">Empowering minds, transforming lives, and advancing knowledge for the development of Nigeria and Africa since 1992.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Academics</div>
+      <ul class="footer-links">
+        <li><a href="faculty.html?faculty=engineering">Engineering</a></li>
+        <li><a href="faculty.html?faculty=health-sciences">Health Sciences</a></li>
+        <li><a href="faculty.html?faculty=physical-sciences">Physical Sciences</a></li>
+        <li><a href="faculty.html?faculty=law">Law</a></li>
+        <li><a href="faculty.html?faculty=management">Management Sciences</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Admissions</div>
+      <ul class="footer-links">
+        <li><a href="index.html#admissions">Apply Now</a></li>
+        <li><a href="#">Entry Requirements</a></li>
+        <li><a href="#">Scholarships</a></li>
+        <li><a href="#">Postgraduate Entry</a></li>
+        <li><a href="#">International Students</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="#">Student Portal</a></li>
+        <li><a href="#">Staff Portal</a></li>
+        <li><a href="#">Library</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="index.html">University Home</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 Nnamdi Azikiwe University, Awka. All rights reserved.</div>
+    <div class="footer-motto">Discipline · Self Reliance · <span>Excellence</span></div>
+  </div>
+</footer>
+
+<script>
+// ─── NAV SCROLL + MOBILE ─────────────────────────────────────────────────────
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+function openMenu() {
+  document.getElementById('mobileMenu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+/* ═══════════════════════ RENDER ENGINE ═══════════════════════ */
+
+function getDeptId(){
+  return new URLSearchParams(window.location.search).get('department')||'computer-science';
+}
+
+function applyTheme(t){
+  const r = document.documentElement.style;
+  r.setProperty('--dept-accent', t.accent);
+  r.setProperty('--dept-accent-light', t.light);
+  r.setProperty('--dept-glow', t.glow);
+  r.setProperty('--dept-hero', t.hero);
+}
+
+function buildCourseCards(list){
+  return list.map(c=>`
+    <div class="course-card">
+      <span class="course-code">${c.code}</span>
+      <div>
+        <div class="course-title">${c.title}</div>
+        <div class="course-units">${c.units} Credit Units</div>
+      </div>
+    </div>`).join('');
+}
+
+function buildStaffCards(list){
+  return list.map(s=>`
+    <div class="staff-card">
+      <div class="staff-avatar">${s.initials}</div>
+      <div class="staff-name">${s.name}</div>
+      <div class="staff-role">${s.role}</div>
+      <div class="staff-spec">${s.spec}</div>
+    </div>`).join('');
+}
+
+function buildResCards(list){
+  return list.map((r,i)=>`
+    <div class="res-card">
+      <div class="res-num">0${i+1}</div>
+      <div class="res-area">${r.area}</div>
+      <div class="res-title">${r.title}</div>
+      <div class="res-desc">${r.desc}</div>
+      <div class="res-meta">
+        <div class="res-stat"><strong>${r.funding}</strong>Funding</div>
+        <div class="res-stat"><strong>${r.projects}</strong>Projects</div>
+      </div>
+    </div>`).join('');
+}
+
+function buildFacCards(list){
+  return list.map(f=>`
+    <div class="fac-card">
+      <span class="fac-icon">${f.icon}</span>
+      <div class="fac-name">${f.name}</div>
+      <div class="fac-desc">${f.desc}</div>
+    </div>`).join('');
+}
+
+function buildNewsCards(list){
+  return list.map(n=>`
+    <div class="news-card">
+      <div class="news-card-img">
+        <div class="news-card-img-inner"></div>
+        <span class="news-cat">${n.cat}</span>
+      </div>
+      <div class="news-body">
+        <div class="news-date">${n.date}</div>
+        <div class="news-title">${n.title}</div>
+      </div>
+    </div>`).join('');
+}
+
+function buildSiblingPills(facultyId, currentId){
+  const list = SIBLINGS[facultyId] || [];
+  return list.map(s=>`
+    <a href="department.html?department=${s.id}" class="sibling-pill${s.id===currentId?' active':''}">
+      <span class="sibling-icon">${s.icon}</span>
+      <div class="sibling-name">${s.name}</div>
+    </a>`).join('');
+}
+
+function renderPage(d){
+  const ug = d.courses.undergraduate;
+  const pg = d.courses.postgraduate;
+  const phd = d.courses.phd;
+
+  const html = `
+    <!-- HERO -->
+    <section id="dept-hero">
+      <div class="hero-grid"></div>
+      <div class="hero-glow"></div>
+      <div class="hero-inner">
+        <div>
+          <div class="hero-supertag">${d.faculty.name}</div>
+          <span class="hero-icon">${d.icon}</span>
+          <h1 class="hero-name">${d.name.replace(/^(Department of |College of )/,'<em>$1</em>')}</h1>
+          <div class="hero-accent-line"></div>
+          <p class="hero-tagline">${d.tagline}</p>
+          <div class="hero-actions">
+            <a href="index.html#admissions" class="btn-a">Apply Now</a>
+            <a href="#courses" class="btn-b">View Courses</a>
+            <a href="#research" class="btn-b">Research</a>
+            <a href="faculty.html?faculty=${d.faculty.id}" class="btn-b">Back to Faculty</a>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="hs-item"><div class="hs-num">${d.stats.students.toLocaleString()}</div><div class="hs-label">Students</div></div>
+          <div class="hs-div"></div>
+          <div class="hs-item"><div class="hs-num">${d.stats.staff}</div><div class="hs-label">Academic Staff</div></div>
+          <div class="hs-div"></div>
+          <div class="hs-item"><div class="hs-num">${d.stats.courses}</div><div class="hs-label">Courses</div></div>
+          <div class="hs-div"></div>
+          <div class="hs-item"><div class="hs-num">${d.stats.research}</div><div class="hs-label">Research Projects</div></div>
+          <div class="hs-div"></div>
+          <div class="hs-item"><div class="hs-num">${d.established}</div><div class="hs-label">Year Established</div></div>
+        </div>
+      </div>
+      <div class="hero-tab"></div>
+    </section>
+
+    <!-- HOD MESSAGE -->
+    <div class="sw">
+      <div class="si">
+        <div class="stag rv">From the Head of Department</div>
+        <h2 class="sh rv d1">A Message from <span>the HOD</span></h2>
+        <div class="hod-grid" style="margin-top:38px;">
+          <div class="hod-card rv">
+            <div class="hod-photo">${HOD_PHOTOS[d.id] ? `<img src="${HOD_PHOTOS[d.id]}" alt="${d.hod.name}" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">` : ''}<div class="hod-initials" style="${HOD_PHOTOS[d.id] ? 'display:none;' : ''}">${d.hod.initials}</div><div class="hod-bar"></div></div>
+            <div class="hod-name">${d.hod.name}</div>
+            <div class="hod-role">Head of Department</div>
+            <div class="hod-quals">${d.hod.qualifications.map(q=>`<div class="hod-qual">${q}</div>`).join('')}</div>
+          </div>
+          <div class="hod-msg rv d1">
+            <span class="qmark">"</span>
+            <div class="hod-body">${d.hod.message.map(p=>`<p>${p}</p>`).join('')}</div>
+            <div class="hod-sig">${d.hod.name}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COURSES -->
+    <div class="sw mid" id="courses">
+      <div class="si">
+        <div class="stag rv">Academic Courses</div>
+        <h2 class="sh rv d1">Courses <span>Offered</span></h2>
+        <div style="margin-top:32px;">
+          <div class="tab-row">
+            <button class="tab active" data-panel="ug">Undergraduate (${ug.length})</button>
+            <button class="tab" data-panel="pg">Postgraduate (${pg.length})</button>
+            <button class="tab" data-panel="phd">Ph.D. (${phd.length})</button>
+          </div>
+          <div class="panel active" id="panel-ug"><div class="course-grid">${buildCourseCards(ug)}</div></div>
+          <div class="panel" id="panel-pg"><div class="course-grid">${buildCourseCards(pg)}</div></div>
+          <div class="panel" id="panel-phd"><div class="course-grid">${buildCourseCards(phd)}</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAFF -->
+    <div class="sw">
+      <div class="si">
+        <div class="stag rv">Academic Staff</div>
+        <h2 class="sh rv d1">Meet the <span>Team</span></h2>
+        <div class="staff-grid" style="margin-top:36px;">${buildStaffCards(d.staff)}</div>
+      </div>
+    </div>
+
+    <!-- RESEARCH -->
+    <div class="sw dark" id="research">
+      <div class="si">
+        <div class="stag light rv">Research & Innovation</div>
+        <h2 class="sh light rv d1">Research <span>Focus Areas</span></h2>
+        <div class="res-grid" style="margin-top:36px;">${buildResCards(d.research)}</div>
+      </div>
+    </div>
+
+    <!-- FACILITIES -->
+    <div class="sw mid">
+      <div class="si">
+        <div class="stag rv">Infrastructure</div>
+        <h2 class="sh rv d1">Our <span>Facilities</span></h2>
+        <div class="fac-grid" style="margin-top:36px;">${buildFacCards(d.facilities)}</div>
+      </div>
+    </div>
+
+    <!-- NEWS -->
+    <div class="sw">
+      <div class="si">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;flex-wrap:wrap;gap:14px;">
+          <div><div class="stag rv">Latest</div><h2 class="sh rv d1">Department <span>News</span></h2></div>
+          <a href="index.html#news" class="btn-c rv d2">All University News</a>
+        </div>
+        <div class="news-grid">${buildNewsCards(d.news)}</div>
+      </div>
+    </div>
+
+    <!-- SIBLING DEPARTMENTS -->
+    <div class="sw mid">
+      <div class="si">
+        <div class="stag rv">Browse More</div>
+        <h2 class="sh rv d1">Other Departments in <span>${d.faculty.name.replace(/^(Faculty of |College of )/,'')}</span></h2>
+        <div class="sibling-grid" style="margin-top:32px;">
+          ${buildSiblingPills(d.faculty.id, d.id)}
+        </div>
+        <div style="margin-top:24px;">
+          <a href="faculty.html?faculty=${d.faculty.id}" class="btn-c">← Back to Full Faculty Page</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-wrap">
+      <div class="cta-inner">
+        <div>
+          <div class="cta-label">Admissions 2024/2025</div>
+          <h2 class="cta-title">Join the ${d.shortName}<br>Department</h2>
+          <p class="cta-sub">Applications are now open. Join ${d.stats.students.toLocaleString()}+ students currently enrolled in this department.</p>
+        </div>
+        <div class="cta-btns">
+          <a href="index.html#admissions" class="btn-white">Begin Application</a>
+          <a href="#courses" class="btn-ghost">View Courses</a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('page-root').innerHTML = html;
+  document.title = `${d.name} — Nnamdi Azikiwe University`;
+  document.getElementById('bc-dept').textContent = d.shortName;
+  document.getElementById('bc-faculty').href = `faculty.html?faculty=${d.faculty.id}`;
+  document.getElementById('bc-faculty').textContent = d.faculty.name;
+}
+
+function renderNotFound(id){
+  document.getElementById('page-root').innerHTML = `
+    <div class="nf">
+      <div class="nf-icon">🔍</div>
+      <h2 class="nf-title">Department Not Found</h2>
+      <p class="nf-sub">No department matches "<strong>${id}</strong>". Try one of these:</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:680px;margin:24px auto 0;">
+        ${Object.values(DEPT).slice(0,6).map(d=>`<a href="department.html?department=${d.id}" class="sibling-pill"><span class="sibling-icon">${d.icon}</span><div class="sibling-name">${d.shortName}</div></a>`).join('')}
+      </div>
+    </div>`;
+}
+
+/* ─── INIT ─── */
+(function(){
+  const id = getDeptId();
+  const d  = DEPT[id];
+  if(!d){ renderNotFound(id); return; }
+  applyTheme(d.theme);
+  renderPage(d);
+  // Tabs
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById(`panel-${t.dataset.panel}`).classList.add('active');
+    });
+  });
+  // Reveal
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);} });
+  },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+})();
+</script>
+</body>
+</html>

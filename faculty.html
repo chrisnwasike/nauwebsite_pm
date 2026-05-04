@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faculty — Nnamdi Azikiwe University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════ VARIABLES ═══════ */
+:root {
+  --bg:          #07090F;
+  --bg-2:        #0D1320;
+  --bg-3:        #111827;
+  --bg-card:     rgba(255,255,255,0.04);
+  --blue:        #2272F0;
+  --blue-dim:    rgba(34,114,240,0.15);
+  --orange:      #F05818;
+  --orange-dim:  rgba(240,88,24,0.15);
+  --orange-glow: rgba(240,88,24,0.35);
+  --white:       #FFFFFF;
+  --text:        rgba(255,255,255,0.88);
+  --text-dim:    rgba(255,255,255,0.55);
+  --text-faint:  rgba(255,255,255,0.28);
+  --border:      rgba(255,255,255,0.07);
+  --border-md:   rgba(255,255,255,0.13);
+  --radius:      4px;
+  /* Faculty accent — same for all faculties in this page */
+  --faculty-accent:       #F05818;
+  --faculty-accent-light: #F8803A;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 2px; }
+
+/* ═══════ ANNOUNCEMENT BAR ═══════ */
+.announcement-bar { background: var(--orange); color: var(--white); text-align: center; padding: 10px 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; z-index: 1002; position: relative; }
+.announcement-bar a { color: var(--white); font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.45); }
+.announcement-bar a:hover { border-color: var(--white); }
+
+/* ═══════ NAVBAR ═══════ */
+nav {
+  position: sticky; top: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5vw; height: 70px;
+  background: rgba(7,9,15,0.97);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.3s ease;
+}
+nav.scrolled { box-shadow: 0 4px 40px rgba(0,0,0,0.6); }
+.nav-brand { display: flex; align-items: center; gap: 12px; }
+.nav-logo { width: 38px; height: 38px; object-fit: contain; flex-shrink: 0; }
+.nav-brand-text { display: flex; flex-direction: column; }
+.nav-brand-name { font-family: 'Playfair Display', serif; color: var(--white); font-size: 14px; font-weight: 700; line-height: 1.2; }
+.nav-brand-tag { color: var(--orange); font-size: 9.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+.nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+.nav-links li a { color: var(--text-dim); font-size: 12.5px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; position: relative; padding-bottom: 4px; }
+.nav-links li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1.5px; background: var(--orange); transition: width 0.25s ease; }
+.nav-links li a:hover { color: var(--white); }
+.nav-links li a:hover::after { width: 100%; }
+.nav-cta { background: var(--orange) !important; color: var(--white) !important; padding: 8px 18px !important; border-radius: var(--radius); letter-spacing: 0.08em !important; }
+.nav-cta:hover { background: #D94D12 !important; }
+.nav-cta::after { display: none !important; }
+.nav-burger { display: none; flex-direction: column; gap: 5px; padding: 6px; cursor: pointer; background: none; border: none; }
+.nav-burger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 1px; }
+.mobile-menu { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(7,9,15,0.98); backdrop-filter: blur(20px); flex-direction: column; align-items: center; justify-content: center; gap: 32px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.mobile-menu.open { opacity: 1; pointer-events: all; display: flex; }
+.mobile-menu a { font-size: 22px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.04em; }
+.mobile-menu a:hover { color: var(--orange); }
+.mobile-close { position: absolute; top: 24px; right: 5vw; font-size: 28px; color: var(--text-dim); cursor: pointer; background: none; border: none; }
+
+/* ═══════ BREADCRUMB ═══════ */
+.breadcrumb { background: var(--bg-2); padding: 14px 5vw; border-bottom: 1px solid var(--border); }
+.breadcrumb-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-faint); letter-spacing: 0.04em; flex-wrap: wrap; }
+.breadcrumb-inner a { color: var(--text-faint); transition: color 0.2s; }
+.breadcrumb-inner a:hover { color: var(--orange); }
+.breadcrumb-sep { opacity: 0.3; }
+.breadcrumb-current { color: var(--orange); }
+
+/* ═══════ FACULTY HERO ═══════ */
+#faculty-hero { background: var(--bg); padding: 70px 5vw 0; position: relative; overflow: hidden; }
+.faculty-hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 80% 20%, rgba(240,88,24,0.09) 0%, transparent 55%),
+    radial-gradient(ellipse at 10% 80%, rgba(34,114,240,0.06) 0%, transparent 50%),
+    linear-gradient(160deg, #07090F 0%, #0D1320 60%, #07090F 100%);
+}
+.faculty-hero-grid {
+  position: absolute; inset: 0; opacity: 0.025;
+  background-image: linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.faculty-hero-inner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: flex-start; }
+.faculty-hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--orange-dim); border: 1px solid rgba(240,88,24,0.3);
+  color: var(--orange); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 2px; margin-bottom: 22px;
+}
+.faculty-hero-icon { font-size: 44px; display: block; margin-bottom: 16px; filter: drop-shadow(0 4px 20px var(--orange-glow)); }
+.faculty-hero-name { font-family: 'Playfair Display', serif; font-size: clamp(32px,4.5vw,58px); font-weight: 900; color: var(--white); line-height: 1.05; margin-bottom: 6px; }
+.faculty-hero-name em { font-style: italic; color: var(--orange); }
+.faculty-hero-tagline { color: var(--text-dim); font-size: 16px; line-height: 1.6; max-width: 580px; font-weight: 300; margin-bottom: 32px; margin-top: 12px; }
+.faculty-hero-actions { display: flex; gap: 14px; flex-wrap: wrap; padding-bottom: 60px; }
+.faculty-hero-stats {
+  background: var(--bg-card); border: 1px solid var(--border-md);
+  border-top: 2px solid var(--orange);
+  border-radius: var(--radius); padding: 28px 24px;
+  min-width: 220px; display: flex; flex-direction: column; gap: 24px;
+  backdrop-filter: blur(10px);
+}
+.fhs-item {}
+.fhs-num { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 900; color: var(--orange); line-height: 1; }
+.fhs-label { color: var(--text-faint); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; }
+.fhs-divider { height: 1px; background: var(--border); }
+.faculty-hero-tab { height: 4px; background: linear-gradient(90deg, var(--faculty-accent), transparent); }
+
+/* ═══════ SECTIONS ═══════ */
+.section-wrap { padding: 80px 5vw; background: var(--bg); }
+.section-wrap.dark { background: var(--bg-2); }
+.section-wrap.mid { background: var(--bg-3); }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-tag { display: inline-flex; align-items: center; gap: 8px; color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 14px; }
+.section-tag::before { content: ''; width: 24px; height: 2px; background: var(--orange); }
+.section-tag.light { color: rgba(255,255,255,0.6); }
+.section-tag.light::before { background: rgba(255,255,255,0.4); }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(26px,3vw,40px); font-weight: 700; color: var(--white); line-height: 1.15; }
+.section-title.light { color: var(--white); }
+.section-title span { color: var(--orange); }
+
+/* ═══════ BUTTONS ═══════ */
+.btn-primary { background: var(--orange); color: var(--white); padding: 13px 28px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; border-radius: var(--radius); display: inline-block; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 6px 24px var(--orange-glow); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px var(--orange-glow); background: #D94D12; }
+.btn-outline { border: 1px solid var(--border-md); color: var(--text); padding: 13px 28px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; background: transparent; cursor: pointer; border-radius: var(--radius); display: inline-block; transition: border-color 0.2s, background 0.2s; }
+.btn-outline:hover { border-color: var(--orange); background: var(--orange-dim); color: var(--white); }
+.btn-dark { border: 1px solid var(--border-md); color: var(--text-dim); padding: 13px 28px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; background: transparent; cursor: pointer; border-radius: var(--radius); display: inline-block; transition: border-color 0.2s, color 0.2s; }
+.btn-dark:hover { border-color: var(--orange); color: var(--white); }
+.btn-navy { background: var(--blue); color: var(--white); padding: 14px 32px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border-radius: var(--radius); display: inline-block; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 8px 28px var(--blue-dim); }
+.btn-navy:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(34,114,240,0.4); }
+
+/* ═══════ DEAN MESSAGE ═══════ */
+.dean-grid { display: grid; grid-template-columns: auto 1fr; gap: 60px; align-items: flex-start; }
+.dean-card { width: 260px; flex-shrink: 0; }
+.dean-photo { width: 220px; height: 260px; background: rgba(255,255,255,0.06); border-radius: var(--radius); position: relative; overflow: hidden; border: 1px solid var(--border-md); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.dean-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.dean-initials { font-family: 'Playfair Display', serif; font-size: 52px; font-style: italic; color: rgba(240,88,24,0.5); user-select: none; }
+.dean-photo-corner { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--orange), transparent); }
+.dean-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+.dean-role { color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+.dean-quals { display: flex; flex-direction: column; gap: 4px; }
+.dean-qual { font-size: 11px; color: var(--text-faint); display: flex; align-items: flex-start; gap: 6px; }
+.dean-qual::before { content: '—'; color: var(--orange); flex-shrink: 0; }
+.dean-message-text {}
+.dean-quote-mark { font-family: 'Playfair Display', serif; font-size: 80px; color: rgba(240,88,24,0.12); line-height: 0.6; margin-bottom: 16px; display: block; }
+.dean-message-body { font-size: 17px; line-height: 1.85; color: var(--text-dim); font-weight: 300; font-style: italic; border-left: 3px solid var(--orange); padding-left: 24px; margin-bottom: 24px; }
+.dean-message-body p + p { margin-top: 16px; }
+.dean-sig { font-family: 'Playfair Display', serif; font-size: 22px; font-style: italic; color: var(--white); margin-top: 10px; }
+
+/* ═══════ PROGRAMME TABS ═══════ */
+.prog-tabs { display: flex; gap: 0; margin-bottom: 36px; border-bottom: 1px solid var(--border-md); }
+.prog-tab { padding: 12px 28px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; color: var(--text-faint); background: transparent; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.2s, border-color 0.2s; }
+.prog-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+.prog-tab:hover:not(.active) { color: var(--white); }
+.prog-panel { display: none; }
+.prog-panel.active { display: block; }
+.prog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.prog-card { background: var(--bg-card); border: 1px solid var(--border); padding: 24px; border-radius: var(--radius); position: relative; transition: all 0.25s; cursor: pointer; overflow: hidden; }
+.prog-card::after { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: var(--orange); transform: scaleY(0); transition: transform 0.25s; transform-origin: bottom; }
+.prog-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); background: rgba(255,255,255,0.06); }
+.prog-card:hover::after { transform: scaleY(1); }
+.prog-degree { display: inline-block; background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(240,88,24,0.25); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 8px; border-radius: 1px; margin-bottom: 10px; }
+.prog-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--white); line-height: 1.25; margin-bottom: 8px; }
+.prog-duration { color: var(--text-faint); font-size: 11px; letter-spacing: 0.06em; margin-bottom: 12px; }
+.prog-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+.prog-apply { display: inline-flex; align-items: center; gap: 6px; color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; margin-top: 16px; transition: gap 0.2s; }
+.prog-card:hover .prog-apply { gap: 10px; }
+
+/* ═══════ RESEARCH ═══════ */
+.research-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.research-card { background: var(--bg-card); border: 1px solid var(--border); padding: 28px; border-radius: var(--radius); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; }
+.research-card:hover { background: rgba(255,255,255,0.07); transform: translateY(-4px); border-color: var(--border-md); }
+.research-card-num { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; color: rgba(255,255,255,0.04); position: absolute; top: 10px; right: 16px; line-height: 1; }
+.research-area { color: var(--orange); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; }
+.research-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--white); line-height: 1.25; margin-bottom: 10px; }
+.research-desc { font-size: 12px; color: var(--text-dim); line-height: 1.65; }
+.research-meta { display: flex; gap: 20px; margin-top: 18px; }
+.research-meta-stat { font-size: 11px; color: var(--text-faint); }
+.research-meta-stat strong { color: var(--orange); display: block; font-size: 15px; font-weight: 700; }
+
+/* ═══════ DEPARTMENTS ═══════ */
+.dept-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.dept-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; text-decoration: none; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: all 0.25s; cursor: pointer; }
+.dept-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--orange); transform: scaleX(0); transition: transform 0.3s; transform-origin: left; }
+.dept-card:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(0,0,0,0.4); border-color: var(--border-md); }
+.dept-card:hover::before { transform: scaleX(1); }
+.dept-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.dept-icon { width: 44px; height: 44px; border-radius: 2px; background: var(--orange-dim); border: 1px solid rgba(240,88,24,0.18); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.dept-prog-badge { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(240,88,24,0.2); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 1px; }
+.dept-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--white); line-height: 1.25; margin-bottom: 8px; }
+.dept-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-bottom: 18px; flex: 1; }
+.dept-hod { display: flex; align-items: center; gap: 10px; padding-top: 14px; border-top: 1px solid var(--border); margin-top: auto; }
+.dept-hod-avatar { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; background: var(--bg-2); border: 1px solid rgba(240,88,24,0.25); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 11px; font-style: italic; color: var(--orange); font-weight: 700; }
+.dept-hod-name { font-size: 11px; font-weight: 700; color: var(--white); line-height: 1.2; }
+.dept-hod-role { font-size: 10px; color: var(--text-faint); letter-spacing: 0.04em; margin-top: 1px; }
+.dept-link { display: inline-flex; align-items: center; gap: 5px; color: var(--orange); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 14px; transition: gap 0.2s; }
+.dept-card:hover .dept-link { gap: 9px; }
+
+/* ═══════ NEWS ═══════ */
+.news-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.news-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all 0.25s; }
+.news-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); border-color: var(--border-md); }
+.news-card-img { height: 140px; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 28px; font-style: italic; color: rgba(255,255,255,0.12); position: relative; }
+.news-card-cat { position: absolute; bottom: 12px; left: 12px; background: var(--orange); color: var(--white); font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 8px; border-radius: 1px; }
+.news-card-body { padding: 20px; }
+.news-card-date { color: var(--text-faint); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+.news-card-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: var(--white); line-height: 1.3; }
+
+/* ═══════ FACULTY PILLS ═══════ */
+.faculties-scroll { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+.faculty-pill { background: var(--bg-card); border: 1px solid var(--border); padding: 18px 16px; border-radius: var(--radius); text-decoration: none; text-align: center; transition: all 0.2s; cursor: pointer; display: block; }
+.faculty-pill:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+.faculty-pill.active { border-color: var(--orange); background: var(--orange-dim); }
+.faculty-pill-icon { font-size: 26px; margin-bottom: 8px; display: block; }
+.faculty-pill-name { font-size: 11px; font-weight: 700; color: var(--white); line-height: 1.3; }
+.faculty-pill-count { font-size: 10px; color: var(--orange); font-weight: 600; margin-top: 4px; }
+
+/* ═══════ ADMISSIONS CTA ═══════ */
+.admissions-cta { background: var(--bg-2); border-top: 1px solid var(--border); padding: 80px 5vw; position: relative; overflow: hidden; }
+.admissions-cta::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 85% 50%, rgba(240,88,24,0.07) 0%, transparent 60%); }
+.admissions-cta-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; position: relative; gap: 40px; flex-wrap: wrap; }
+.cta-label { color: var(--text-faint); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 12px; }
+.cta-title { font-family: 'Playfair Display', serif; font-size: clamp(28px,3vw,44px); font-weight: 900; color: var(--white); line-height: 1.1; }
+.cta-sub { color: var(--text-dim); font-size: 15px; line-height: 1.6; margin-top: 12px; font-weight: 300; max-width: 440px; }
+.cta-actions { display: flex; gap: 14px; align-items: center; flex-shrink: 0; }
+
+/* ═══════ FOOTER ═══════ */
+footer { background: var(--bg-2); border-top: 1px solid var(--border); padding: 72px 0 0; }
+.footer-grid { max-width: 1200px; margin: 0 auto; padding: 0 5vw 56px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; border-bottom: 1px solid var(--border); }
+.footer-brand-logo { width: 48px; height: 48px; object-fit: contain; margin-bottom: 16px; }
+.footer-brand-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+.footer-brand-tag { font-size: 11px; color: var(--orange); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+.footer-brand-desc { font-size: 13px; color: var(--text-dim); line-height: 1.7; max-width: 300px; margin-bottom: 20px; }
+.footer-col-title { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: 13px; color: var(--text-dim); transition: color 0.2s; }
+.footer-links a:hover { color: var(--orange); }
+.footer-bottom { max-width: 1200px; margin: 0 auto; padding: 20px 5vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.footer-copy { font-size: 12px; color: var(--text-faint); }
+.footer-motto { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-faint); }
+.footer-motto span { color: var(--orange); }
+
+/* ═══════ REVEAL ANIMATIONS ═══════ */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ═══════ NOT FOUND ═══════ */
+.not-found { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 20px; }
+.not-found-icon { font-size: 60px; margin-bottom: 20px; }
+.not-found-title { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+.not-found-sub { color: var(--text-dim); font-size: 15px; margin-bottom: 28px; }
+
+/* ═══════ RESPONSIVE ═══════ */
+@media (max-width: 1024px) {
+  .faculty-hero-inner { grid-template-columns: 1fr; }
+  .faculty-hero-stats { flex-direction: row; flex-wrap: wrap; min-width: unset; gap: 16px; }
+  .fhs-divider { display: none; }
+  .dean-grid { grid-template-columns: 1fr; }
+  .dean-card { width: 100%; display: flex; gap: 24px; align-items: flex-start; }
+  .dean-photo { width: 130px; height: 160px; flex-shrink: 0; }
+  .prog-grid { grid-template-columns: 1fr 1fr; }
+  .dept-grid { grid-template-columns: 1fr 1fr; }
+  .research-grid { grid-template-columns: 1fr 1fr; }
+  .news-grid { grid-template-columns: 1fr 1fr; }
+  .faculties-scroll { grid-template-columns: repeat(3,1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .section-wrap { padding: 60px 20px; }
+  .prog-grid { grid-template-columns: 1fr; }
+  .dept-grid { grid-template-columns: 1fr; }
+  .research-grid { grid-template-columns: 1fr; }
+  .news-grid { grid-template-columns: 1fr; }
+  .faculties-scroll { grid-template-columns: repeat(2,1fr); }
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  .admissions-cta-inner { flex-direction: column; }
+  .faculty-hero-actions { flex-direction: column; }
+  .cta-actions { flex-direction: column; width: 100%; }
+  .cta-actions .btn-navy, .cta-actions .btn-dark { text-align: center; justify-content: center; }
+}
+@media (max-width: 540px) {
+  .faculty-hero-name { font-size: clamp(28px,8vw,44px); }
+  .faculties-scroll { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── IN-PAGE DATA STORE ─── -->
+<script>
+const FACULTY_DATA = {
+  "engineering": {
+    id: "engineering",
+    name: "Faculty of Engineering",
+    shortName: "Engineering",
+    icon: "⚙️",
+    tagline: "Forging the infrastructure of a modern Africa — from bridges to microchips, one graduate at a time.",
+    accentColor: "#C9922A",
+    imgBg: "linear-gradient(135deg, #0D2040, #1A3A5C)",
+    stats: { programmes: 10, students: 4200, staff: 87, research: 23 },
+    dean: {
+      name: "Prof. Emmanuel C. Anike",
+      initials: "EA",
+      role: "Dean, Faculty of Engineering",
+      qualifications: ["Ph.D. Civil & Structural Engineering, Uni. of Lagos", "MNSE, COREN Registered Engineer", "Fellow, Nigerian Academy of Engineering"],
+      message: [
+        "The Faculty of Engineering at Nnamdi Azikiwe University has, over three decades, built a reputation for producing engineers of exceptional calibre — graduates who do not merely understand theory, but who possess the practical courage to deploy their knowledge in the service of Nigeria and the continent.",
+        "Our curriculum is continuously aligned with global industry demands, while remaining deeply rooted in the challenges and opportunities unique to sub-Saharan Africa. Whether you aspire to design smart infrastructure, pioneer renewable energy systems, or develop the software that will power the next generation of African enterprise — your journey begins here."
+      ]
+    },
+    programmes: {
+      undergraduate: [
+        { name: "Civil Engineering", degree: "B.Eng.", duration: "5 Years", desc: "Structural analysis, highway engineering, geotechnics, water resources and construction management." },
+        { name: "Mechanical Engineering", degree: "B.Eng.", duration: "5 Years", desc: "Thermodynamics, manufacturing systems, fluid mechanics, machine design and industrial automation." },
+        { name: "Electrical/Electronic Engineering", degree: "B.Eng.", duration: "5 Years", desc: "Power systems, telecommunications, digital electronics and renewable energy technologies." },
+        { name: "Chemical Engineering", degree: "B.Eng.", duration: "5 Years", desc: "Process engineering, petroleum refining, polymer technology and industrial chemical plants." },
+        { name: "Computer Engineering", degree: "B.Eng.", duration: "5 Years", desc: "Embedded systems, VLSI design, networks, cybersecurity and hardware-software co-design." },
+        { name: "Metallurgical & Materials Engineering", degree: "B.Eng.", duration: "5 Years", desc: "Materials characterization, corrosion science, welding, mineral processing and nanomaterials." }
+      ],
+      postgraduate: [
+        { name: "M.Eng. Structural Engineering", degree: "M.Eng.", duration: "18 Months", desc: "Advanced structural analysis, finite element modelling, earthquake and wind engineering." },
+        { name: "M.Eng. Electrical Power Systems", degree: "M.Eng.", duration: "18 Months", desc: "Power generation, smart grid systems, HVDC transmission and renewable energy integration." },
+        { name: "M.Sc. Environmental Engineering", degree: "M.Sc.", duration: "18 Months", desc: "Waste management, water treatment, environmental impact assessment and green infrastructure." },
+        { name: "MBA Engineering Management", degree: "MBA", duration: "12 Months", desc: "Project management, engineering economics, procurement and leadership for senior engineers." }
+      ],
+      phd: [
+        { name: "Ph.D. Civil Engineering", degree: "Ph.D.", duration: "3–4 Years", desc: "Original research in structural, geotechnical, transportation or water resources engineering." },
+        { name: "Ph.D. Electrical Engineering", degree: "Ph.D.", duration: "3–4 Years", desc: "Power electronics, signal processing, photonics, telecommunications or control engineering." },
+        { name: "Ph.D. Mechanical Engineering", degree: "Ph.D.", duration: "3–4 Years", desc: "Advanced research in thermofluids, manufacturing, tribology or vibration engineering." }
+      ]
+    },
+    research: [
+      { area: "Infrastructure", title: "Smart Roads & Bridge Monitoring", desc: "IoT-based structural health monitoring systems deployed on Anambra State highway network.", funding: "₦340M", projects: 8, pubs: 42 },
+      { area: "Energy", title: "Rural Solar Electrification Initiative", desc: "Scalable standalone solar microgrids for off-grid communities across South-East Nigeria.", funding: "₦280M", projects: 6, pubs: 31 },
+      { area: "Digital Systems", title: "Embedded AI for Industrial Control", desc: "Edge AI systems for real-time fault detection in Nigerian manufacturing and oil & gas plants.", funding: "₦190M", projects: 5, pubs: 19 }
+    ],
+    news: [
+      { date: "Aug 2, 2024", category: "Achievement", title: "Civil Engineering Dept. Wins Federal Infrastructure Innovation Prize", bg: "linear-gradient(135deg,#0D2040,#1A3A5C)" },
+      { date: "Jul 28, 2024", category: "Events", title: "Annual Engineering Week 2024 — Robotics Challenge Open for Registration", bg: "linear-gradient(135deg,#1A2030,#0D3050)" },
+      { date: "Jul 15, 2024", category: "Research", title: "UNIZIK-Shell Partnership to Fund 12 New Petroleum Engineering Scholarships", bg: "linear-gradient(135deg,#201A10,#3A2A10)" }
+    ],
+    departments: [
+      { id: "civil-engineering",       name: "Civil Engineering",                    icon: "🏗️", programmes: 3, hod: { name: "Prof. Chukwudi Obiora", initials: "CO" }, desc: "Structural analysis, geotechnics, transportation, water resources and environmental engineering." },
+      { id: "mechanical-engineering",  name: "Mechanical Engineering",               icon: "⚙️", programmes: 3, hod: { name: "Prof. Emeka Nwosu",      initials: "EN" }, desc: "Thermodynamics, manufacturing, fluid mechanics, machine design and industrial automation." },
+      { id: "electrical-engineering",  name: "Electrical & Electronic Engineering",  icon: "⚡", programmes: 3, hod: { name: "Dr. Ngozi Anichebe",     initials: "NA" }, desc: "Power systems, telecommunications, digital electronics and renewable energy technologies." },
+      { id: "chemical-engineering",    name: "Chemical Engineering",                 icon: "🧪", programmes: 2, hod: { name: "Dr. Ikechukwu Eze",      initials: "IE" }, desc: "Process engineering, petroleum refining, polymer technology and industrial chemical plants." },
+      { id: "computer-engineering",    name: "Computer Engineering",                 icon: "💾", programmes: 2, hod: { name: "Dr. Obinna Okafor",      initials: "OO" }, desc: "Embedded systems, VLSI design, networks, cybersecurity and hardware-software co-design." },
+      { id: "metallurgical-engineering", name: "Metallurgical & Materials Engineering", icon: "🔩", programmes: 2, hod: { name: "Dr. Uchenna Okeke",   initials: "UO" }, desc: "Materials characterisation, corrosion science, welding, mineral processing and nanomaterials." }
+    ]
+  },
+
+  "health-sciences": {
+    id: "health-sciences",
+    name: "College of Health Sciences",
+    shortName: "Health Sciences",
+    icon: "⚕️",
+    tagline: "Training the healers, researchers, and public health leaders that sub-Saharan Africa urgently needs.",
+    accentColor: "#C9922A",
+    imgBg: "linear-gradient(135deg, #1A0D20, #2A1040)",
+    stats: { programmes: 12, students: 5800, staff: 134, research: 47 },
+    dean: {
+      name: "Prof. Ngozi Adaeze Okonkwo",
+      initials: "NO",
+      role: "Provost, College of Health Sciences",
+      qualifications: ["MBBS, FWACP (Internal Medicine), University of Nigeria", "M.Sc. Clinical Epidemiology, London School of Hygiene & Tropical Medicine", "Fellow, West African College of Physicians"],
+      message: [
+        "The College of Health Sciences at UNIZIK occupies a unique and vital position in Nigerian tertiary education. We do not simply train clinicians — we cultivate health professionals who understand that medicine in Africa must be evidence-based, contextually grounded, and deeply humane.",
+        "Our Teaching Hospital is one of South-East Nigeria's premier referral centres, providing our students with unparalleled clinical exposure from the earliest stages of their training. We invite you to join a community of healers committed to transforming healthcare outcomes across the continent."
+      ]
+    },
+    programmes: {
+      undergraduate: [
+        { name: "Medicine & Surgery", degree: "MBBS", duration: "6 Years", desc: "Comprehensive clinical training in all medical specialties anchored at NAUTH Teaching Hospital." },
+        { name: "Nursing Science", degree: "B.N.Sc.", duration: "5 Years", desc: "Adult, paediatric, psychiatric and community nursing with extensive clinical placements." },
+        { name: "Medical Laboratory Science", degree: "B.MLS", duration: "5 Years", desc: "Haematology, clinical chemistry, microbiology, histopathology and molecular diagnostics." },
+        { name: "Pharmacy", degree: "B.Pharm.", duration: "5 Years", desc: "Pharmaceutical sciences, pharmacology, clinical pharmacy and pharmaceutical management." },
+        { name: "Physiotherapy", degree: "B.PT.", duration: "5 Years", desc: "Musculoskeletal, neurological and cardio-respiratory physiotherapy and rehabilitation sciences." },
+        { name: "Dentistry", degree: "BDS", duration: "5 Years", desc: "Oral medicine, surgery, orthodontics, endodontics and dental public health." }
+      ],
+      postgraduate: [
+        { name: "M.Sc. Public Health", degree: "M.Sc.", duration: "18 Months", desc: "Epidemiology, health policy, global health, biostatistics and community health interventions." },
+        { name: "M.Sc. Clinical Microbiology", degree: "M.Sc.", duration: "18 Months", desc: "Infectious disease management, antimicrobial resistance and molecular diagnostics." },
+        { name: "Postgraduate Diploma Nursing", degree: "PGD", duration: "12 Months", desc: "Clinical specialisation in critical care, oncology nursing or midwifery practice." }
+      ],
+      phd: [
+        { name: "Ph.D. Public Health", degree: "Ph.D.", duration: "3–4 Years", desc: "Epidemiology, health systems research or health policy analysis." },
+        { name: "Ph.D. Biomedical Sciences", degree: "Ph.D.", duration: "3–4 Years", desc: "Molecular biology, immunology, pharmacology or clinical biochemistry." }
+      ]
+    },
+    research: [
+      { area: "Infectious Disease", title: "Tropical Disease & HIV/AIDS Initiative", desc: "Malaria drug resistance profiling and novel HIV treatment pathways across South-East Nigeria.", funding: "₦520M", projects: 14, pubs: 89 },
+      { area: "Maternal Health", title: "Reducing Maternal Mortality in Anambra", desc: "Community-based interventions targeting eclampsia, obstetric haemorrhage and skilled birth attendance.", funding: "₦210M", projects: 9, pubs: 47 },
+      { area: "Non-Communicable Disease", title: "Hypertension & Diabetes Surveillance Network", desc: "Regional registry and care pathway research for NCDs in urban and rural Anambra communities.", funding: "₦180M", projects: 7, pubs: 38 }
+    ],
+    news: [
+      { date: "Aug 5, 2024", category: "Research", title: "UNIZIK Faculty of Medicine Secures WHO Collaborative Research Grant", bg: "linear-gradient(135deg,#1A0D20,#2A1040)" },
+      { date: "Jul 30, 2024", category: "Events", title: "Annual Clinical Skills Competition — Register Your Team Now", bg: "linear-gradient(135deg,#0D1A20,#102A30)" },
+      { date: "Jul 12, 2024", category: "Achievement", title: "NAUTH Ranked Best Teaching Hospital in South-East by NMC Inspection", bg: "linear-gradient(135deg,#1A1510,#2A2010)" }
+    ],
+    departments: [
+      { id: "medicine-surgery",           name: "Medicine & Surgery",           icon: "🩺", programmes: 1, hod: { name: "Prof. C. Emejuku",       initials: "CE" }, desc: "Comprehensive clinical training across all medical specialties at NAUTH Teaching Hospital." },
+      { id: "nursing-science",            name: "Nursing Science",              icon: "💊", programmes: 2, hod: { name: "Prof. Adaeze Nwosu",    initials: "AN" }, desc: "Adult, paediatric, psychiatric and community nursing with extensive clinical placements." },
+      { id: "medical-laboratory-science", name: "Medical Laboratory Science",   icon: "🔬", programmes: 2, hod: { name: "Dr. Ifeoma Eze",        initials: "IE" }, desc: "Haematology, clinical chemistry, microbiology, histopathology and molecular diagnostics." },
+      { id: "pharmacy",                   name: "Pharmacy",                     icon: "💉", programmes: 2, hod: { name: "Prof. B. Okonkwo",       initials: "BO" }, desc: "Pharmaceutical sciences, pharmacology, clinical pharmacy and pharmaceutical management." },
+      { id: "physiotherapy",              name: "Physiotherapy",                icon: "🏃", programmes: 2, hod: { name: "Dr. Chioma Anieke",     initials: "CA" }, desc: "Musculoskeletal, neurological and cardio-respiratory physiotherapy and rehabilitation." },
+      { id: "dentistry",                  name: "Dentistry",                    icon: "🦷", programmes: 1, hod: { name: "Dr. Emeka Okafor",      initials: "EO" }, desc: "Oral medicine, surgery, orthodontics, endodontics and dental public health." }
+    ]
+  },
+
+  "physical-sciences": {
+    id: "physical-sciences",
+    name: "Faculty of Physical Sciences",
+    shortName: "Physical Sciences",
+    icon: "💻",
+    tagline: "Pushing the boundaries of computation, mathematics, and the physical world — building the brains of tomorrow.",
+    accentColor: "#C9922A",
+    imgBg: "linear-gradient(135deg, #0A1A30, #102240)",
+    stats: { programmes: 8, students: 3100, staff: 72, research: 18 },
+    dean: {
+      name: "Prof. Chidera Eze",
+      initials: "CE",
+      role: "Dean, Faculty of Physical Sciences",
+      qualifications: ["Ph.D. Computer Science (Machine Learning), University of Ibadan", "M.Sc. Applied Mathematics, University of Lagos", "Senior Member, IEEE"],
+      message: [
+        "In a world increasingly shaped by data, algorithms, and digital systems, the Faculty of Physical Sciences stands at the forefront of preparing Nigeria's next generation of technologists, mathematicians, and scientists. We offer rigorous, industry-relevant training that produces graduates capable of competing on the global stage.",
+        "Our partnerships with leading technology companies — including several Nigerian unicorn-stage startups — ensure that our programmes remain connected to the realities of the job market while never losing sight of the deep scientific foundations that make truly great technologists."
+      ]
+    },
+    programmes: {
+      undergraduate: [
+        { name: "Computer Science", degree: "B.Sc.", duration: "4 Years", desc: "Algorithms, machine learning, software engineering, database systems and cybersecurity." },
+        { name: "Mathematics", degree: "B.Sc.", duration: "4 Years", desc: "Pure and applied mathematics, numerical methods, statistics and mathematical modelling." },
+        { name: "Physics", degree: "B.Sc.", duration: "4 Years", desc: "Classical and quantum mechanics, electromagnetism, optics, astrophysics and instrumentation." },
+        { name: "Statistics", degree: "B.Sc.", duration: "4 Years", desc: "Statistical inference, econometrics, data science, actuarial science and biometrics." },
+        { name: "Information Technology", degree: "B.Sc.", duration: "4 Years", desc: "Systems administration, cloud computing, UI/UX, network security and enterprise software." },
+        { name: "Industrial Physics", degree: "B.Sc.", duration: "4 Years", desc: "Electronics, industrial instrumentation, material characterization and quality control." }
+      ],
+      postgraduate: [
+        { name: "M.Sc. Computer Science", degree: "M.Sc.", duration: "18 Months", desc: "Artificial intelligence, distributed systems, HCI and software architecture." },
+        { name: "M.Sc. Data Science & Analytics", degree: "M.Sc.", duration: "18 Months", desc: "Big data, predictive modelling, business intelligence and machine learning pipelines." },
+        { name: "M.Sc. Applied Mathematics", degree: "M.Sc.", duration: "18 Months", desc: "Numerical analysis, mathematical finance, optimization and dynamical systems." }
+      ],
+      phd: [
+        { name: "Ph.D. Computer Science", degree: "Ph.D.", duration: "3–4 Years", desc: "Research in AI, algorithms, cybersecurity, bioinformatics or distributed computing." },
+        { name: "Ph.D. Mathematics", degree: "Ph.D.", duration: "3–4 Years", desc: "Pure or applied mathematics with a focus on current open problems in the field." }
+      ]
+    },
+    research: [
+      { area: "Artificial Intelligence", title: "African AI & Igbo Language Processing Lab", desc: "Building NLP models trained on Igbo and other Nigerian languages for real-world applications.", funding: "₦220M", projects: 7, pubs: 34 },
+      { area: "Cybersecurity", title: "Nigerian Critical Infrastructure Protection Programme", desc: "Threat modelling, intrusion detection and policy research for banking and energy sectors.", funding: "₦150M", projects: 5, pubs: 22 },
+      { area: "Data Science", title: "AgriData Platform for Anambra State", desc: "Satellite and sensor-based crop yield modelling to support state agricultural policy decisions.", funding: "₦90M", projects: 4, pubs: 18 }
+    ],
+    news: [
+      { date: "Aug 8, 2024", category: "Research", title: "UNIZIK AI Lab Publishes Landmark Igbo Language Model in Nature Digital Medicine", bg: "linear-gradient(135deg,#0A1A30,#102240)" },
+      { date: "Jul 25, 2024", category: "Events", title: "UNIZIK Hackathon 2024 — ₦5M Prize Pool Now Open for Student Registration", bg: "linear-gradient(135deg,#0A2010,#102A20)" },
+      { date: "Jul 18, 2024", category: "Partnership", title: "Microsoft & UNIZIK Sign MoU for Azure AI Research Centre on Campus", bg: "linear-gradient(135deg,#10200A,#20300A)" }
+    ],
+    departments: [
+      { id: "computer-science",      name: "Computer Science",      icon: "💻", programmes: 3, hod: { name: "Prof. Chidi Ezeasor",   initials: "CE" }, desc: "Algorithms, machine learning, software engineering, database systems and cybersecurity." },
+      { id: "mathematics",           name: "Mathematics",           icon: "📐", programmes: 3, hod: { name: "Dr. Ngozi Obi",          initials: "NO" }, desc: "Pure and applied mathematics, numerical methods, statistics and mathematical modelling." },
+      { id: "physics",               name: "Physics",               icon: "⚛️", programmes: 2, hod: { name: "Dr. Emeka Nwofor",      initials: "EN" }, desc: "Classical and quantum mechanics, electromagnetism, optics and astrophysics." },
+      { id: "statistics",            name: "Statistics",            icon: "📊", programmes: 2, hod: { name: "Dr. Ifeoma Nnaji",       initials: "IN" }, desc: "Statistical inference, econometrics, data science, actuarial science and biometrics." },
+      { id: "information-technology", name: "Information Technology", icon: "🌐", programmes: 2, hod: { name: "Dr. Obinna Okonkwo",  initials: "OO" }, desc: "Systems administration, cloud computing, UI/UX, network security and enterprise software." },
+      { id: "industrial-physics",    name: "Industrial Physics",    icon: "🔭", programmes: 2, hod: { name: "Dr. C. Anichebe",        initials: "CA" }, desc: "Electronics, industrial instrumentation, material characterisation and quality control." }
+    ]
+  },
+
+  "law": {
+    id: "law",
+    name: "Faculty of Law",
+    shortName: "Law",
+    icon: "⚖️",
+    tagline: "Shaping the legal minds that will define Nigeria's constitutional future, one argument at a time.",
+    accentColor: "#C9922A",
+    imgBg: "linear-gradient(135deg, #1A1510, #2A2010)",
+    stats: { programmes: 4, students: 1800, staff: 48, research: 12 },
+    dean: {
+      name: "Prof. Ifeoma Nwosu (SAN)",
+      initials: "IN",
+      role: "Dean, Faculty of Law",
+      qualifications: ["LL.B. (Hons), University of Nigeria, Nsukka", "BL, Nigerian Law School", "LL.M. International Law, University of London", "Senior Advocate of Nigeria (SAN)"],
+      message: [
+        "The Faculty of Law at Nnamdi Azikiwe University has produced some of Nigeria's most distinguished legal minds — attorneys who have shaped jurisprudence at the Supreme Court, built international practices, and driven landmark reforms in human rights and commercial law.",
+        "We believe that law is not merely a profession; it is a calling. Our graduates leave here not just with knowledge of statutes and procedure, but with a fierce commitment to justice, an understanding of law's role in economic development, and the advocacy skills to effect real change."
+      ]
+    },
+    programmes: {
+      undergraduate: [
+        { name: "Law (LL.B.)", degree: "LL.B.", duration: "5 Years", desc: "Comprehensive training in Nigerian private and public law, mooting, clinical legal education and law reform." },
+        { name: "Law with International Relations", degree: "LL.B.", duration: "5 Years", desc: "Nigerian law integrated with public international law, diplomatic studies and global governance." }
+      ],
+      postgraduate: [
+        { name: "LL.M. Commercial Law", degree: "LL.M.", duration: "12 Months", desc: "Corporate governance, mergers & acquisitions, banking law, securities regulation and arbitration." },
+        { name: "LL.M. International Law & Human Rights", degree: "LL.M.", duration: "12 Months", desc: "International humanitarian law, refugee law, treaty practice and international adjudication." },
+        { name: "PGD Legislative Drafting", degree: "PGD", duration: "12 Months", desc: "Statutory interpretation, legislative process, bill drafting and parliamentary procedure." }
+      ],
+      phd: [
+        { name: "Ph.D. Law", degree: "Ph.D.", duration: "3–5 Years", desc: "Original doctrinal or socio-legal scholarship in any area of Nigerian, African or international law." }
+      ]
+    },
+    research: [
+      { area: "Human Rights", title: "Digital Rights & Online Freedom in Nigeria", desc: "Mapping legal gaps in Nigeria's regulatory framework for digital privacy, expression and access.", funding: "₦80M", projects: 4, pubs: 28 },
+      { area: "Commercial Law", title: "ECOWAS Trade Law Harmonisation Project", desc: "Comparative analysis of commercial law frameworks across West African jurisdictions.", funding: "₦65M", projects: 3, pubs: 19 },
+      { area: "Constitutional Law", title: "Electoral Reform & Democratic Accountability", desc: "Evidence-based policy research on electoral legislation, INEC reforms and voter disenfranchisement.", funding: "₦55M", projects: 3, pubs: 15 }
+    ],
+    news: [
+      { date: "Aug 3, 2024", category: "Achievement", title: "UNIZIK Moot Team Wins West Africa Regional Philip C. Jessup Competition", bg: "linear-gradient(135deg,#1A1510,#2A2010)" },
+      { date: "Jul 22, 2024", category: "Events", title: "Annual Law Week: 'AI, Justice & the Nigerian Constitution' — All Welcome", bg: "linear-gradient(135deg,#15101A,#201525)" },
+      { date: "Jul 10, 2024", category: "Research", title: "Faculty Submits Evidence to Senate on Proposed Electoral Act Amendment", bg: "linear-gradient(135deg,#10151A,#152025)" }
+    ],
+    departments: [
+      { id: "private-law",                name: "Private & Property Law",         icon: "🏠", programmes: 1, hod: { name: "Prof. Adaeze Okonkwo",  initials: "AO" }, desc: "Contract, tort, land law, equity and trusts, family law and succession." },
+      { id: "public-law",                 name: "Public & International Law",     icon: "🌍", programmes: 2, hod: { name: "Prof. Emeka Eze",         initials: "EE" }, desc: "Constitutional law, administrative law, human rights and public international law." },
+      { id: "jurisprudence",              name: "Jurisprudence & Legal Theory",   icon: "⚖️", programmes: 1, hod: { name: "Dr. Ngozi Obialo",       initials: "NO" }, desc: "Legal philosophy, African jurisprudence, comparative law and feminist legal theory." },
+      { id: "commercial-law",             name: "Commercial & Industrial Law",    icon: "📋", programmes: 1, hod: { name: "Dr. B. Nnaji",             initials: "BN" }, desc: "Company law, banking and finance law, intellectual property, arbitration and ADR." }
+    ]
+  },
+
+  "management": {
+    id: "management",
+    name: "Faculty of Management Sciences",
+    shortName: "Management Sciences",
+    icon: "💼",
+    tagline: "Building the business leaders, accountants, and entrepreneurs that will power Nigeria's economic transformation.",
+    accentColor: "#C9922A",
+    imgBg: "linear-gradient(135deg, #0A2010, #152A10)",
+    stats: { programmes: 9, students: 6200, staff: 96, research: 19 },
+    dean: {
+      name: "Prof. Bartholomew Okafor",
+      initials: "BO",
+      role: "Dean, Faculty of Management Sciences",
+      qualifications: ["Ph.D. Business Administration, Covenant University", "MBA Finance, University of Benin", "FCA, Institute of Chartered Accountants of Nigeria (ICAN)"],
+      message: [
+        "Africa's economic transformation will not be led by foreign investors alone — it will be driven by homegrown business leaders, entrepreneurial accountants, and management scientists who understand the Nigerian market from the inside out. The Faculty of Management Sciences exists to produce exactly these people.",
+        "Our programmes blend rigorous academic training with practical exposure through industry partnerships, live consulting projects, and an active entrepreneurship incubator. We prepare our graduates not just to find jobs, but to create them."
+      ]
+    },
+    programmes: {
+      undergraduate: [
+        { name: "Accounting", degree: "B.Sc.", duration: "4 Years", desc: "Financial and management accounting, auditing, taxation and professional ICAN exam preparation." },
+        { name: "Business Administration", degree: "B.Sc.", duration: "4 Years", desc: "Strategy, operations, HRM, marketing, organisational behaviour and entrepreneurship." },
+        { name: "Banking & Finance", degree: "B.Sc.", duration: "4 Years", desc: "Commercial banking, investment analysis, fintech, capital markets and financial regulation." },
+        { name: "Marketing", degree: "B.Sc.", duration: "4 Years", desc: "Consumer behaviour, digital marketing, brand management, sales strategy and market research." },
+        { name: "Public Administration", degree: "B.Sc.", duration: "4 Years", desc: "Public policy, governance, development administration and local government management." }
+      ],
+      postgraduate: [
+        { name: "MBA (Full-Time)", degree: "MBA", duration: "18 Months", desc: "General management, strategy, leadership, finance and entrepreneurship for experienced professionals." },
+        { name: "MBA (Part-Time/Weekend)", degree: "MBA", duration: "24 Months", desc: "Identical MBA curriculum designed for working managers and business owners." },
+        { name: "M.Sc. Finance", degree: "M.Sc.", duration: "18 Months", desc: "Corporate finance, derivatives, risk management, portfolio theory and fintech applications." },
+        { name: "M.Sc. Accounting", degree: "M.Sc.", duration: "18 Months", desc: "Advanced financial reporting, forensic accounting, IFRS compliance and audit standards." }
+      ],
+      phd: [
+        { name: "Ph.D. Business Administration", degree: "Ph.D.", duration: "3–4 Years", desc: "Strategic management, organisational theory, corporate governance or HRM research." },
+        { name: "Ph.D. Accounting & Finance", degree: "Ph.D.", duration: "3–4 Years", desc: "Financial reporting quality, capital markets, banking regulation or tax policy." }
+      ]
+    },
+    research: [
+      { area: "Entrepreneurship", title: "UNIZIK SME Growth & Survival Study", desc: "Longitudinal tracking of 600+ South-East Nigerian SMEs over 5 years — factors behind growth and failure.", funding: "₦120M", projects: 6, pubs: 33 },
+      { area: "Finance", title: "Fintech Adoption in Nigerian Markets", desc: "Consumer behaviour, regulatory barriers and financial inclusion impact of mobile payment platforms.", funding: "₦95M", projects: 5, pubs: 27 },
+      { area: "Public Sector", title: "IGR Optimisation for Anambra State", desc: "Evidence-based tax policy research conducted in direct partnership with Anambra State Revenue Service.", funding: "₦70M", projects: 4, pubs: 18 }
+    ],
+    news: [
+      { date: "Aug 6, 2024", category: "Events", title: "UNIZIK Business Case Competition 2024 — ₦3M in Prizes, Open to All Students", bg: "linear-gradient(135deg,#0A2010,#152A10)" },
+      { date: "Jul 26, 2024", category: "Partnership", title: "Access Bank Signs MoU to Fund Management Sciences Entrepreneurship Incubator", bg: "linear-gradient(135deg,#0A1520,#102030)" },
+      { date: "Jul 14, 2024", category: "Research", title: "Prof. Okafor's Fintech Study Featured in The Economist's Africa Business Special", bg: "linear-gradient(135deg,#1A1010,#2A1A10)" }
+    ],
+    departments: [
+      { id: "accounting",              name: "Accounting",               icon: "📒", programmes: 3, hod: { name: "Prof. Ifeoma Nwosu",     initials: "IN" }, desc: "Financial and management accounting, auditing, taxation and professional ICAN preparation." },
+      { id: "business-administration", name: "Business Administration",  icon: "📈", programmes: 3, hod: { name: "Dr. Chukwudi Okafor",    initials: "CO" }, desc: "Strategy, operations management, HRM, organisational behaviour and entrepreneurship." },
+      { id: "banking-finance",         name: "Banking & Finance",        icon: "🏦", programmes: 2, hod: { name: "Dr. Emeka Obialo",       initials: "EO" }, desc: "Commercial banking, investment analysis, fintech, capital markets and financial regulation." },
+      { id: "marketing",               name: "Marketing",                icon: "📣", programmes: 2, hod: { name: "Dr. Adaeze Eze",          initials: "AE" }, desc: "Consumer behaviour, digital marketing, brand management, sales strategy and market research." },
+      { id: "public-administration",   name: "Public Administration",    icon: "🏛️", programmes: 2, hod: { name: "Dr. Obinna Anichebe",    initials: "OA" }, desc: "Public policy, governance, development administration and local government management." }
+    ]
+  },
+
+  "arts": {
+    id: "arts",
+    name: "Faculty of Arts",
+    shortName: "Arts",
+    icon: "📚",
+    tagline: "Celebrating the depth of human expression, language, and culture — because civilisation begins with the arts.",
+    accentColor: "#C9922A",
+    imgBg: "linear-gradient(135deg, #20100A, #30180A)",
+    stats: { programmes: 11, students: 2900, staff: 68, research: 14 },
+    dean: {
+      name: "Prof. Adaeze Chukwu",
+      initials: "AC",
+      role: "Dean, Faculty of Arts",
+      qualifications: ["Ph.D. African Literature, University of Ghana, Legon", "M.A. Linguistics, University of Nigeria, Nsukka", "Member, Association of Nigerian Authors (ANA)"],
+      message: [
+        "At the Faculty of Arts, we hold an unpopular conviction: that in an era of STEM fervour, the humanities are not a luxury — they are a necessity. Nigeria's cultural, linguistic and historical richness is an asset of extraordinary value, and it is the mission of this faculty to unlock, preserve and export that value to the world.",
+        "Our graduates become journalists who hold power accountable, novelists who reframe the African narrative, linguists who build the language tools for the AI age, and historians who ensure that the lessons of the past are not lost on the leaders of the future."
+      ]
+    },
+    programmes: {
+      undergraduate: [
+        { name: "English Language & Literature", degree: "B.A.", duration: "4 Years", desc: "Literary criticism, creative writing, applied linguistics, sociolinguistics and English for specific purposes." },
+        { name: "History & International Studies", degree: "B.A.", duration: "4 Years", desc: "African history, diplomatic history, international relations theory and foreign policy analysis." },
+        { name: "Philosophy", degree: "B.A.", duration: "4 Years", desc: "Logic, ethics, epistemology, African philosophy, political philosophy and philosophy of science." },
+        { name: "Igbo Language & Linguistics", degree: "B.A.", duration: "4 Years", desc: "Igbo grammar, oral literature, language documentation and the linguistics of West African languages." },
+        { name: "Religion & Human Relations", degree: "B.A.", duration: "4 Years", desc: "World religions, African traditional religion, interfaith relations and the sociology of religion." },
+        { name: "Mass Communication", degree: "B.A.", duration: "4 Years", desc: "Print and digital journalism, broadcasting, public relations, media law and media economics." }
+      ],
+      postgraduate: [
+        { name: "M.A. English & Literary Studies", degree: "M.A.", duration: "18 Months", desc: "Advanced literary theory, post-colonial studies, creative writing and digital humanities." },
+        { name: "M.A. African History", degree: "M.A.", duration: "18 Months", desc: "Pre-colonial African societies, colonialism, decolonisation, oral history and archival research." },
+        { name: "M.A. Mass Communication", degree: "M.A.", duration: "18 Months", desc: "Media management, investigative journalism, political communication and digital media strategy." }
+      ],
+      phd: [
+        { name: "Ph.D. English & Literary Studies", degree: "Ph.D.", duration: "3–4 Years", desc: "Original scholarship in literature, linguistics, applied language studies or digital humanities." },
+        { name: "Ph.D. African History", degree: "Ph.D.", duration: "3–4 Years", desc: "Advanced historical research with regional focus on West and Central Africa." }
+      ]
+    },
+    research: [
+      { area: "Language Technology", title: "Digital Documentation of Igbo Oral Tradition", desc: "Archiving and digitising endangered oral histories, proverbs and performance traditions across Igboland.", funding: "₦75M", projects: 5, pubs: 31 },
+      { area: "Media Studies", title: "Misinformation & Election Coverage in Nigeria", desc: "Content analysis and media literacy intervention research focused on national election cycles.", funding: "₦58M", projects: 4, pubs: 22 },
+      { area: "African Studies", title: "Post-Colonial Memory & Identity in South-East Nigeria", desc: "Interdisciplinary historical and sociological study of civil war memory, trauma and reconciliation.", funding: "₦45M", projects: 3, pubs: 17 }
+    ],
+    news: [
+      { date: "Aug 1, 2024", category: "Achievement", title: "UNIZIK Alumna Chimamanda-Inspired Writing Prize Winner Announced", bg: "linear-gradient(135deg,#20100A,#30180A)" },
+      { date: "Jul 27, 2024", category: "Events", title: "Annual UNIZIK Cultural Festival — 3 Days of Music, Drama & Visual Art", bg: "linear-gradient(135deg,#0A1520,#102030)" },
+      { date: "Jul 9, 2024", category: "Research", title: "Igbo Language Team Releases Open-Source NLP Dataset — 2M Tokens", bg: "linear-gradient(135deg,#101A10,#182A18)" }
+    ],
+    departments: [
+      { id: "english-literary-studies",    name: "English & Literary Studies",    icon: "✍️", programmes: 3, hod: { name: "Prof. Chioma Nwosu",    initials: "CN" }, desc: "Literary criticism, creative writing, applied linguistics, sociolinguistics and English for specific purposes." },
+      { id: "history-international-studies", name: "History & International Studies", icon: "🗺️", programmes: 2, hod: { name: "Dr. Emeka Obialo",  initials: "EO" }, desc: "African history, diplomatic history, international relations theory and foreign policy analysis." },
+      { id: "philosophy",                   name: "Philosophy",                   icon: "🧠", programmes: 2, hod: { name: "Dr. Ngozi Ezeobi",      initials: "NE" }, desc: "Logic, ethics, epistemology, African philosophy and philosophy of science." },
+      { id: "igbo-linguistics",             name: "Igbo Language & Linguistics",  icon: "🗣️", programmes: 2, hod: { name: "Prof. Adaeze Okeke",   initials: "AO" }, desc: "Igbo grammar, oral literature, language documentation and West African linguistics." },
+      { id: "religion-human-relations",     name: "Religion & Human Relations",   icon: "☮️", programmes: 2, hod: { name: "Dr. Chukwudi Nwofor",  initials: "CN" }, desc: "World religions, African traditional religion, interfaith relations and sociology of religion." },
+      { id: "mass-communication",           name: "Mass Communication",           icon: "📰", programmes: 3, hod: { name: "Dr. Ifeoma Okonkwo",   initials: "IO" }, desc: "Print and digital journalism, broadcasting, public relations and media economics." }
+    ]
+  }
+};
+
+const DEAN_PHOTOS = {
+  "health-sciences":   "images/dean-health-sciences.png",
+  "engineering":       "images/dean-engineering.png",
+  "physical-sciences": "images/dean-physical-sciences.png",
+  "law":               "images/dean-law.png",
+  "management":        "images/dean-management.png",
+  "arts":              "images/dean-arts.png"
+};
+
+const ALL_FACULTIES = [
+  { id: "health-sciences",   name: "College of Health Sciences",       icon: "⚕️",  count: "12 Programmes" },
+  { id: "engineering",       name: "Faculty of Engineering",           icon: "⚙️",  count: "10 Programmes" },
+  { id: "physical-sciences", name: "Faculty of Physical Sciences",     icon: "💻", count: "8 Programmes"  },
+  { id: "law",               name: "Faculty of Law",                   icon: "⚖️",  count: "4 Programmes"  },
+  { id: "management",        name: "Faculty of Management Sciences",   icon: "💼", count: "9 Programmes"  },
+  { id: "arts",              name: "Faculty of Arts",                  icon: "📚", count: "11 Programmes" }
+];
+</script>
+
+<!-- ─── ANNOUNCEMENT BAR ─── -->
+<div class="announcement-bar">
+  📣 2024/2025 Post-UTME Registration Now Open — <a href="index.html#admissions">Apply Before August 30 →</a>
+</div>
+
+<!-- ─── NAVBAR ─── -->
+<nav id="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="images/logo.png" alt="UNIZIK" class="nav-logo">
+    <div class="nav-brand-text">
+      <span class="nav-brand-name">Nnamdi Azikiwe University</span>
+      <span class="nav-brand-tag">Est. 1992 · Awka, Nigeria</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#academics">Academics</a></li>
+    <li><a href="index.html#research">Research</a></li>
+    <li><a href="index.html#campus">Campus</a></li>
+    <li><a href="index.html#news">News</a></li>
+    <li><a href="index.html#admissions" class="nav-cta">Apply Now</a></li>
+  </ul>
+  <button class="nav-burger" id="burger" onclick="openMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ─── MOBILE MENU ─── -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMenu()">✕</button>
+  <a href="index.html#about" onclick="closeMenu()">About</a>
+  <a href="index.html#academics" onclick="closeMenu()">Academics</a>
+  <a href="index.html#research" onclick="closeMenu()">Research</a>
+  <a href="index.html#campus" onclick="closeMenu()">Campus</a>
+  <a href="index.html#news" onclick="closeMenu()">News</a>
+  <a href="index.html#admissions" onclick="closeMenu()" style="color:var(--orange)">Apply Now →</a>
+</div>
+
+<!-- ─── BREADCRUMB ─── -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="index.html#academics">Academics</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current" id="breadcrumb-label">Faculty</span>
+  </div>
+</div>
+
+<!-- ─── MAIN CONTENT (rendered by JS) ─── -->
+<div id="page-root"></div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <img src="images/logo.png" alt="UNIZIK" class="footer-brand-logo">
+      <div class="footer-brand-name">Nnamdi Azikiwe University</div>
+      <div class="footer-brand-tag">Awka · Anambra State · Nigeria</div>
+      <p class="footer-brand-desc">Empowering minds, transforming lives, and advancing knowledge for the development of Nigeria and the African continent since 1992.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Academics</div>
+      <ul class="footer-links">
+        <li><a href="index.html#academics">All Faculties</a></li>
+        <li><a href="faculty.html?faculty=health-sciences">Health Sciences</a></li>
+        <li><a href="faculty.html?faculty=engineering">Engineering</a></li>
+        <li><a href="faculty.html?faculty=physical-sciences">Physical Sciences</a></li>
+        <li><a href="faculty.html?faculty=law">Law</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Admissions</div>
+      <ul class="footer-links">
+        <li><a href="index.html#admissions">Apply Now</a></li>
+        <li><a href="#">Entry Requirements</a></li>
+        <li><a href="#">Scholarships</a></li>
+        <li><a href="#">Postgraduate Entry</a></li>
+        <li><a href="#">International Students</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="#">Student Portal</a></li>
+        <li><a href="#">Staff Portal</a></li>
+        <li><a href="#">Library</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="index.html">University Home</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 Nnamdi Azikiwe University, Awka. All rights reserved.</div>
+    <div class="footer-motto">Discipline · Self Reliance · <span>Excellence</span></div>
+  </div>
+</footer>
+
+<script>
+// ─── NAV SCROLL + MOBILE ─────────────────────────────────────────────────────
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+function openMenu() {
+  document.getElementById('mobileMenu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ─── RENDER ENGINE ────────────────────────────────────────────────────────────
+
+function getFacultyId() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('faculty') || 'engineering';
+}
+
+function buildFacultyPills(currentId) {
+  return ALL_FACULTIES.map(f => `
+    <a href="faculty.html?faculty=${f.id}" class="faculty-pill ${f.id === currentId ? 'active' : ''}">
+      <span class="faculty-pill-icon">${f.icon}</span>
+      <div class="faculty-pill-name">${f.name}</div>
+      <div class="faculty-pill-count">${f.count}</div>
+    </a>
+  `).join('');
+}
+
+function buildDepartmentCards(list) {
+  return list.map(d => `
+    <a href="department.html?department=${d.id}" class="dept-card">
+      <div class="dept-card-top">
+        <div class="dept-icon">${d.icon}</div>
+        <span class="dept-prog-badge">${d.programmes} Prog${d.programmes > 1 ? 's' : ''}</span>
+      </div>
+      <div class="dept-name">${d.name}</div>
+      <div class="dept-desc">${d.desc}</div>
+      <div class="dept-hod">
+        <div class="dept-hod-avatar">${d.hod.initials}</div>
+        <div>
+          <div class="dept-hod-name">${d.hod.name}</div>
+          <div class="dept-hod-role">Head of Department</div>
+        </div>
+      </div>
+      <div class="dept-link">Visit Department →</div>
+    </a>
+  `).join('');
+}
+
+function buildProgrammeCards(list) {
+  return list.map(p => `
+    <div class="prog-card">
+      <span class="prog-degree">${p.degree}</span>
+      <div class="prog-name">${p.name}</div>
+      <div class="prog-duration">⏱ ${p.duration}</div>
+      <div class="prog-desc">${p.desc}</div>
+      <a href="index.html#admissions" class="prog-apply">Apply for this Programme →</a>
+    </div>
+  `).join('');
+}
+
+function buildResearchCards(list) {
+  return list.map((r, i) => `
+    <div class="research-card">
+      <div class="research-card-num">0${i+1}</div>
+      <div class="research-area">${r.area}</div>
+      <div class="research-title">${r.title}</div>
+      <div class="research-desc">${r.desc}</div>
+      <div class="research-meta">
+        <div class="research-meta-stat"><strong>${r.funding}</strong>Funding</div>
+        <div class="research-meta-stat"><strong>${r.projects}</strong>Projects</div>
+        <div class="research-meta-stat"><strong>${r.pubs}</strong>Publications</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildNewsCards(list) {
+  return list.map(n => `
+    <div class="news-card">
+      <div class="news-card-img" style="background: ${n.bg}">
+        <span class="news-card-cat">${n.category}</span>
+      </div>
+      <div class="news-card-body">
+        <div class="news-card-date">${n.date}</div>
+        <div class="news-card-title">${n.title}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderPage(f) {
+  const ug = f.programmes.undergraduate;
+  const pg = f.programmes.postgraduate;
+  const phd = f.programmes.phd;
+
+  const html = `
+    <!-- HERO -->
+    <section id="faculty-hero">
+      <div class="faculty-hero-bg"></div>
+      <div class="faculty-hero-grid"></div>
+      <div class="faculty-hero-inner">
+        <div class="faculty-hero-left">
+          <div class="faculty-hero-tag">Nnamdi Azikiwe University</div>
+          <span class="faculty-hero-icon">${f.icon}</span>
+          <h1 class="faculty-hero-name">${f.name.replace(/(Faculty of|College of)\s/,'<em>$1</em> ')}</h1>
+          <p class="faculty-hero-tagline">${f.tagline}</p>
+          <div class="faculty-hero-actions">
+            <a href="index.html#admissions" class="btn-primary">Apply Now</a>
+            <a href="#departments" class="btn-outline">Departments</a>
+            <a href="#programmes" class="btn-outline">Programmes</a>
+            <a href="#research" class="btn-outline">Research</a>
+          </div>
+        </div>
+        <div class="faculty-hero-stats">
+          <div class="fhs-item">
+            <div class="fhs-num">${f.stats.programmes}</div>
+            <div class="fhs-label">Programmes</div>
+          </div>
+          <div class="fhs-divider"></div>
+          <div class="fhs-item">
+            <div class="fhs-num">${f.stats.students.toLocaleString()}</div>
+            <div class="fhs-label">Students</div>
+          </div>
+          <div class="fhs-divider"></div>
+          <div class="fhs-item">
+            <div class="fhs-num">${f.stats.staff}</div>
+            <div class="fhs-label">Academic Staff</div>
+          </div>
+          <div class="fhs-divider"></div>
+          <div class="fhs-item">
+            <div class="fhs-num">${f.stats.research}</div>
+            <div class="fhs-label">Research Projects</div>
+          </div>
+        </div>
+      </div>
+      <div class="faculty-hero-tab"></div>
+    </section>
+
+    <!-- DEAN'S MESSAGE -->
+    <div class="section-wrap">
+      <div class="section-inner">
+        <div class="section-tag reveal">From the Dean</div>
+        <h2 class="section-title reveal reveal-delay-1">A Message of <span>Welcome</span></h2>
+        <div class="dean-grid" style="margin-top: 40px;">
+          <div class="dean-card reveal">
+            <div class="dean-photo">
+              ${DEAN_PHOTOS[f.id] ? `<img src="${DEAN_PHOTOS[f.id]}" alt="Dean ${f.dean.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">` : ''}
+              <div class="dean-initials" style="${DEAN_PHOTOS[f.id] ? 'display:none;' : ''}">${f.dean.initials}</div>
+              <div class="dean-photo-corner"></div>
+            </div>
+            <div class="dean-name">${f.dean.name}</div>
+            <div class="dean-role">${f.dean.role}</div>
+            <div class="dean-quals">
+              ${f.dean.qualifications.map(q => `<div class="dean-qual">${q}</div>`).join('')}
+            </div>
+          </div>
+          <div class="dean-message-text reveal reveal-delay-1">
+            <span class="dean-quote-mark">"</span>
+            <div class="dean-message-body">
+              ${f.dean.message.map(p => `<p>${p}</p>`).join('')}
+            </div>
+            <div class="dean-sig">${f.dean.name}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPARTMENTS -->
+    <div class="section-wrap mid" id="departments">
+      <div class="section-inner">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 36px; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <div class="section-tag reveal">Academic Departments</div>
+            <h2 class="section-title reveal reveal-delay-1">Departments within the <span>${f.shortName}</span></h2>
+          </div>
+        </div>
+        <div class="dept-grid">${buildDepartmentCards(f.departments)}</div>
+      </div>
+    </div>
+
+    <!-- PROGRAMMES -->
+    <div class="section-wrap mid" id="programmes">
+      <div class="section-inner">
+        <div class="section-tag reveal">Academic Programmes</div>
+        <h2 class="section-title reveal reveal-delay-1">Degrees We <span>Offer</span></h2>
+        <div style="margin-top: 36px;">
+          <div class="prog-tabs">
+            <button class="prog-tab active" data-panel="ug">Undergraduate (${ug.length})</button>
+            <button class="prog-tab" data-panel="pg">Postgraduate (${pg.length})</button>
+            <button class="prog-tab" data-panel="phd">Ph.D. Research (${phd.length})</button>
+          </div>
+          <div class="prog-panel active" id="panel-ug">
+            <div class="prog-grid">${buildProgrammeCards(ug)}</div>
+          </div>
+          <div class="prog-panel" id="panel-pg">
+            <div class="prog-grid">${buildProgrammeCards(pg)}</div>
+          </div>
+          <div class="prog-panel" id="panel-phd">
+            <div class="prog-grid">${buildProgrammeCards(phd)}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESEARCH -->
+    <div class="section-wrap dark" id="research">
+      <div class="section-inner">
+        <div class="section-tag light reveal">Research & Innovation</div>
+        <h2 class="section-title light reveal reveal-delay-1">Research <span>Priorities</span></h2>
+        <p style="color: var(--text-dim); font-size: 15px; line-height: 1.6; max-width: 560px; font-weight: 300; margin-top: 12px; margin-bottom: 40px;" class="reveal reveal-delay-2">Our researchers are tackling the challenges that matter most to Nigeria and the African continent.</p>
+        <div class="research-grid">${buildResearchCards(f.research)}</div>
+      </div>
+    </div>
+
+    <!-- NEWS -->
+    <div class="section-wrap" id="news">
+      <div class="section-inner">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 36px; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <div class="section-tag reveal">Latest Updates</div>
+            <h2 class="section-title reveal reveal-delay-1">Faculty <span>News</span></h2>
+          </div>
+          <a href="index.html#news" class="btn-dark reveal reveal-delay-2">View All News</a>
+        </div>
+        <div class="news-grid">${buildNewsCards(f.news)}</div>
+      </div>
+    </div>
+
+    <!-- OTHER FACULTIES -->
+    <div class="section-wrap mid">
+      <div class="section-inner">
+        <div class="section-tag reveal">Explore More</div>
+        <h2 class="section-title reveal reveal-delay-1">Other <span>Faculties</span></h2>
+        <div class="faculties-scroll" style="margin-top: 32px;">
+          ${buildFacultyPills(f.id)}
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMISSIONS CTA -->
+    <div class="admissions-cta">
+      <div class="admissions-cta-inner">
+        <div>
+          <div class="cta-label">Admissions 2024/2025</div>
+          <h2 class="cta-title">Ready to Join the<br>${f.shortName} Family?</h2>
+          <p class="cta-sub">Applications are now open for all programmes. Join ${f.stats.students.toLocaleString()}+ students already studying in the ${f.name}.</p>
+        </div>
+        <div class="cta-actions">
+          <a href="index.html#admissions" class="btn-navy">Begin Application</a>
+          <a href="#programmes" class="btn-dark">View Programmes</a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('page-root').innerHTML = html;
+  document.title = `${f.name} — Nnamdi Azikiwe University`;
+  document.getElementById('breadcrumb-label').textContent = f.name;
+}
+
+function renderNotFound(id) {
+  document.getElementById('page-root').innerHTML = `
+    <div class="not-found">
+      <div class="not-found-icon">🔍</div>
+      <h2 class="not-found-title">Faculty Not Found</h2>
+      <p class="not-found-sub">No faculty matches the ID "<strong>${id}</strong>". Please choose from the list below.</p>
+      <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:12px; max-width:700px; margin:32px auto 0;">
+        ${ALL_FACULTIES.map(f => `<a href="faculty.html?faculty=${f.id}" class="faculty-pill"><span class="faculty-pill-icon">${f.icon}</span><div class="faculty-pill-name">${f.name}</div></a>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+(function init() {
+  const id = getFacultyId();
+  const faculty = FACULTY_DATA[id];
+
+  if (!faculty) {
+    renderNotFound(id);
+    return;
+  }
+
+  renderPage(faculty);
+  bindTabs();
+  bindReveal();
+})();
+
+function bindTabs() {
+  document.querySelectorAll('.prog-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.prog-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.prog-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(`panel-${tab.dataset.panel}`).classList.add('active');
+    });
+  });
+}
+
+function bindReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+</script>
+</body>
+</html>
